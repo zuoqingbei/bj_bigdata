@@ -1,0 +1,88 @@
+<#macro paginate2 page  tagBody="false" searchForm="searchForm" prev_show_always="false" next_show_always="false" table_order_feild="">
+<#--
+参数使用说明：
+page：				必须，page分页对象
+searchForm: 		可选，指定要查询的form表单，将表单里面的所有内容元素 全部放入分页 查询 参数中取，默认表名searchForm
+table_order_feild:	可选，如果需要自动化排序，需要将table_order_feild字段传进来
+tagBody：			可选，可以自己设计控件样式和大小，控件的ID 要和传进来的 docId一样，默认ID为echarts1
+-->
+<#if (tagBody == "false")>
+	<div class="dataTables_paginate paging_bootstrap">
+		<div class="dataTables_info" style="float: left;padding-top: 10px;">共<em style="color: #aaa;">${page.totalRow!0}</em>条信息，每页<em style="color: #aaa;">${page.pageSize!10}</em>条</div>
+		<ul id="Pagination" class="pagination" ></ul>
+	</div>
+<#else>
+	<#nested> 
+</#if>
+
+<script type="text/javascript" src="/script/jquery.pagination.js"></script>
+<script type="text/javascript">
+$(function(){
+	//分页方法区
+	var limit = ${page.pageSize!10};
+	var totalRow = ${page.totalRow!0};
+	var current_page = ${page.pageNumber!1};
+	//获取表单的所有值
+	var params = serializeForm("${searchForm}");  
+	jQuery("#Pagination").pagination(totalRow, {
+		num_edge_entries: 2, //边缘页数
+		num_display_entries: 10, //主体页数
+		items_per_page:limit, //每页显示1项
+		current_page:current_page,
+		prev_text:'前一页',
+		next_text:'下一页',
+		prev_show_always:${prev_show_always},
+		next_show_always:${next_show_always},
+		link_to:encodeURI('?p=__id__&'+params),
+		callback:function(){}
+	});	
+	
+	//排序方法区
+	$(".ui-jqgrid-sortable").each(function(){
+  		//页面开始，初始化排序字段
+  		var orderField='${table_order_feild}';
+  		var datahide=$(this).attr("data-hide");
+  		if(orderField.toUpperCase().startWith(datahide.toUpperCase())){
+  			//设置值
+  			$(this).attr("data-hide",orderField);
+  			//asc
+  			if(orderField.toUpperCase().endWith("_ASC"))
+  				$(this).append('<i class="icon-caret-down" style="float: right;padding-top:5px;"></i>');
+  				
+  			//desc
+  			if(orderField.toUpperCase().endWith("_DESC"))
+  				$(this).append('<i class="icon-caret-up" style="float: right;"></i>');
+  			//设置样式
+  		}
+  		//给排序字段添加click事件
+  		$(this).click(function(){
+  			var datahide=$(this).attr("data-hide");
+  			if(datahide==undefined||datahide.length==0){
+  				return;
+  			}
+  			//对绑定的排序列取得参数，然后 排序  先 ASC --> DESC -->自然排序
+  			if(datahide.toUpperCase().endWith("_ASC")){
+  				datahide=datahide.substring(0,datahide.length-4)+"_DESC";
+  			}else if(datahide.toUpperCase().endWith("_DESC")){
+  				datahide=datahide.substring(0,datahide.length-5)+"";
+  			}else{
+  				datahide=datahide+"_ASC";
+  			}
+  			//获取表单的所有值
+  			var params = serializeForm("${searchForm}"); 
+  			
+  			var url="";
+  			if(url.indexOf("?")!=-1){
+  				url+="&"+datahide+"=1&"+params;
+  			}else{
+  				url+="?"+datahide+"=1&"+params;
+  			}
+  			//刷新页面
+  			location.href=url;
+  		});
+	});
+	
+	
+});
+</script>
+</#macro>

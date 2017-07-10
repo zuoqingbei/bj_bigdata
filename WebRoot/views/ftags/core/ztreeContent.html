@@ -1,0 +1,202 @@
+<html>
+<head>
+	<title>数据选择</title>
+    <script src="/script/jquery-1.8.0.min.js" type="text/javascript"></script>
+<!--     <script src="/static/global/plugins/jquery-migrate.min.js" type="text/javascript"></script> -->
+	<link href="/script/jquery-ztree/3.5.12/css/zTreeStyle/zTreeStyle.min.css" rel="stylesheet" type="text/css"/>
+    <script src="/script/jquery-ztree/3.5.12/js/jquery.ztree.all-3.5.min.js" type="text/javascript"></script>
+	<script type="text/javascript">
+    	var url;
+    	if('${url!}'.indexOf("?")==-1){
+    		url='${url!}'+"?"
+    	}else{
+    		url='${url!}'+"&"
+    	}
+    	url+="extId=${extId!}&isAll=${isAll!}&module=${module!}&t="+ new Date().getTime();
+    	var chkStyle ='${radio!''}'=='false'?'checkbox':'radio';
+		var key, lastValue = "", nodeList = [], type = 1;
+		var tree, setting = {
+				view:{selectedMulti:false,dblClickExpand:false},
+// 				check:{enable:${checked?string},nocheckInherit:true,chkboxType :{ "Y" : "s", "N" : "s" }},
+               //选中取消选中只关联子类不关联父类
+				check:{enable:${checked?string},nocheckInherit:true,chkboxType :{ "Y" : "s", "N" : "s" },chkStyle:chkStyle,radioType: "all"},
+				async:{enable:true,url:url,autoParam:["id"]},
+				data:{simpleData:{enable:true}},
+				callback:{
+					beforeClick: function(treeId, treeNode){
+						if("${checked}" == "true"){
+							tree.expandNode(treeNode, true, false, false);
+						}
+					},
+					onClick:function(event, treeId, treeNode){
+						tree.expandNode(treeNode);
+					},onCheck: function(e, treeId, treeNode){
+						var nodes = tree.getCheckedNodes(true);
+						for (var i=0, l=nodes.length; i<l; i++) {
+							tree.expandNode(nodes[i], true, false, false);
+						}
+						return false;
+					},onAsyncSuccess: function(event, treeId, treeNode, msg){
+						var nodes = tree.getNodesByParam("pId", treeNode.id, null);
+						for (var i=0, l=nodes.length; i<l; i++) {
+							try{tree.checkNode(nodes[i], treeNode.checked, true);}catch(e){}
+						}
+						selectCheckNode();
+					},onDblClick: function(){
+						<#if checked=='false'>
+						top.$.jBox.getBox().find("button[value='ok']").trigger("click");
+						</#if>
+					}
+				}
+			};
+		
+		function expandNodes(nodes) {
+			if (!nodes) return;
+			for (var i=0, l=nodes.length; i<l; i++) {
+				tree.expandNode(nodes[i], true, false, false);
+				if (nodes[i].isParent && nodes[i].zAsync) {
+					expandNodes(nodes[i].children);
+				}
+			}
+		}
+		
+		$(document).ready(function(){
+			$.get(url, function(zNodes){
+				// 初始化树结构
+				tree = $.fn.zTree.init($("#tree"), setting, zNodes);
+// 				// 默认展开一级节点
+// 				var nodes = tree.getNodesByParam("level", 0);
+// 				for(var i=0; i<nodes.length; i++) {
+// 					tree.expandNode(nodes[i], true, false, false);
+// 				}
+// 				//异步加载子节点
+// 				var nodesOne = tree.getNodesByParam("isParent", true);
+// 				for(var j=0; j<nodesOne.length; j++) {
+// 					tree.reAsyncChildNodes(nodesOne[j],"!refresh",true);
+// 				}
+				selectCheckNode();
+			});
+			key = $("#key");
+			key.bind("focus", focusKey).bind("blur", blurKey).bind("change cut input propertychange", searchNode);
+			key.bind('keydown', function (e){if(e.which == 13){searchNode();}});
+			setTimeout("search();", "300");
+		});
+		
+		// 默认选择节点
+		function selectCheckNode(){
+			var ids = "${selectIds!}".split(",");
+			for(var i=0; i<ids.length; i++) {
+				var node = tree.getNodeByParam("id", (type==3?"u_":"")+ids[i]);
+				if("${checked}" == "true"){
+					try{tree.checkNode(node, true, false);}catch(e){}
+					tree.selectNode(node, false);
+				}else{
+					tree.selectNode(node, true);
+				}
+			}
+		}
+	  	function focusKey(e) {
+			if (key.hasClass("empty")) {
+				key.removeClass("empty");
+			}
+		}
+	  	
+		function blurKey(e) {
+			if (key.get(0).value === "") {
+				key.addClass("empty");
+			}
+			searchNode(e);
+		}
+		
+		//搜索节点
+		function searchNode() {
+			// 取得输入的关键字的值
+			var value = $.trim(key.get(0).value);
+			
+			// 按名字查询
+			var keyType = "name";
+			if (key.hasClass("empty")) {
+				value = "";
+			}
+			
+			// 如果和上次一次，就退出不查了。
+			if (lastValue === value) {
+				return;
+			}
+			
+			// 保存最后一次
+			lastValue = value;
+			
+			var nodes = tree.getNodes();
+			// 如果要查空字串，就退出不查了。
+			if (value == "") {
+				showAllNode(nodes);
+				return;
+			}
+			hideAllNode(nodes);
+			nodeList = tree.getNodesByParamFuzzy(keyType, value);
+			updateNodes(nodeList);
+		}
+		
+		//隐藏所有节点
+		function hideAllNode(nodes){			
+			nodes = tree.transformToArray(nodes);
+			for(var i=nodes.length-1; i>=0; i--) {
+				tree.hideNode(nodes[i]);
+			}
+		}
+		
+		//显示所有节点
+		function showAllNode(nodes){			
+			nodes = tree.transformToArray(nodes);
+			for(var i=nodes.length-1; i>=0; i--) {
+					if(nodes[i].getParentNode()!=null){
+						tree.expandNode(nodes[i],false,false,false,false);
+					}else{
+						tree.expandNode(nodes[i],true,true,false,false);
+					}
+					tree.showNode(nodes[i]);
+					showAllNode(nodes[i].children);
+			}
+		}
+		
+		//更新节点状态
+		function updateNodes(nodeList) {
+			tree.showNodes(nodeList);
+			for(var i=0, l=nodeList.length; i<l; i++) {
+				//展开当前节点的父节点
+				tree.showNode(nodeList[i].getParentNode()); 
+				//显示展开符合条件节点的父节点
+				while(nodeList[i].getParentNode()!=null){
+					tree.expandNode(nodeList[i].getParentNode(), true, false, false);
+					nodeList[i] = nodeList[i].getParentNode();
+					tree.showNode(nodeList[i].getParentNode());
+				}
+				//显示根节点
+				tree.showNode(nodeList[i].getParentNode());
+				//展开根节点
+				tree.expandNode(nodeList[i].getParentNode(), true, false, false);
+			}
+		}
+		
+		// 开始搜索
+		function search() {
+			//$("#search").slideToggle(200);
+			$("#txt").toggle();
+			$("#key").focus();
+		}
+		
+	</script>
+</head>
+<body>
+<!-- 	<div style="position:absolute;right:8px;top:5px;cursor:pointer;" onclick="search();"> -->
+<!-- 		<i class="icon-search"></i><label id="txt">搜索</label> -->
+<!-- 	</div> -->
+	<div id="search" class="form-search hide" style="padding:10px 0 0 13px;">
+		<label for="key" class="control-label" style="padding:5px 5px 3px 0;">关键字：</label>
+		<input type="text" class="empty" id="key" name="key" maxlength="50" style="width:110px;">
+		<button class="btn" id="btn" onclick="searchNode()">搜索</button>
+	</div>
+	<div id="tree" class="ztree" style="padding:15px 20px;"></div>
+</body>
+</html>

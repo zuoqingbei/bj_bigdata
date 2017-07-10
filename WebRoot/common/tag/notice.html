@@ -1,0 +1,231 @@
+<!-- page specific plugin styles -->
+<link rel="stylesheet" href="/bk/assets/css/jquery-ui-1.10.3.full.min.css" />
+<!-- page specific plugin scripts -->
+<script src="/bk/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+<script src="/bk/assets/js/jquery.ui.touch-punch.min.js"></script>
+
+<link href="/static/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
+<script src="/static/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="/static/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+
+<link href="/static/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" type="text/css" />
+<link href="/static/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" type="text/css" />
+<script src="/static/global/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js" type="text/javascript"></script>
+<script src="/static/global/plugins/jquery-file-upload/js/jquery.iframe-transport.js" type="text/javascript"></script>
+<script src="/static/global/plugins/jquery-file-upload/js/jquery.fileupload.js" type="text/javascript"></script>
+<script type="text/javascript" src="/script/kindeditor-4.1.4/kindeditor-all-min.js"></script>
+<div class="row">
+<div class="col-md-12">
+   <form action="/notice/save" id="submitForm" class="form-horizontal form " role="form" method="post" >
+        <div class="form-body">
+      
+        <div class="form-group">
+         <label class="col-sm-2 control-label no-padding-right" >会议名称: </label>
+         <div class="col-sm-9">
+          <input type="text" name="model.name" value="${model.name!}" placeholder="会议名称" class="form-control input-inline input-large" datatype="*" nullmsg="请输入相应的值！" sucmsg="可用"  id="name">
+         </div>
+        </div>
+        
+        <div class="form-group">
+         <label class="col-sm-2 control-label no-padding-right" >会议分类: </label>
+         <div class="col-sm-9">
+           <#include "/views/ftags/core/treeselect.tag"/> 
+           <@ztree id="category_id" datatype="*"  name="cat_ids" value="${model.cat_ids!}" cssClass="form-control input-inline input-large" 
+           labelName="cat_names" labelValue="${model.cat_names!}" title="选择学科分类" 
+           allowClear=true notAllowSelectParent=false checked=true  url="/common/a/categoryTreeData"  />
+         </div>
+        </div>
+        
+        <div class="form-group">
+         <label class="col-sm-2 control-label no-padding-right" >举办时间: </label>
+         <div class="col-sm-9">
+          <input type="text" name="start_time" value="${model.start_time!}" readonly   datatype="*"  placeholder="开始时间" class="form-control input-inline input-small"  id="start_time" >----
+          <input type="text" name="end_time" value="${model.end_time!}" readonly   datatype="*"  placeholder="结束时间" class="form-control input-inline input-small"  id="end_time" >
+        </div>
+        </div>
+        
+        <!--  <div class="form-group">
+         <label class="col-sm-2 control-label no-padding-right" >组委会名称:</label>
+         <div class="col-sm-9">
+          <input type="text" name="model.company_name" value="${model.company_name!}" placeholder="组委会名称" class="form-control input-inline input-large" datatype="*" nullmsg="请输入相应的值！" sucmsg="可用" onclick="showCompany()" id="org_name">
+          <input type="hidden" name="model.company_id" value="${model.company_id!}"  class="col-xs-10 col-sm-5" datatype="*" nullmsg="请输入相应的值！" sucmsg="可用" onclick="showCompany()" id="org_id" >
+         </div>
+        </div> -->
+        
+        <div class="form-group">
+         <label class="col-sm-2 control-label no-padding-right" >举办地点:</label>
+         <div class="col-sm-9">
+          <input type="text" name="" value="${pro_name!}${city_name!}${area_name!}" placeholder="选择省市区" class="form-control input-inline input-large" datatype="*" nullmsg="请输入相应的值！" sucmsg="可用" id="allcity"  onclick="showCityPop()"  ><br>
+          <input type="text" name="model.address" value="${model.address!}" placeholder=" 填写详细地址" class="form-control input-inline input-large"   >
+          <input   type="hidden" id="pro"  name="pro">
+             <input   type="hidden" id="city"  name="city">
+              <input   type="hidden" id="area"  name="area">
+         </div>
+        </div>
+        
+         <div class="form-group">
+         <label class="col-sm-2 control-label no-padding-right" >网站链接:</label>
+         <div class="col-sm-9">
+          <input type="text" name="model.domain" value="${model.domain!}" placeholder="网站链接" class="form-control input-inline input-large"  nullmsg="请输入相应的值！" sucmsg="可用" id="domain">
+         </div>
+        </div>
+        
+        <div class="form-group">
+         <label class="col-sm-2 control-label no-padding-right" >会议来源:</label>
+         <div class="col-sm-9">
+          <input type="text" name="model.source" value="${model.source!}" placeholder="会议来源" class="form-control input-inline input-large"  >
+         </div>
+        </div>
+        <div class="form-group">
+         <label class="col-sm-2 control-label no-padding-right" >参会人数:</label>
+         <div class="col-sm-9">
+          <input type="text" name="model.con_num" value="${model.con_num!}" placeholder="参会人数" class="form-control input-inline input-large"  nullmsg="请输入相应的值！" sucmsg="可用">
+         </div>
+        </div>
+        
+        <div class="form-group">
+         <label class="col-sm-2 control-label no-padding-right" >学分性质:</label>
+         <div class="col-sm-9">
+         
+         <div class="col-sm-9">
+         <div class="md-radio-inline">
+                  <div class="md-radio">
+                      <input type="radio" id="radio1" name="model.credits_type"  value="country1"  class="md-radiobtn"  auto-data="credits_type">
+                      <label for="radio1">
+                          <span class="inc"></span>
+                          <span class="check"></span>
+                          <span class="box"></span>国家级Ⅰ类</label>
+                  </div>
+                  <div class="md-radio ">
+                      <input type="radio" id="radio2" name="model.credits_type"  value="country2"  class="md-radiobtn"  auto-data="credits_type">
+                      <label for="radio2">
+                          <span class="inc"></span>
+                          <span class="check"></span>
+                          <span class="box"></span>国家级Ⅱ类</label>
+                  </div>
+                   <div class="md-radio ">
+                      <input type="radio" id="radio3" name="model.credits_type"  value="provice1"  class="md-radiobtn"  auto-data="credits_type">
+                      <label for="radio3">
+                          <span class="inc"></span>
+                          <span class="check"></span>
+                          <span class="box"></span>省级Ⅰ类</label>
+                  </div>
+                   <div class="md-radio ">
+                      <input type="radio" id="radio4" name="model.credits_type"  value="provice2"  class="md-radiobtn"  auto-data="credits_type">
+                      <label for="radio4">
+                          <span class="inc"></span>
+                          <span class="check"></span>
+                          <span class="box"></span>省级Ⅱ类</label>
+                  </div>
+                   <div class="md-radio ">
+                      <input type="radio" id="radio5" name="model.credits_type"  value="city1"  class="md-radiobtn"  auto-data="credits_type">
+                      <label for="radio5">
+                          <span class="inc"></span>
+                          <span class="check"></span>
+                          <span class="box"></span>市级Ⅰ类</label>
+                  </div>
+                   <div class="md-radio ">
+                      <input type="radio" id="radio6" name="model.credits_type"  value="city2"  class="md-radiobtn"  auto-data="credits_type">
+                      <label for="radio6">
+                          <span class="inc"></span>
+                          <span class="check"></span>
+                          <span class="box"></span>市级Ⅱ类</label>
+                  </div>
+              </div>
+         </div>
+         <!--  <input type="radio" name="model.credits_type" value="country1"  class="form-control " datatype="*"  id="credits_type"> 国家级Ⅰ类
+          <input type="radio" name="model.credits_type" value="country2" class="form-control " datatype="*"  id="credits_type">国家级Ⅱ类
+          <input type="radio" name="model.credits_type" value="provice1"  class="form-control " datatype="*"  id="credits_type">省级Ⅰ类
+          <input type="radio" name="model.credits_type" value="provice2"  class="form-control " datatype="*"  id="credits_type">省级Ⅱ类
+          <input type="radio" name="model.credits_type" value="city1"  class="form-control " datatype="*" id="credits_type">市级Ⅰ类
+          <input type="radio" name="model.credits_type" value="city2"  class="form-control " datatype="*"  id="credits_type">市级Ⅱ类 -->
+         </div>
+        </div>
+        
+        <div class="form-group">
+         <label class="col-sm-2 control-label no-padding-right" >学分数量:</label>
+         <div class="col-sm-9">
+          <input type="text" name="model.credits_num" value="${model.credits_num!}" placeholder="学分数量" class="form-control input-inline input-large" datatype="*" nullmsg="请输入相应的值！"  ignore="ignore" sucmsg="可用" id="credits_num">
+         </div>
+        </div>
+        
+         <div class="form-group">
+         <label class="col-sm-2 control-label no-padding-right" >联系人:</label>
+         <div class="col-sm-9">
+          <input type="text" name="model.link_name" value="${model.link_name!}" placeholder="姓名" class="form-control input-inline input-small" datatype="*"  ignore="ignore" id="link_name">
+          <input type="text" name="model.org" value="${model.org!}" placeholder="单位" class="form-control input-inline input-small" datatype="*"  ignore="ignore" id="org"></br>
+          <input type="text" name="model.mobile" value="${model.mobile!}" placeholder="手机号码" class="form-control input-inline input-small" datatype="*"   ignore="ignore" id="mobile">
+          <input type="text" name="model.email" value="${model.email!}" placeholder="邮箱" class="form-control input-inline input-small" datatype="*"   ignore="ignore" id="email">
+         </div>
+        </div>
+        
+         <div class="form-group">
+         <label class="col-sm-2 control-label no-padding-right" >详细介绍:</label>
+         <div class="col-sm-9">
+         <textarea class="  wysiwyg" id="moreContent" name="model.instruction" cols="42" rows="10">${model.instruction!}</textarea> <br />
+         </div>
+         
+        </div>
+        
+       <!--  <div class="form-group">
+         <label class="col-sm-2 control-label no-padding-right" >图片: </label>
+         
+          <div class="col-md-10">
+                 <#include "/views/ftags/core/fileUpload.tag"/> 
+                 <@fileUpload hiddenPathsId="thumb" hiddenPathsName="model.thumb"  hiddenNamesId="names"  hiddenNamesName="thumb"  hiddenPathsVal="${model.thumb!}"
+                  isMuti=false   fileTypeLimit="images" fileSizeLimit="10" />
+                 <span class="help-inline Validform_checktip"></span>
+             </div>
+        </div> -->
+        </div>
+        <input type="hidden" name="model.type" value="2">
+        <input type="hidden" name="model.id" value="${model.id!}">
+		<div class="form-actions clearfix">
+            <div class="col-md-offset-3 col-md-10" style="margin:60 auto;">
+              <button id="save_but" class="btn btn-info" type="submit"  onclick="getcontent();" >
+               <i class="icon-ok bigger-110"></i>
+                                               保存
+              </button>
+              &nbsp; &nbsp; &nbsp;
+               <button id="cancel_but" class="btn btn-info " type="button" onclick="history.go(-1)">
+                <i class="icon-ok bigger-110"></i>
+                                                    取消
+               </button>
+            </div>
+		</div>
+      
+   </form>
+   </div>
+</div>
+       
+
+
+<script type="text/javascript"> 
+var editor=null;
+// KindEditor.ready(function(K) {
+// 	editor=KindEditor.create('#moreContent',{
+// 		thremType:'simple',
+// 		basePath:'/script/kindeditor-4.1.4/',
+// 		uploadJson : '/script/kindeditor-4.1.4/jsp/upload_json.jsp',
+// 		fileManagerJson : '/script/kindeditor-4.1.4/jsp/file_manager_json.jsp',
+// 		height:500,
+// 		items:[
+// 		        'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',
+// 		        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+// 		        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+// 		        'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+// 		        'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+// 		        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
+// 		        'flash', 'media', 'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+// 		        'anchor', 'link', 'unlink', 
+// 		]
+// });
+// });
+
+editor=initKindEditor("moreContent",700,500,null,'complex');
+
+
+function getcontent(){
+	editor.sync();
+}
+</script>

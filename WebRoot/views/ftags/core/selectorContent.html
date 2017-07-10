@@ -1,0 +1,219 @@
+<#include "/admin/common/_layoutForm.html"/>
+<@layout >
+<link rel="stylesheet" href="/admin/common/resources/css/colorPicker.css" type="text/css"  />
+<link rel="stylesheet" href="/admin/common/resources/css/invalid.css" type="text/css"  />
+<style>
+.dataTables_length {
+    margin-top: -3px;
+}
+ .result-list li {
+    float: left;
+    line-height: 20px;
+    padding-left: 5px;
+}
+</style>
+<div class="subcontent">
+    <form action="#" name="documentForm" id="searchForm" method="post" class="clear"> 
+       <div class="tableoptions f-12" >
+                           输入查询内容：<input class="search_input" type="text" name="sname" />
+        <#if addUrl?? && addUrl!=''>
+	         <#if addUrl?index_of("parent.window.location.href=")==-1>
+	         	<button class="search_button"   type="button" onclick="location.href='${addUrl!}'">添加</button>
+	         <#else>
+	          <#assign address=addUrl?substring(28,addUrl?length)>
+	         	<button class="search_button"   type="button" onclick="parent.window.location.href='${address!}'">添加</button>
+	         </#if>
+        
+        </#if>
+        <button class="search_button"  id="search_button" type="button" >查询</button>
+       </div>
+       <div class="clear"></div>
+       
+       <table cellpadding="0" cellspacing="0" border="0" width="100%" class="stdtable clear f-12" id="dataTable">
+         <thead id="thead">
+          <tr width="100%">
+            <th class="head1" >操作</th>
+            <#list coloums?split(",") as col>
+            <th class="head1" >${col!}</th>
+            </#list>
+          </tr>
+         </thead>
+         <tbody></tbody>
+       </table>
+     </form>
+     
+     <div class="select-result result-list f-12 p-t10">
+      <h3 class="select-rs-hd fl" style="padding-top: 10px;">您的选择</h3>
+      <ul id="username" class="fl" style="line-height: 30px;font-size:15px;color:orange;padding-top: 15px;">
+       <#if idsL ??>
+        <#list idsL as id>
+        <li><input <#if isMulti=="false">type="radio"<#else>type="checkbox"</#if>  value="${id!}" name="selectIds" onclick="_remove('${id!}');" checked="checked"><span name="selectNames">${namesL[id_index]}</span></li>
+        </#list>
+       </#if>
+      </ul>
+     </div>
+     
+      <div class="clear p-l110">
+        <input  class="button button-r radius2" type="button" value="完成添加" onclick="return completeSelect();"/>
+      </div>
+</div>
+<script type="text/javascript">
+//datatables
+var oTable ;
+$(function(){
+	var param='${param}'.split(",");
+	var paramStr="?";
+	for(var x=0;x<param.length;x++){
+		if(param[x]!=""){
+			paramStr+=param[x].split(":")[0]+"="+param[x].split(":")[1]+"&";
+		}
+	}
+	if(paramStr!=""){
+		paramStr=paramStr.substr(0,paramStr.length-1);
+	}
+	 var setting = $.extend(true,baseDataTablesSettings,{
+	  "bFilter":false,
+	  "bSort": false ,
+	  "sAjaxSource": "${dataUrl!}"+paramStr,
+	  "aoColumns": [
+    	{ "mDataProp": null ,
+    	   "sDefaultContent": "",
+    		"mRender":function(data,type,row){
+    			var value="";
+    			var selectedIds=getSelectValues(1);
+    			<#if isMulti=='false'>
+        			if((','+selectedIds+',').indexOf(','+row["ID"]+',')!=-1){
+        				value+='<input  type="radio" name="ids" value="'+row["ID"]+'" value-name="'+row["COL"]+'" value-col1="'+row["COL1"]+'"  value-col2="'+row["COL2"]+'"    value-col3="'+row["COL3"]+'"  checked="checked"/>';
+        			}else{
+        				value+='<input  type="radio" name="ids" value="'+row["ID"]+'" value-name="'+row["COL"]+'"  value-col1="'+row["COL1"]+'"   value-col2="'+row["COL2"]+'"    value-col3="'+row["COL3"]+'"/>';
+        			}
+    			<#else>
+        			if((','+selectedIds+',').indexOf(','+row["ID"]+',')!=-1){
+        				value+='<input  type="checkbox" name="ids" value="'+row["ID"]+'" value-name="'+row["COL"]+'" value-col1="'+row["COL1"]+'"   value-col2="'+row["COL2"]+'"    value-col3="'+row["COL3"]+'" checked="checked"/>';
+        			}else{
+        				value+='<input  type="checkbox" name="ids" value="'+row["ID"]+'" value-name="'+row["COL"]+'" value-col1="'+row["COL1"]+'"    value-col2="'+row["COL2"]+'"    value-col3="'+row["COL3"]+'"/>';
+        			}
+    			</#if>
+    			return value;
+    		}
+    	},
+	   { "mDataProp": "COL"},
+	   { "mDataProp": "COL1"},
+	   { "mDataProp": "COL2"},
+	   ],
+	  "sPaginationType": "full_numbers",
+	  //回调函数
+	  "fnServerData" : function(sSource, aoData, fnCallback) {  
+		   var condition="{";
+		   for(var i=0;i<aoData.length;i++){
+				condition+="\""+aoData[i].name+"\":"+"\""+aoData[i].value+"\",";
+		   }
+		   condition+="}"
+		   var conditions = eval('(' + condition + ')');
+	       $.ajax({  
+	           "type" : 'get',  
+	           "url" : sSource,  
+	           "dataType" : "json",  
+	           "data" :conditions,  
+	           "success" : function(resp) { 
+	        	   //处理datatables自己方法
+	        	   fnCallback(resp);  
+	        	   //每个行被选择的时候
+	        	   $("input[name='ids']").on("change",function() {
+	       				if($(this).attr("checked")){
+	       					//如果是单选先移除其他的
+	       					var id=$(this).val();
+	       					var name=$(this).attr("value-name");
+	       					<#if isMulti=='false'>
+	       					_remove($(this).val())
+	       					</#if>
+	       					_add(id,name,$(this).attr("value-col1"),$(this).attr("value-col2"),$(this).attr("value-col3"));
+	       				}else{
+	       					_remove($(this).val())
+	       				}
+	       		   })
+	           }  
+	       });  
+		}
+	 });
+	 oTable = $('#dataTable').dataTable(setting);
+	 
+	 //绑定查询按钮事件
+	 $("#search_button").click(function(){
+	  	oTable.fnReloadAjax();//刷新数据
+	 }); 
+	 
+});
+
+
+//移除一个选择
+function _remove(values){
+	//如果是单选
+	<#if isMulti=='false'>
+	$("#username").html("");
+	<#else>
+	//如果是多选
+	$("[name='selectIds'][value='"+values+"']").parent().remove();
+	</#if>
+}
+
+//添加一个选择
+function _add(id,name,col1,col2,col3){
+	var html=((name==null||name=='null')?col1:name)
+	var li='<li><input type="checkbox" value="'+id+'"  value-col1="'+col1+'"  value-col2="'+col2+'"    value-col3="'+col3+'" name="selectIds" onclick="_remove("'+id+'");" checked="checked"><span name="selectNames">'+html+'</span></li>'
+	$("#username").append(li);
+}
+
+//获取所有result区域的值  
+function getSelectValues(type){
+	var values=new Array();
+	//获取ID的值
+	if(type==1){
+		$("[name='selectIds']").each(function(){
+			values.push($(this).val());
+		})
+	}else if(type==2){
+		$("[name='selectNames']").each(function(){
+			values.push($(this).html());
+		})
+	}else if(type==3){
+		$("[name='selectIds']").each(function(){
+			values.push($(this).attr("value-col0"));
+		})
+	}else if(type==4){
+		$("[name='selectIds']").each(function(){
+			values.push($(this).attr("value-col1"));
+		})
+	}else if(type==5){
+		$("[name='selectIds']").each(function(){
+			values.push($(this).attr("value-col2"));
+		})
+	}else if(type==6){
+		$("[name='selectIds']").each(function(){
+			values.push($(this).attr("value-col3"));
+		})
+	}
+	return values.join(",");
+}
+
+//完成选择
+function completeSelect(){
+	var ids=getSelectValues(1);
+	var names=getSelectValues(2);
+	var col0s=getSelectValues(3);
+	var col1s=getSelectValues(4);
+	var col2s=getSelectValues(5);
+	var col3s=getSelectValues(6);
+	parent.$("#${inputId!}").val(ids);
+	parent.$("#${nameInputId!}").val(names);
+	<#if callBackFun?? && callBackFun!=''>
+    	try{
+    		parent.${callBackFun}(ids,names,col1s,col2s,col3s);
+    	}catch (e){
+    	}
+    </#if>
+	parent.hidePopWin(false);
+}
+
+</script>
+</@layout>

@@ -1,0 +1,235 @@
+body {
+    font-family: "微软雅黑", sans-serif;
+    color: #FFF;
+}
+
+h1, h4{
+    text-align: center;
+}
+ul{
+    list-style: none;
+}
+
+.selected{
+    font-weight: bold;
+    background-color: rgba(0,0,0,.3);
+}
+.hover{
+    font-weight: bold;
+}
+.btn-default{
+    color: #fff;
+    background-color: transparent;
+    border-color: #eee;
+}
+.btn-default:hover,
+.btn-default:focus{
+    color: #ddd;
+    border-color: #eee;
+    background-color: rgba(0,0,0,.15)
+}
+.btn-default:active:focus{
+    color: #fff;
+    border-color: #eee;
+    background-color: rgba(0,0,0,.3)
+}
+.open > .dropdown-toggle.btn-default,
+.btn-default:active:hover,
+.btn-default.active:hover,
+.open > .dropdown-toggle.btn-default:hover,
+.btn-default:active:focus,
+.btn-default.active:focus,
+.open > .dropdown-toggle.btn-default:focus,
+.btn-default:active.focus,
+.btn-default.active.focus,
+.open > .dropdown-toggle.btn-default.focus{
+    color: #ccc;
+    background-color: transparent;
+    border-color: #eee;
+}
+.dropdown ul{
+    background-color: rgba(0,0,0,.5);
+}
+.dropdown ul li{
+    cursor: pointer;
+}
+body{
+    background: url(../img/body_bg_city.jpg) no-repeat fixed center ;
+    background-size: 100% 100%;
+}
+.table-hover > tbody > tr:hover{
+    background-color:rgba(0, 0, 0, 0.23)
+}
+
+
+
+/*------------------*/
+
+#l{
+    position: fixed;
+    height: 100%;
+    width:16%;
+    margin-left: -15px;
+    background: rgba(0,0,0,0.25);
+}
+#l .userInfo{
+    margin-bottom: 6em;
+}
+#l .userInfo-pic img{
+    margin: 0 auto;
+    padding:.5em;
+}
+#l .userInfo-offer{
+    text-align: center;
+}
+
+#l .menu{
+    padding:2em 0;
+}
+#l .menu li{
+    cursor: pointer;
+    padding:.4em;
+}
+#l .menu>ul>li{
+    font-size: 1.1em;
+}
+#l .menu>ul>li>ul>li{
+    font-size: .9em;
+}
+
+/*--------  右边的样式   ------*/
+#r h3{
+    padding-left: 1em;
+}
+#r header{
+    padding-top:.6em;
+    border-bottom: 1px solid rgba(255,255,255,.5);
+}
+#r header .status span{
+    top: .5em;
+    left: -.3em;
+    font-size: 1.5em;
+}
+#r header span.glyphicon-ok {
+    color: limegreen;
+}
+#r li.tab{
+    position: absolute;
+    top: 8px;
+    left:4em;
+}
+#r .tab .btn,
+#r .tab .btn:active:focus{
+    padding-top: 11.5px;
+    padding-bottom: 12px;
+    margin-right: .3em;
+    border-radius: 4px 4px 0 0;
+    background-color:rgba(255,255,255,.15);
+
+}
+#r .tab>.btn.selected{
+    border-bottom-color: #2d1f38;
+    background-color:transparent;
+    outline:none;
+}
+#r .tab>button>span.glyphicon.glyphicon-remove{
+    left:.3em;
+    top:.15em;
+    z-index: 1000;
+}
+
+#r .search{
+    padding: 1em;
+    background-color: rgba(0,0,0,.2);
+    margin-top: .5em;
+}
+#r .search .form-group{
+    margin:.6em;
+}
+#r .search option{
+    background-color: rgb(102, 62, 99);
+}
+#r .search .title{
+    font-size: 1.2em;
+    padding-top: 1em;
+}
+#r .search .btn{
+    margin-top: .5em;
+    margin-bottom: .5em;
+    width:100%;
+}
+#r .search input:not([type=submit]){
+    color: #fff;
+    background-color: transparent;
+}
+#r .search form [type=submit]{
+    padding:5px 2em;
+}
+
+#r .switch:not(#index){
+    display: none;
+}
+
+#r .numShow{
+    padding: 1em;
+}
+#r .numShow .item{
+    padding: 1em;
+    border: 1px solid;
+    border-radius: 5px;
+    background-color: rgba(0,0,0,.2);
+}
+#r .numShow .item h4{
+    margin-top: 0;
+}
+#r .numShow .item .number{
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    text-shadow: 2px 2px 3px #000;
+    padding-left: .6em;
+}
+#r .numShow .item .comp{
+    margin-top: .8em;
+}
+#r .chartPie{
+    padding:1em;
+}
+#r .chartPie .item{
+    padding: 1em;
+    border: 1px solid;
+    border-radius: 5px;
+    background-color: rgba(0,0,0,.2);
+}
+
+#r .chartBar .item,
+#r .chartLine .item{
+    padding: 1em;
+    border: 1px solid;
+    border-radius: 5px;
+    background-color: rgba(0,0,0,.2);
+}
+
+
+
+
+
+
+
+
+
+
+
+#r .chartPie [id^=chart] {
+    height: 10em;
+}
+#r .chartBar [id^=chart] {
+    height: 20em;
+}
+#r .chartLine [id^=chart] {
+    height: 30em;
+}
+
+
+
+

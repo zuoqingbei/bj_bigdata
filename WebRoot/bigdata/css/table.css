@@ -1,0 +1,62 @@
+#r .alert-info{
+    margin-top: 1.8em;
+    margin-bottom: 1em;
+    background-color: rgba(58, 255, 71, 0.25);
+    color: #fff;
+    overflow: hidden;
+}
+#r .alert-info .btn{
+    margin: -8px 0;
+}
+.table > thead > tr > th,
+.table > tbody > tr td{
+    text-align: center;
+    vertical-align: middle;
+    color: #ddd;
+}
+
+table td.department,
+table td.reporter .reporter-name{
+    cursor: pointer;
+}
+#usageMode td.department>.content,
+#level td.department>.content{
+    cursor: default;
+}
+table td.reporter .reporter-name:hover,
+#usageMode table td.department>div:not(.content):hover,
+#level table td.department>div:not(.content):hover{
+    text-decoration: underline;
+}
+
+table td .content{
+    display: none;
+}
+table td:not(.reporter) .reporter-name,
+table td:not(.reporter)  .content{
+    margin-bottom: .5em;
+}
+#usageMode td:not(.reporter) .reporter-name,
+#level td:not(.reporter) .reporter-name{
+    border:none;
+}
+#usageMode .reporter-name,
+#usageMode .content,
+#level .reporter-name,
+#level .content{
+    margin-bottom: 0;
+}
+#usageMode .total,
+#level .total{
+    margin-bottom: .5em;
+}
+#r table td {
+    padding: 8px 0;
+}
+
+table td a{
+    color: #fff;
+}
+table td a:hover{
+    color: #4ff6ff;
+}

@@ -1,0 +1,186 @@
+<div class="-mob-share-ui -mob-share-ui-theme-slide-right" style="display: none">
+    <ul class="-mob-share-list">
+        <li class="-mob-share-weibo"><p>新浪微博</p></li>
+        <li class="-mob-share-tencentweibo"><p>腾讯微博</p></li>
+        <li class="-mob-share-qzone"><p>QQ空间</p></li>
+        <li class="-mob-share-qq"><p>QQ好友</p></li>
+        <li class="-mob-share-weixin"><p>微信</p></li>
+        <li class="-mob-share-douban"><p>豆瓣</p></li>
+        <li class="-mob-share-facebook"><p>Facebook</p></li>
+        <li class="-mob-share-twitter"><p>Twitter</p></li>
+    </ul>
+    <div class="-mob-share-close">取消</div>
+</div>
+<div class="-mob-share-ui-bg"></div>
+
+<#if session?? &&session.share_sdk_url??>
+<script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=54d178623e6"></script>
+<script src="/script/commonJs/ua.min.js"></script>
+<script>
+try{
+	
+
+mobShare.config( {
+    debug: false, // 开启调试，将在浏览器的控制台输出调试信息
+    appkey: '54d178623e6', // appkey
+    params: {
+        url: '${session.share_sdk_url!}', // 分享链接
+        title: '${session.share_sdk_title!}', // 分享标题
+        description: '${session.share_sdk_description!}', // 分享内容
+        pic: '${session.share_sdk_pic!}', // 分享图片，使用逗号,隔开
+        reason:'${session.share_sdk_reason!}'//只应用与QZone与朋友网
+    },
+    /**
+     * 分享时触发的回调函数
+     * 分享是否成功，目前第三方平台并没有相关接口，因此无法知道分享结果
+     * 所以此函数只会提供分享时的相关信息
+     * @param {String} plat 平台名称
+     * @param {Object} params 实际分享的参数 { url: 链接, title: 标题, description: 内容, pic: 图片连接 }
+     */
+    callback: function( plat, params ) {
+    }
+});
+
+//分享参数
+app={
+ title:'${session.share_sdk_title!}',//会议名称
+ description:'${session.share_sdk_description!}',//时间地点
+ url:'${session.share_sdk_url!}',
+ thumb:'${session.share_sdk_pic!}'
+};
+
+//设置分析参数
+function to_app_data(){
+ try{
+  if(UA.isAndroid()){
+   	window.android.to_app_data(JSON.stringify(app));
+  }else if (UA.isIOS()){
+   	document.location='doctorpda/to_app_data?json='+JSON.stringify(app);
+  }
+ }catch (e) {
+ }
+}
+
+window.onload=function (){
+  if(navigator.userAgent.indexOf("doctorpda")>0){
+    to_app_data();
+  }
+} 
+
+
+}catch(e){
+	
+}
+</script>
+
+<#if (session.is_weixin?? && session.is_weixin)>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+<@_wx_config url='${session.req_url!}'>
+//${session.req_url!}
+wx.config({
+	debug:false,
+	appId:'${sign.appId!}',
+	timestamp:'${sign.timestamp!}',
+	nonceStr:'${sign.nonceStr!}',
+	signature:'${sign.signature!}',
+	jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo']  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+});
+wx.ready(function(res){
+	 // 2.1 监听“分享给朋友”，按钮点击、自定义分享内容及分享结果接口
+    wx.onMenuShareAppMessage({
+        title: app.title,
+        desc: app.description,
+        link: app.url,
+        imgUrl: app.thumb,
+        trigger: function (res) {
+           // alert('用户点击发送给朋友');
+        },
+        success: function (res) {
+            //   alert('已分享');
+        },
+        cancel: function (res) {
+            //alert('已取消');
+        },
+        fail: function (res) {
+            //alert(JSON.stringify(res));
+        }
+    });
+   
+    // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+    wx.onMenuShareTimeline({
+    	title: app.title,
+        desc: app.description,
+        link: app.url,
+        imgUrl: app.thumb,
+        trigger: function (res) {
+            //alert('用户点击分享到朋友圈');
+        },
+        success: function (res) {
+            //  alert('已分享');
+        },
+        cancel: function (res) {
+            //  alert('已取消');
+        },
+        fail: function (res) {
+            //   alert(JSON.stringify(res));
+        }
+    });
+    //  alert('已注册获取“分享到朋友圈”状态事件');
+
+    // 2.3 监听“分享到QQ”按钮点击、自定义分享内容及分享结果接口
+    wx.onMenuShareQQ({
+    	title: app.title,
+        desc: app.description,
+        link: app.url,
+        imgUrl: app.thumb,
+        trigger: function (res) {
+            // alert('用户点击分享到QQ');
+        },
+        complete: function (res) {
+            // alert(JSON.stringify(res));
+        },
+        success: function (res) {
+            //  alert('已分享');
+        },
+        cancel: function (res) {
+            //   alert('已取消');
+        },
+        fail: function (res) {
+            // alert(JSON.stringify(res));
+        }
+    });
+    //  alert('已注册获取“分享到 QQ”状态事件');
+
+    // 2.4 监听“分享到微博”按钮点击、自定义分享内容及分享结果接口
+
+    wx.onMenuShareWeibo({
+    	title: app.title,
+        desc: app.description,
+        link: app.url,
+        imgUrl: app.thumb,
+        trigger: function (res) {
+            // alert('用户点击分享到微博');
+        },
+        complete: function (res) {
+            //  alert(JSON.stringify(res));
+        },
+        success: function (res) {
+            //    alert('已分享');
+        },
+        cancel: function (res) {
+            //  alert('已取消');
+        },
+        fail: function (res) {
+            //   alert(JSON.stringify(res));
+        }
+    });
+    //  alert('已注册获取“分享到微博”状态事件');
+
+	
+});
+</@_wx_config>    
+</script>
+</#if>
+
+</#if>

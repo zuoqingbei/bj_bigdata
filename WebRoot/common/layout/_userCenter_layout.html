@@ -1,0 +1,139 @@
+<#macro layout >
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+<#if session.login_user??>
+     ${session.login_user.nickname!session.login_user.mobile!}个人中心
+<#else>
+           个人中心
+</#if>
+</title>
+<link rel="stylesheet" type="text/css" href="/account/sign/css/common_f.css" />
+<link rel="stylesheet" href="/script/validform/style.css" type="text/css" />
+<link href="/script/subModal/subModal.css" type="text/css" rel="stylesheet"/>
+<script src="/script/jquery-1.8.0.min.js" type="text/javascript"></script>
+<script src="/account/sign/js/jquery.SuperSlide.2.1.1.js" type="text/javascript"></script>
+<script type='text/javascript' src='/script/My97DatePicker/WdatePicker.js'></script>
+<script type="text/javascript" src="/script/jquery.form.js?v=9-30"></script>
+<script type="text/javascript" src="/script/validform/Validform_v5.3.2_min.js"></script>
+<script type="text/javascript" src="/script/subModal/common.js"></script>
+<script type="text/javascript" src="/script/subModal/subModal.js"></script>
+<script type="text/javascript" src="/script/autoFillData/autoFillData.js"></script>
+<script type="text/javascript" src="/script/commonJs/common.js"></script>
+</head>
+<body>
+<!---header-->
+<div class="join_top_a">
+  <div class="join_top_nav join_layout">
+    <div class="fl">
+      <p> <a href="#">欢迎访问${site_name!}！</a> 
+      <#if session.login_user??>
+        <a href="${base_path!}/account/conuser" class="user">${session.login_user.nickname!session.login_user.mobile!}</a> 
+        <a href="${base_path!}/c/login/changePwd?to=${base_path!}">修改密码</a>
+        <a href="/logout?to=${base_path!}">退出</a>
+      <#else>
+        <a href="${base_path!}/child_login?tag=p" class="user">登录</a> 
+        <a href="${base_path!}/c/login/register?to=${base_path!}">注册</a>
+      </#if>
+      </p>
+    </div>
+    <div class="logo"><a href="http://www.doctorpda.cn"></a></div>
+  </div>
+</div>
+<!-- 个人中心 -->
+<div class="w960 attendPerBox" style="min-height: 550px;">
+    <!---banner-->
+    <div class="banner_img"> 
+    <#if session?exists>
+      <#assign conid=session.conference.id>
+    <#else>
+      <#assign conid=conference.id>
+    </#if>
+    <@_config con_id='${conid!}'>
+    <#if conConfig.banner?index_of("doctorpda.cn")!=-1>
+        <img src="${conConfig.banner!}?imageView2/2/h/150" />
+    <#else>
+        <img src="${conConfig.banner!}" width="960px;"/>
+    </#if> 
+    </@_config>
+    </div>
+    
+    <!-- nav -->
+    <ul class="nav">
+    <#if channel_id??>
+    
+     <#if channel_id=='findPwd'>
+      <div class="t">找回密码 - <a href="${base_path!}/" target="_self">返回会议首页</a></div>
+     <#else>
+     
+      <li id="index" 
+      <#if channel_id=='index'>
+       class="userselected"
+      </#if>
+      >
+      <a href="${base_path!}/account/conuser" target="_self">  个人中心</a></li>
+            
+      <li id="sign"
+       <#if channel_id=='sign'>
+       class="userselected"
+      </#if>
+      >
+      <a href="${base_path!}/account/userInfoUpdate?channel_id=sign" target="_self">  参会报名</a></li>
+
+      <li id="confile"
+       <#if channel_id=='doc'>
+       class="userselected"
+      </#if>
+      >
+      <a href="${base_path!}/c/document?channel_id=doc" target="_self"> 会议投稿</a></li>
+     
+      <li id="group"
+      <#if channel_id='document'> 
+        class="userselected"
+        </#if>
+      >
+      <a href="${base_path!}/c/document/docList?channel_id=index" target="_self"> 稿件管理</a></li>
+      
+      <li id="group"
+      <#if channel_id='group'> 
+        class="userselected"
+        </#if>
+        >
+      <a href="${base_path!}/account/group" target="_self">    团队代表报名</a></li>
+                              
+      <li id="info"
+       <#if channel_id=='info'>
+       class="userselected"
+      </#if>
+      >
+      <a href="${base_path!}/account/userInfoUpdate?channel_id=info" target="_self">信息修改</a></li>
+      
+      <#if session.session_conuser??>
+       <#if session.session_conuser.type==1>
+        <#if channel_id=='plan'>
+         <li id="info" class="userselected">
+        <#else>
+         <li id="info">
+        </#if>
+        <a href="${base_path!}/account/plan/list?channel_id=plan" target="_self">个人日程</a></li>
+       </#if>
+      </#if>
+      
+      
+      <li id="shouye" class="fhsy"><a href="${base_path!}/" target="_self">返回大会首页</a></li>
+      </#if>
+      
+      <#else>
+       <div class="t">个人中心 - <a href="${base_path!}/" target="_self">返回会议首页</a></div>
+      </#if>
+    </ul>  
+   <#nested>
+ </div>
+<!-- 底部信息 -->
+<#include "/common/_footer.html"/>
+
+</body>
+</html>
+</#macro>

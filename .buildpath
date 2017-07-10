@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+	<buildpathentry kind="src" path="src"/>
+	<buildpathentry kind="src" path="topic"/>
+	<buildpathentry kind="src" path="pay"/>
+	<buildpathentry kind="src" path="service"/>
+	<buildpathentry kind="con" path="org.eclipse.dltk.mod.launching.INTERPRETER_CONTAINER"/>
+	<buildpathentry kind="con" path="org.eclipse.vjet.eclipse.core.JSNATIVE_CONTAINER/JS Native Types"/>
+	<buildpathentry kind="con" path="org.eclipse.vjet.eclipse.core.BROWSER_CONTAINER/Browser SDK"/>
+	<buildpathentry external="true" kind="lib" path="C:/Users/longjunfeng/git/conference2_cmda/WebRoot/WEB-INF/lib/druid-0.2.18.jar"/>
+	<buildpathentry external="true" kind="lib" path="C:/Users/longjunfeng/git/conference2_cmda/WebRoot/WEB-INF/lib/jodconverter-core-3.0-beta-4.jar"/>
+	<buildpathentry external="true" kind="lib" path="C:/Users/longjunfeng/git/conference2_cmda/WebRoot/WEB-INF/lib/jpedal_lgpl.jar"/>
+</buildpath>

@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<base href="${ctx_path}/" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="/backstage/css/style.css" />
+<link rel="stylesheet" type="text/css"
+	href="/script/imgselect/css/imgareaselect-default.css" />
+<link rel="stylesheet" type="text/css"
+	href="/admin/common/resources/css/style.css" type="text/css"
+	media="screen" />
+<script type="text/javascript" src="/script/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="/script/image_cut.js"></script>
+<script type="text/javascript" src="/script/jquery.imgareaselect.js"></script>
+<script type="text/javascript" src="/script/jquery.form.js?v=9-30"></script>
+
+<title>图片裁剪</title>
+</head>
+<body>
+	<div class="imgcut" style="padding: 8px;">
+		<div class="fl">
+			<div class="dqtx-top yzhtext-da">原始图片</div>
+			<div class=" p-t10">
+				<img id="old" src="${ctx_path!}${imgSrcPath!}" title="image select"
+					alt="loading IMG ......" />
+			</div>
+		</div>
+
+		<div class="shchqu fl">
+			<div class="shchqu-top yzhtext-da">预览头像</div>
+			<div class="ltximg">
+            <div class="ltximg-180">
+              <div class="ltximg-180-top" align="center" style="overflow:hidden;width:180px;height:264px;"><img  id="big" src="${ctx_path}${imgSrcPath}" height="264" width="180"/></div>
+              <div class="ltximg-180-bott" align="center">大尺寸头像，180× 264像素</div>
+            </div>
+           <!--  <div class="ltximg-50">
+              <div class="ltximg-50-top" align="center" style="overflow:hidden;width:50px;height:73px;"><img id="middle" src="${ctx_path}${imgSrcPath}" height="73" width="50"/></div>
+              <div class="ltximg-50-bott">中尺寸头像，50× 73像素</div>
+            </div>
+            <div class="ltximg-30 clear">
+              <div class="ltximg-30-top" align="center" style="overflow:hidden;width:30px;height:44px;"><img id="small" src="${ctx_path}${imgSrcPath}" height="44" width="30"/></div>
+              <div class="ltximg-30-bott">小尺寸头像，30× 44像素</div>
+            </div> -->
+          </div>
+
+		</div>
+		<br class="clear" /> 
+		<div class="clear">
+			<form id="submitForm" target="hiddenIframe" method="post"
+				id="cutImgForm">
+				<input type="hidden" id="oldimgSrcPath" name="oldimgSrcPath"
+					value="${imgSrcPath!}" /> <input type="hidden" id="imgSrcPath"
+					name="imgSrcPath" value="${imgSrcPath!}" /> <input type="hidden"
+					id="cutImageW" name="imgWidth" /> <input type="hidden"
+					id="cutImageH" name="imgHeight" /> <input type="hidden"
+					id="cutImageX" name="imgTop" /> <input type="hidden"
+					id="cutImageY" name="imgLeft" /> <input type="hidden"
+					id="imgScale" name="imgScale" value="1" /> 
+					<input type="hidden" id="oldimageW"  value="${oldimageW!}" /> 
+					<input type="hidden" id="oldimageH"  value="${oldimageH!}" />
+				<#if !(isShowBtn?? && isShowBtn=='0')>
+				<div class="clear p-l110 f-bold">
+					<input class="button-r radius2  f-bold" type="submit" value="确认裁剪" id="cutBtn" onclick="return subForm();" />
+				</div>
+				</#if>
+			</form>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		imgcut($('#oldimageW').val(), $('#oldimageH').val());
+		
+		function closeimg(img_path) {
+			var imgpath = $('#imgSrcPath').val();
+			var oldimgpath = $('#oldimgSrcPath').val();
+			parent.$('#preview').attr('src', img_path);
+			parent.$('#preview').css('display', 'block');
+			parent.$('#oldphoto').attr('value', img_path);
+			parent.hidePopWin(false);
+		}
+
+		function subForm() {
+			$("#cutBtn").attr("disabled","disabled");
+			
+			$('#submitForm').ajaxSubmit({
+				url : '${base_path!}/common/file/imageCut',
+				uploadFiles : false,
+				dataType : 'json',
+				success : function(data, status) {
+					$("#cutBtn").removeAttr("disabled");
+					if (data.success) {
+						$('#imgSrcPath').val(data.imgSrcPath);
+						closeimg(data.imgSrcPath);
+					}
+				}
+			});
+
+			return false;
+		}
+	</script>
+</body>
+</html>

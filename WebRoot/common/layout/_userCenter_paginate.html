@@ -1,0 +1,48 @@
+<#macro paginate currentPage totalPage actionUrl selectedChannelId urlParas="" parasUrl="">
+	<#if (totalPage <= 0) || (currentPage > totalPage)><#return></#if>
+	<#local startPage = currentPage - 4>
+	<#if (startPage < 1)><#local startPage = 1></#if>
+	
+	<#local endPage = currentPage + 4>
+	<#if (endPage > totalPage)><#local endPage = totalPage></#if>
+	<div id="tnt_pagination">
+			<#if (currentPage <= 8)>
+				<#local startPage = 1>
+			</#if>
+			<#if ((totalPage - currentPage) < 8)>
+				<#local endPage = totalPage>
+			</#if>
+			
+			<#if (currentPage == 1)>
+				首页
+			<#else>
+				<a href="${actionUrl}${selectedChannelId}-#{1}-${urlParas!}-${parasUrl!}">首页</a>
+			</#if>
+			
+			<#if (currentPage > 8)>
+				<a href="${actionUrl}${selectedChannelId}-#{1}-${urlParas!}-${parasUrl!}">#{1}</a>
+				<a href="${actionUrl}${selectedChannelId}-#{2}-${urlParas!}-${parasUrl!}">#{2}</a>
+				<span class="gap">…</span>
+			</#if>
+			
+			<#list startPage..endPage as i>
+				<#if currentPage == i>
+					<span class="active_tnt_link">#{i}</span>
+				<#else>
+					<a href="${actionUrl}${selectedChannelId}-#{i}-${urlParas!}-${parasUrl!}">#{i}</a>
+				</#if>
+			</#list>
+			
+			<#if ((totalPage - currentPage) >= 8)>
+				<span class="gap">…</span>
+				<a href="${actionUrl}${selectedChannelId}-#{totalPage - 1}-${urlParas!}-${parasUrl!}">#{totalPage - 1}</a>
+				<a href="${actionUrl}${selectedChannelId}-#{totalPage}-${urlParas!}-${parasUrl!}">#{totalPage}</a>
+			</#if>
+			
+			<#if (currentPage == totalPage)>
+				最后一页
+			<#else>
+				<a href="${actionUrl}${selectedChannelId}-#{totalPage}-${urlParas!}-${parasUrl!}">最后一页</a>
+			</#if>
+	</div>
+</#macro>

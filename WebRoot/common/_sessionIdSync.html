@@ -1,0 +1,9 @@
+<!-- 在不同域名进行sessionId同步 -->
+<script type="text/javascript">
+//往主域名.会议自定义域名,同步sessionId
+var sessionId='${JSESSIONID!}';
+$("body").append(unescape("%3Cscript src='http://${base_domain!}/ck?sessionId="+sessionId+"' type='text/javascript'%3E%3C/script%3E"));
+<#if conference?? && conference.user_domain??>
+$("body").append(unescape("%3Cscript src='http://${conference.user_domain!}/ck?sessionId="+sessionId+"' type='text/javascript'%3E%3C/script%3E"));
+</#if>
+</script>

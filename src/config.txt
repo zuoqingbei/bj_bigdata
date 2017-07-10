@@ -1,0 +1,33 @@
+#是否开发模式
+devMode = true
+
+
+
+#------------------------------------------------------API接口或账户配置------------------------------------------------
+#数据库
+
+jdbcUrl =jdbc:mysql://101.200.74.145/qst?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+user = qst
+password = qst
+
+#jdbcUrl =jdbc:mysql://192.167.31.50/bigdatademo?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+#user = wsh
+#password = 112112
+
+#file文件服务配置 	
+##文件数量 
+file.count_limit=20
+##图片类型文件最大值(单位M)
+file.img_size_limit=10
+##视频类型文件最大值(单位M)
+file.video_size_limit=500
+##文档类型文件最大值(单位M)
+file.doc_size_limit=50
+##excel类型文件最大值(单位M)
+file.excel_size_limit=50
+##ppt类型文件最大值(单位M)
+file.ppt_size_limit=50
+##音频类型文件最大值(单位M)
+file.voice_size_limit=50
+##通用其他类型文件最大值(单位M)
+file.other_size_limit=50

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>报表开发-新闻分析</title>
+    <link rel="stylesheet" href="/bigdata/asserts/css/bootstrap-3.3.7.css">
+    <link rel="stylesheet" href="/bigdata/css/style.css">
+    <link rel="stylesheet" href="/bigdata/css/table.css">
+</head>
+<body id="sourceAnalysis">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <div id="l">
+                <div class="userInfo">
+                    <div class="userInfo-pic">
+                        <img class="img-responsive img-circle" src="/bigdata/img/user_pic.png" alt="用户名">
+                    </div>
+                    <h4 class="userInfo-name">王将军</h4>
+                    <div class="userInfo-offer">AA公司总经理</div>
+                </div>
+                <nav class="menu">
+                    <ul>
+                        <li><span> - </span><span class="navText">总览</span></li>
+                        <li><span> - </span><span class="navText">素材分析</span></li>
+                        <li>
+                            <span> + </span><span class="navText">新闻分析</span>
+                            <ul>
+                                <li><span> - </span>新闻分析</li>
+                                <li><span> - </span>使用方式</li>
+                                <li><span> - </span>评价级别</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span> + </span><span class="navText">其它</span>
+                            <ul style="display: none">
+                                <li><span> - </span>其它1</li>
+                                <li><span> - </span>其它2</li>
+                                <li><span> - </span>其它3</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="col-md-10" id="r">
+            <header>
+                <ul class="row header">
+                    <li class="pull-left status"><span class="glyphicon glyphicon-ok"></span></li>
+                    <li class="col-md-2 tab">
+                        <button class="btn btn-default">总览 <span class="glyphicon glyphicon-remove"></span></button>
+                        <button class="btn btn-default active">素材分析 <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </li>
+                    <li class="col-md-2 pull-right">
+                        <button class="btn btn-default">登出系统&gt;&gt;</button>
+                    </li>
+                    <li class="col-md-2 pull-right text-right">
+                        <button class="btn btn-default">关闭操作</button>
+                    </li>
+                </ul>
+            </header>
+            <div class="search">
+                <ul class="row">
+                    <li class="col-md-2 text-right title"><strong>查询条件：</strong></li>
+                    <li class="col-md-2">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdown1"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                大单位
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdown1">
+                                <li>大单位1</li>
+                                <li>大单位2</li>
+                                <li>大单位3</li>
+                                <li>大单位4</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="col-md-2">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdown2"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                部门
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdown2">
+                                <li>部门1</li>
+                                <li>部门2</li>
+                                <li>部门3</li>
+                                <li>部门4</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="col-md-2">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdown3"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                发稿人
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdown3">
+                                <li>发稿人1</li>
+                                <li>发稿人2</li>
+                                <li>发稿人3</li>
+                                <li>发稿人4</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="col-md-2">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdown4"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                方向
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdown4">
+                                <li>方向1</li>
+                                <li>方向2</li>
+                                <li>方向3</li>
+                                <li>方向4</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="col-md-2">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdown5"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                Reserve
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdown5">
+                                <li>Reserve1</li>
+                                <li>Reserve2</li>
+                                <li>Reserve3</li>
+                                <li>Reserve4</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="col-md-6 col-md-offset-2">
+                        <form action="" class=" form-inline">
+                            <div class="form-group">
+                                <label for="date1">起始日期</label>
+                                <input class="form-control" id="date1" type="date">
+                            </div>
+                            -
+                            <div class="form-group">
+                                <label for="date2">截止日期</label>
+                                <input class="form-control" id="date2" type="date">
+                            </div>
+                        </form>
+                    </li>
+                    <li class="col-md-2">
+                        <button class="btn btn-success btn-sm"> 查 询</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="row chartPie numShow">
+                <div class="col-md-3">
+                    <div class="item">
+                        <h4 class="title">素材量（个）</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="number">17,435</div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="comp">
+                                    <span class="glyphicon glyphicon-arrow-up"></span>
+                                    同比<span>9%</span>
+                                    <span class="glyphicon glyphicon-arrow-down"></span>
+                                    环比<span>3%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="item">
+                        <h4>使用方式</h4>
+                        <div id="chartNewsPie01"></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="item">
+                        <h4>是否批示</h4>
+                        <div id="chartNewsPie02"></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="item">
+                        <h4>评论级别</h4>
+                        <div id="chartNewsPie03"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <div class="pull-left">“部门”、“发稿人”可钻取</div>
+                <div class="pull-right btn btn-default">导出本地</div>
+            </div>
+            <table class="table table-bordered table-responsive table-hover">
+                <thead>
+                <tr>
+                    <th>时间</th>
+                    <th>部门</th>
+                    <th>发稿人</th>
+                    <th>新闻标题</th>
+                    <th>使用方式</th>
+                    <th>评价级别</th>
+                    <th>是否有批示</th>
+                    <th>使用单位</th>
+                    <th>前方记者</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>6月6日</td>
+                    <td>北京一公司</td>
+                    <td>柴静</td>
+                    <td class="newsTitle"><a href="">今年高考生数量突破100万</a></td>
+                    <td class="useWay">WEB</td>
+                    <td class="level">A</td>
+                    <td class="instruction">是</td>
+                    <td class="useUnit">中国联想集团</td>
+                    <td class="frontReporter">白岩松</td>
+                </tr>
+                <tr>
+                    <td>6月6日</td>
+                    <td>北京一公司</td>
+                    <td>柴静</td>
+                    <td class="newsTitle"><a href="">今年高考生数量突破100万</a></td>
+                    <td class="useWay">WEB</td>
+                    <td class="level">A</td>
+                    <td class="instruction">是</td>
+                    <td class="useUnit">中国联想集团</td>
+                    <td class="frontReporter">白岩松</td>
+                </tr>
+                <tr>
+                    <td>6月7日</td>
+                    <td>北京一公司</td>
+                    <td>柴静</td>
+                    <td class="newsTitle"><a href="">今年高考生数量突破100万</a></td>
+                    <td class="useWay">WEB</td>
+                    <td class="level">A</td>
+                    <td class="instruction">是</td>
+                    <td class="useUnit">中国联想集团</td>
+                    <td class="frontReporter">白岩松</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="/bigdata/asserts/js/jquery-2.2.4.js"></script>
+<script src="/bigdata/asserts/js/bootstrap-3.3.7.js"></script>
+<script src="/bigdata/asserts/echarts3.0/echarts.min-3.6.0.js"></script>
+<script src="/bigdata/js/main.js"></script>
+<script src="/bigdata/js/charts.js"></script>
+<script>
+
+</script>
+</body>
+</html>

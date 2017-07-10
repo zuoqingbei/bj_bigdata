@@ -1,0 +1,99 @@
+<#if conference?? && conference.ad_status?? && conference.ad_status==1>
+<!-- 对联广告  -->
+
+<link rel="stylesheet" type="text/css" href="/css/ad.css"/>
+
+<div style="background-image: url(/images/ad/floatbg.jpg);"></div>
+<script language="javascript" type="text/javascript">
+<@_ad con_id='${conference.id}' ad_status='${conference.ad_status!}'>
+//JavaScript Document
+lastScrollY=0;
+function heartBeat(){ 
+    var diffY;
+    if (document.documentElement && document.documentElement.scrollTop)
+     diffY = document.documentElement.scrollTop;
+    else if (document.body)
+     diffY = document.body.scrollTop
+    else
+     {/*Netscape stuff*/}
+     
+    //alert(diffY);
+    percent=.1*(diffY-lastScrollY); 
+    if(percent>0)percent=Math.ceil(percent); 
+    else percent=Math.floor(percent); 
+    document.getElementById("lovexin12").style.top=parseInt(document.getElementById("lovexin12").style.top)+percent+"px";
+    document.getElementById("lovexin14").style.top=parseInt(document.getElementById("lovexin12").style.top)+percent+"px";
+    
+    lastScrollY=lastScrollY+percent; 
+    //alert(lastScrollY);
+}
+
+var suspendcode12=$('<div id="lovexin12" style="left:0px;POSITION:absolute;TOP:150px;z-index: 100;"></div>')
+var suspendcode14=$('<div id="lovexin14" style="right:0px;POSITION:absolute;TOP:150px;z-index: 100;"></div>')
+<#list ads as one>
+var ad${one_index!+1}='<div id="float${one_index!}" style="margin-bottom: 10px">'
+	 <#if one.content_type?? &&one.content_type==2>
+	 +'<a href="javascript:void(0);" onclick="showVideoDiv(\'${one.name!}\',\'${one.video_path!}\')">'
+  	 <#else>
+	 +'<a href="${one.url!}" target="_blank">'
+  	 </#if>
+  	 <#if one.image_path??>
+  		+'<div class="float_content" style="background-image: url(${one.image_path!});">'
+  	 <#else>
+  		+'<div class="float_content">'
+  	 </#if>
+     +'<h3 class="float_content_title">${one.name!}</h3>'
+     +'<div class="float_content_detail">${one.description!}</div>'
+     +'</div>'
+     +'<a style="display: block" href="JavaScript:;" onclick="float${one_index!}.style.visibility=\'hidden\'">'
+     +'<img border="0" src="/images/ad/close.gif">'
+     +'</a></div>';
+//如果小于等于2个
+<#if  one_index<=1>
+     suspendcode12.append(ad${one_index!});
+//如果大于2个
+<#else>
+     suspendcode14.append(ad${one_index!});
+</#if>
+     
+</#list>
+$("body").append(suspendcode12);
+$("body").append(suspendcode14);
+window.setInterval("heartBeat()",10);
+
+//显示视频广告
+function showVideoDiv(title,src){
+	//1.标题和视频赋值
+	$('#ad_video_title').html(title);
+	$('#ad_video_content').attr("src",src);
+	//2.显示视频DIV
+	$('#ad_video_title').html(title);
+	$("#ad_video_div").show();
+	$("#ad_video_bg").show();
+}
+
+//隐藏广告
+function hiddenVideoDiv(){
+	//1.关闭视频
+	var myVideo=document.getElementById("ad_video_content");
+	myVideo.pause();
+	$('#ad_video_content').attr("src","");
+	//2.隐藏DIV
+	$("#ad_video_div").hide();
+	$("#ad_video_bg").hide();
+}
+</@_ad>
+</script>
+
+<!-- 视频广告弹出框 -->
+<dl id="ad_video_div" class="pop" >
+  <dt><span id="ad_video_title">视频介绍</span><a class="close" title="关闭" id="ad_video_close" onclick="hiddenVideoDiv()"></a></dt>
+  <dd>
+    <video id="ad_video_content" controls="controls" src="" autoplay="autoplay" style="width: 100%;height: 100%;">
+    Your browser does not support HTML5 video.
+    </video>
+  </dd>
+</dl>
+<div id="ad_video_bg"  class="OverlayBG"></div>
+
+</#if>

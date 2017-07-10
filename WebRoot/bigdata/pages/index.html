@@ -1,0 +1,41 @@
+<#include "/bigdata/layout/_layout.html"/>
+<@layout scripts=[] csss=["/bigdata/css/style.css","/bigdata/css/table.css"]  s_channel="" s_part="">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<body id="all">
+<div class="container-fluid">
+    <div class="row">
+    	<!-- 左侧导航 -->
+   		<#include "/bigdata/layout/_left.html"/> 
+        <div class="col-md-10" id="r">
+        	<!-- 头部 -->
+            <#include "/bigdata/layout/_header.html"/>
+            <!-- 查询 -->
+            <#include "/bigdata/layout/_search.html"/>
+            <!------------------------------- 总览 -------------------------------->
+            <#include "/bigdata/layout/_total.html"/>
+            <!------------------------------- 素材分析 -------------------------------->
+            <#include "/bigdata/layout/_sourceAnalysis.html"/>
+            <!------------------------------- 新闻分析 -------------------------------->
+            <#include "/bigdata/layout/_newsAnalysis.html"/>
+            <!------------------------------- 使用方式 -------------------------------->
+            <#include "/bigdata/layout/_usageMode.html"/>
+            <!------------------------------- 评价级别 -------------------------------->
+            <#include "/bigdata/layout/_level.html"/>
+            
+        </div>
+    </div>
+</div>
+<script src="/bigdata/js/charts.js"></script>
+<script src="/bigdata/js/main.js"></script>
+<script src="/bigdata/js/bigdata_common.js"></script>
+<script src="/bigdata/js/data.js"></script>
+<script>
+$(function(){
+	loadData();
+	loadConditions();
+})
+</script>
+</body>
+</html>
+</@layout>

@@ -1,0 +1,72 @@
+<#macro layout  selected='con' title='' keywords='' description='' selectNav='aa' isShowSearch="true">
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <link rel="shortcut icon" href="../images/favicon.ico" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no" name="viewport" />
+    <meta content="telephone=no" name="format-detection" />
+    <title>${title?default('')}</title>
+    <meta name="keywords" content="${keywords?default('医学会议,医师协会会议系统,医学学术会议')}" />
+    <#if description?length gt 220>
+    <meta name="description" content="${description[0..220]?html}"/>
+    <#else>
+    <meta name="description" content="${description?default('医师协会会议系统是医学会议在线查询网站，提供国际医学会议、国内医学会议信息查询服务，共收录2013年医学学术会议12000场，在这里可查询到医学会议邀请函，通知，并可以在线报名。')?html}"/>
+    </#if>
+    <meta name="copyright" content="医师协会会议系统网站-青岛掌上医讯信息技术有限公司技术支持"/>
+    <!--[if lt IE 9]>
+     <div  style="margin:0 auto; line-height:35px; padding:10px 0;text-align:center; font-size:18px; background:#f0f0f0; z-index:1000000;">
+          您正在使用的网络浏览器版本太低，为了您能更好地浏览和体验本站内容，推荐使用GOOGLE浏览器。
+     </div>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="/index/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="/index/css/layout.css">
+    <link rel="stylesheet" type="text/css" href="/css/platform.css"  media="screen" />
+    <link rel="stylesheet" type="text/css" href="/account/css/personal.css"  media="screen" />
+    <link rel="stylesheet" type="text/css" href="/script/subModal/subModal.css" />
+    <link rel="stylesheet" type="text/css" href="/admin/common/resources/css/style.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/script/validform/style.css"  /> 
+    <link rel="stylesheet" type="text/css" href="/account/css/personal.css"  /> 
+    <link rel="stylesheet" type="text/css" href="/account/sign/css/common_f.css" />
+    
+    <script type="text/javascript" src="/index/js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/index/js/index.js"></script>
+    <script type="text/javascript" src="/script/subModal/common.js"></script>
+    <script type="text/javascript" src="/script/subModal/subModal.js"></script>
+    <script type="text/javascript" src="/script/validform/Validform_v5.3.2_min.js"></script>
+    <script type="text/javascript" src="/script/validform/Validform_Datatype.js"></script>
+    
+    <style type="text/css">
+    .nav li a {
+    color: #fff !important;
+    font-size: 16px;
+    display: block;
+     }
+         a {
+         text-decoration: none !important;
+     }
+    </style>
+</head>
+<body>
+<div class="wrap">
+  <!-- header -->
+  <#include "/resources/index/cmda3/common/header.html"/> 
+  <!-- header -->
+
+
+ <div id="grmain" style="min-height: 500px;">
+      <!-- left -->
+      <#include "/common/_account_left.html"/> 
+      <#nested>
+ </div>
+   
+   
+   <!-- footer -->
+  <#include "/resources/index/cmda3/common/footer.html"/>
+    <!-- footer -->
+</div>
+
+</body>
+</html>
+</#macro>

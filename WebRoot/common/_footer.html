@@ -1,0 +1,53 @@
+<link rel="stylesheet" href="/css/common_footer.css" type="text/css">
+<!-- footer -->
+<br>
+
+<#if session?? && session.conference?? && (session.conference.id=='09d1b0mg8s3h00000019') >
+<#-- wfns2019定制:页脚 -->
+<div class="footer wapper">
+       <div class="link">
+		  <#if login_user??>
+             <span class="list">${_res.get('common.hello_label')}，
+             <a href="http://${base_domain!}/account/con" target="_blank">${login_user.nickname!}</a>
+             &nbsp; | &nbsp;
+             <a href="http://${base_domain!}/logout" onclick="return logout(this);">${_res.get('common.logout_label')}</a>
+             </span>
+          </#if>
+	   </div>
+  <div class="copy">           
+     <p> 
+       copyright © WFNS2019组委会版权所有 
+       ${_res.get('common.tec_support_label')}： 
+       <a target="_blank" href="http://${base_domain!}">${_res.get('common.zsyx_label')}® ${site_name!}</a> &nbsp;&nbsp;
+       ${_res.get('common.zsyx_no_name')}：
+       <a target="_blank" href="http://www.miibeian.gov.cn/">${_res.get('common.zsyx_no_label')}</a>
+     </p>       
+  </div> 
+</div> 
+<#else>
+
+<div class="footer wapper">
+       <div class="link">
+		  <a href="http://${base_domain!}/about"  target="_blank">${_res.get('common.about_us_label')}</a>&nbsp; |&nbsp;
+	  	  <a href="http://${base_domain!}/contact"  target="_blank">${_res.get('common.contact_us_label')}</a>&nbsp; | &nbsp;
+		  <a href="http://${base_domain!}/serviceInfo">${_res.get('common.conference_service_label')}</a>
+		  <#if login_user??>
+       	  &nbsp; | &nbsp;
+             <span class="list">${_res.get('common.hello_label')}，
+             <a href="http://${base_domain!}/account/con" target="_blank">${login_user.nickname!}</a>
+             &nbsp; | &nbsp;
+             <a href="http://${base_domain!}/logout" onclick="return logout(this);">${_res.get('common.logout_label')}</a>
+             </span>
+          </#if>
+	   </div>
+  <div class="copy">           
+     <p> 
+       ${_res.get('common.tec_support_label')}： 
+       <a target="_blank" href="http://${base_domain!}">${_res.get('common.zsyx_label')}® ${site_name!}</a> &nbsp;&nbsp;
+       <a target="_blank" href="http://www.miibeian.gov.cn/">${_res.get('common.zsyx_no_label')}</a>
+     </p>       
+  </div> 
+</div> 
+</#if> 
+
+

@@ -1,0 +1,47 @@
+<#macro layout title=''>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<meta name="copyright" content=""/>
+
+<!-- css -->
+<link rel="stylesheet" type="text/css" href="/script/validform/style.css"  /> 
+<link href="/service/css/styles.css" media="screen" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="/account/sign/css/common_f.css" />
+<link rel="stylesheet" href="/script/validform/style.css" type="text/css" />
+<link href="/script/subModal/subModal.css" type="text/css" rel="stylesheet"/>
+
+
+<!-- 打印插件 -->
+<object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0> 
+	<embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0 pluginspage="install_lodop32.exe"></embed>
+</object>
+
+<!-- jQuery -->
+<script type="text/javascript" src="/script/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="/script/jquery.form.js?v=9-30"></script>
+<script type='text/javascript' src='/script/validform/Validform_v5.3.2_min.js'></script>
+<script type="text/javascript" src="/script/validform/Validform_Datatype.js"></script>
+
+<!-- 公用的一些JS -->
+<script type="text/javascript" src="/script/commonJs/common.js"></script>
+<script type="text/javascript" src="/script/autoFillData/autoFillData.js"></script>
+
+<!-- 弹出框 -->
+<link rel="stylesheet" type="text/css" href="/script/subModal/subModal.css" />
+<script type="text/javascript" src="/script/subModal/subModal.js"></script>
+<style>
+.c25{ font-family: "微软雅黑";  color:#fff; border-bottom: 2px solid  #10619a; height: 62px; padding: 10px; background: url("/service/images/bgnew.png") right top no-repeat; box-shadow:0 1px 2px 0 RGBA(0,0,0,.3)}
+.c25 .d1{ font-size: 26px; }
+.c25 .d2{ float: right;}
+.c25 .d2 .e1{ white-space: nowrap; float: right;}
+.c25 .d2 .e2{ float: right;}
+</style>
+</head>
+<body>
+<#nested>
+</body>
+</html>
+</#macro>

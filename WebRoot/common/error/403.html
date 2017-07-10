@@ -1,0 +1,29 @@
+<#include "/index/common/_layout.html"/>
+<@layout   keywords='医学会议、中国医师协会会议、医学学术会议、医学会议大全、2014年医学会议、2014年医学学术会议、2015年医学会议、2016年医学会议' 
+description='中国医师协会是医学会议在线查询网站，提供国际医学会议、国内医学学术会议信息查询服务，在这里可查询到医学学术会议邀请函、通知，并可以在线报名。'>
+
+<link rel="stylesheet" type="text/css" href="/index/css/error.css">
+        <div class="error">
+            <em>403</em>
+            <div class="e-t">
+                <img src="/index/image/59.gif">
+                <p>您暂无权限进入该页面!</p>
+                <h5 style="text-align: center;">${msg!}</h5>
+            </div>
+            <a href="javascript:history.go(-1);">返回</a>
+        </div>
+<script type="text/javascript">
+$(function(){
+	//现场服务自动退出
+	setTimeout(function(){
+		if(parent){
+			var href=$("#logoutBtn",window.parent.document).attr("href");
+			if(href){
+				parent.location.href=href;
+			}
+		}
+	},1000);
+})
+
+</script>
+</@layout>

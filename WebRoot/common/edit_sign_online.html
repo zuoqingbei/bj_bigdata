@@ -1,0 +1,68 @@
+<#macro sign_online>
+  <link rel="stylesheet" type="text/css" href="/script/validform/style.css"  />
+  <script type='text/javascript' src='/script/validform/Validform_v5.3.2_min.js'></script> 
+	<div id="edit_user" style="display: none">
+
+	<h3>修改报名信息</h3>
+   <form id="signForm" action="/account/notice_sign_update" method="post" class="clear form_p">
+   		<input type="hidden" name="user.notice_id" value="${conference.id!}"/>
+   		<input type="hidden" name="user.source" value="网站"/>
+		<p>
+		<label> <i class="f-12 error_color">*</i> 姓 名：</label>
+		<input class="baoming-input" type="text" name="user.name"  datatype="*" nullmsg="请填写姓名" value="${notice_user.name!}">
+		 <span class="Validform_checktip"></span>
+		</p>
+		 <p class="clear">
+		   <label> <i class="f-12 error_color">*</i> 手 机：</label>
+		   <input class="baoming-input" type="text" name="user.mobile" readonly="readonly" datatype="*&m" errormsg="请输入正确的手机号" nullmsg="请填写手机号,方便我们与您联系" value="${notice_user.mobile!}">
+		      <span class="Validform_checktip"></span>
+		</p>
+	 <p class="clear">
+	   <label> <i class="f-12 error_color">*</i> 邮箱：</label>
+	   <input class="baoming-input" type="text" name="user.email"  datatype="*&e" errormsg="输入正确的email地址" nullmsg="请填写邮箱,方便我们与您联系" value="${notice_user.email!}">
+	   <span class="Validform_checktip"></span>
+	 </p>
+	  <p class="clear">
+	   <label> <i class="f-12 error_color">*</i> 邮寄地址：</label>
+          <input class="baoming-input" type="text" name="user.address" value="${notice_user.address!}">
+	 </p>
+		 <p class="clear">
+		   <label>  备注：</label>
+		   <textarea id="remark" name="user.remark" class="form-textarea" style="width: 400px;height: 100px;" >${notice_user.remark!}</textarea>
+		      <span class="Validform_checktip"></span>
+		 </p>
+		 <!-- <br class="clear"> -->
+		<p style="padding-left:70px;">
+		<input type="hidden" name="user.id" value="${notice_user.id!}">
+		<input type="submit" class="tougao" value="修改信息" style="border:none; font-family:'微软雅黑'" id="tosave">
+		</p>
+		<div class="clear"></div>
+	</form>	
+</div>
+<script type="text/javascript">
+<!--
+var validator1=null;
+$(function(){
+	validator1=$("#signForm").Validform({
+		ajaxPost : true,
+		tiptype:function(msg,o,cssctl){
+			if(!o.obj.is("form")){//验证表单元素时o.obj为该表单元素，全部验证通过提交表单时o.obj为该表单对象;
+				var objtip=o.obj.siblings(".Validform_checktip");
+				cssctl(objtip,o.type);
+				objtip.text(msg);
+			}
+		},
+		callback : function(data) {
+			var obj=data;
+			if (obj.success) {
+				alert("修改信息成功!");
+				window.location.reload();
+			} else {
+				alert("修改信息失败,请联系会议管理员!");
+			}
+		}
+	});
+});
+//-->
+</script>
+</#macro>

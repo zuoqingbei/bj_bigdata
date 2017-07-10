@@ -1,0 +1,164 @@
+<#macro layout  selected='con' title='' keywords='' description='' selectNav='aa' isShowSearch="true">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="shortcut icon" href="../images/favicon.ico" />
+<link rel="stylesheet" href="/script/validform/style.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="/script/imgselect/css/imgareaselect-default.css" />
+<script type="text/javascript" src="/script/jquery-1.8.0.min.js"></script>
+<link href="/script/subModal/subModal.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="/script/subModal/common.js"></script>
+<script type="text/javascript" src="/script/subModal/subModal.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta property="qc:admins" content="40073666576554330636" />
+<meta property="wb:webmaster" content="782d2d0f345e822c" />
+<title>${title?default('医学会议')}</title>
+<meta name="keywords" content="${keywords?default('医学会议,医会通,医学学术会议')}" />
+<#if description?length gt 220>
+<meta name="description" content="${description[0..220]?html}"/>
+<#else>
+<meta name="description" content="${description?default('医会通是医学会议在线查询网站，提供国际医学会议、国内医学会议信息查询服务，共收录2013年医学学术会议12000场，在这里可查询到医学会议邀请函，通知，并可以在线报名。')?html}"/>
+</#if>
+<meta name="copyright" content="医会通网站-青岛掌上医讯信息技术有限公司技术支持"/>
+<link rel="stylesheet" href="/css/platform.css" type="text/css" media="screen" />
+</head>
+
+<body>
+	 <div class="topWrap">	
+		<div class="topInner warp98">
+			<ul class="fl topfleft">
+				<li><a href="http://${passport_domain!}" target="_blank">掌上医讯</a></li>
+				<li><a href="http://${passport_domain!}/app/down"  target="_blank">客户端下载</a></li>
+				<li><a href="http://shop108401802.taobao.com/" target="_blank">手机报订阅</a></li>			
+			</ul>
+			<ul class="fr topfright">
+		        <#if session??>  
+				        <#if session['login_user']??>
+		                   <span class="text">您好，<a href="http://${passport_domain!}/my/home/" onclick="" target="_blank">${session['login_user'].nickname!session['login_user'].mobile!}</a></span>
+		                   <span class="line"> | </span> <a href="/account/con" title="会议管理" onclick="">会议管理</a>  
+		                   <span class="line"> | </span> <a href="/logout" title="退出" >退出</a>  
+				        <#else>					      
+		                  <li class="denglu"><p><a href="/login" target="_blank">登录</a></p></li>
+			              <li><p><a href="/register" target="_blank">注册</a></p></li>     
+				        </#if>  
+			 <#else>
+				<#if login_user_profile??>
+		         	<span class="text">您好，${login_user_profile.name!}</span>
+		            <span class="line"> | </span> <a href="http://${passport_domain!}/my/home/" title="个人中心" onclick="">个人资料</a>  
+		            <span class="line"> | </span> <a href="/account/con" title="会议管理" onclick="">会议管理</a>  
+		            <span class="line"> | </span> <a href="/logout" title="退出" onclick="return logout(this);">退出</a>  
+				
+				<#else>
+				      <li><p><a href="/login" target="_blank">登录</a></p></li>
+			         <li><p><a href="/register" target="_blank">注册</a></p></li>     
+				</#if>
+		   	</#if>  
+			</ul>
+		</div>
+	</div>  
+	
+    <div class="con_header_wrap">
+        <div class="warp98 con_header_inner clearfix">
+            <div class="logo_wrap" >
+                <a title="医会通会议平台首页" href="/"><img alt="医会通会议平台首页" title="医会通会议平台首页" src="/images/logo_yht.png"></a>
+            </div>
+	            <div class="search_box">
+					<div class="el_search">
+						<form action="http://so.doctorpda.cn" id="searchForm" method="post">																													
+							<div class="el_search_inputbox">
+								<input type="text" placeholder="请输入会议名称/地点/学科/召开时间" class="el_search_input" name="q" id="solr_query"/>
+								<input type="hidden"  name="tp" value="con"/>
+							</div>
+							<input type="button" onclick="checkUrl()" class="el_search_submit" value="搜索会议" id="search_con"/>
+						</form>
+					</div>				
+					<div class="hotsearch">
+						<span class="fl">热门搜索：</span>
+						<ul class="el_nav5">
+							<li><a class="el_nav2_a" href="http://so.doctorpda.cn/?t=con&q=北京会议">北京会议</a></li>
+							<li><a class="el_nav2_a" href="http://so.doctorpda.cn/?t=con&q=上海会议"">上海会议</a></li>
+						</ul>
+					</div>			
+			    </div>
+			    <!-- end search_box -->		
+        </div>
+    </div>
+    
+    <div class="warp98 main_nav">
+       <div class="nav">
+	      <ul>
+	      <#if selected='con'>
+		        <li><a title="首页" href="http://${base_domain!}/shouye">首页</a></li>
+		        <div class="break_icon">&nbsp;</div>	        
+		        <li><a title="医学会议" href="http://${base_domain!}/" class="on">会议</a></li>
+		        <div class="break_icon">&nbsp;</div>	        
+		        <li><a title="产品介绍" href="http://${base_domain!}/product/">产品</a></li>
+		        <div class="break_icon">&nbsp;</div>
+		         <li><a title="服务" href="http://${base_domain!}/serviceInfo/">服务</a></li>
+		        
+	      <#elseif selected='product'>
+	      		 <li><a title="首页" href="http://${base_domain!}/shouye">首页</a></li>
+		        <div class="break_icon">&nbsp;</div>	        
+		        <li><a title="医学会议" href="http://${base_domain!}/" >会议</a></li>
+		        <div class="break_icon">&nbsp;</div>
+		        <li><a title="产品介绍" href="http://${base_domain!}/product/"  class="on">产品</a></li>
+		        <div class="break_icon">&nbsp;</div>
+		        <li><a title="服务" href="http://${base_domain!}/serviceInfo/">服务</a></li>
+		  <#elseif selected='service'>
+	      		 <li><a title="首页" href="http://${base_domain!}/shouye">首页</a></li>
+		        <div class="break_icon">&nbsp;</div>	        
+		        <li><a title="医学会议" href="http://${base_domain!}/" >会议</a></li>
+		        <div class="break_icon">&nbsp;</div>
+		        <li><a title="产品介绍" href="http://${base_domain!}/product/"  >产品</a></li>
+		        <div class="break_icon">&nbsp;</div>
+		        <li><a title="服务" href="http://${base_domain!}/serviceInfo/" class="on">服务</a></li>
+	      <#else>
+		        <li><a title="首页" href="http://${base_domain!}/shouye" class="on">首页</a></li>
+		        <div class="break_icon">&nbsp;</div>	        
+		        <li><a title="医学会议" href="http://${base_domain!}/" >会议</a></li>
+		        <div class="break_icon">&nbsp;</div>
+		        <li><a title="产品介绍" href="http://${base_domain!}/product/"  >产品</a></li>
+		        <div class="break_icon">&nbsp;</div>
+		          <li><a title="服务" href="http://${base_domain!}/serviceInfo/">服务</a></li>
+	      </#if>
+	        <div class="break_icon">&nbsp;</div>
+	      </ul>
+	    </div>
+           <div class="itemBtn">
+           <!-- <a href="/account/create_con" target="_blank" class="btn_creat" title="创建会议官网" id="add_con">创建会议</a>   -->
+           <!-- <a href="/account/apply" target="_blank" class="btn_creat" title="创建会议官网" id="add_con">发布会议单页</a>  -->
+           </div> 
+    </div>
+
+<#nested>
+<!--footer-->
+<#include "/common/_footer.html"/>
+<div style="display:none;">
+<script type="text/javascript">
+	var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fbc9d4fa6469686fe63002104880688b1' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+</div>
+</body>
+</html>
+<script type="text/javascript">
+	function register(obj){
+		var to="?to="+window.location.href;
+		<#if to??>
+			to='${to!}';
+		</#if>
+		window.location.href=window.location.href+to;
+		return false;
+	}
+	function checkUrl(){
+		if($("#solr_query").val() != "" ){
+			//var href = "http://www.doctorpda.cn/search/" + $("#solr_query").val()+"?tp=con";
+			var href = "http://so.doctorpda.cn/?t=con&q="+ $("#solr_query").val();
+			window.location.href = href;
+		}else{
+			alert("请输入搜索条件");
+		}
+	}
+</script> 
+</#macro>

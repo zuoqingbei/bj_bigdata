@@ -1,0 +1,54 @@
+<#macro paginate currentPage totalPage actionUrl urlParas="">
+	<#if (totalPage <= 0) || (currentPage > totalPage)><#return></#if>
+	<#local startPage = currentPage - 4>
+	<#if (startPage < 1)><#local startPage = 1></#if>
+	
+	<#local endPage = currentPage + 4>
+	<#if (endPage > totalPage)><#local endPage = totalPage></#if>
+<style>
+.dataTables_paginate{ margin-top:10px;}
+.paginate_button{border:1px solid #BDBDBD; cursor: pointer;color:#333333;font-weight:bold;padding:3px 7px;}
+.paginate_active{background-color:#e0f7ff;color:#04aee7;}
+</style>
+	<div class="dataTables_paginate">
+			<#if (currentPage <= 8)>
+				<#local startPage = 1>
+			</#if>
+			<#if ((totalPage - currentPage) < 8)>
+				<#local endPage = totalPage>
+			</#if>
+			
+			<#if (currentPage == 1)>
+				<span class="paginate_button paginate_button_disabled" id="">上一页</span>
+			<#else>
+				<span class="paginate_button"><a href="${actionUrl}#{currentPage - 1}${urlParas!}${parasUrl!}" class="">上一页</a></span><span>
+			</#if>
+			
+			<#if (currentPage > 8)>
+				<a href="${actionUrl}#{1}${urlParas!}${parasUrl!}" class="paginate_button">#{1}</a>
+				<a href="${actionUrl}#{2}${urlParas!}${parasUrl!}" class="paginate_button">#{2}</a>
+				<span class="gap">…</span>
+			</#if>
+			
+			<#list startPage..endPage as i>
+				<#if currentPage == i>
+					<a class="paginate_button paginate_active">#{i}</a>
+				<#else>
+					<a href="${actionUrl}#{i}${urlParas!}${parasUrl!}" class="paginate_button">#{i}</a>
+				</#if>
+			</#list>
+			
+			<#if ((totalPage - currentPage) >= 8)>
+				<span class="gap">…</span>
+				<a href="${actionUrl}#{totalPage - 1}${urlParas!}${parasUrl!}" class="paginate_button">#{totalPage - 1}</a>
+				<a href="${actionUrl}#{totalPage}${urlParas!}${parasUrl!}" class="paginate_button">#{totalPage}</a>
+			</#if>
+			
+			<#if (currentPage == totalPage)>
+				<span class="paginate_button" id="">下一页</span>
+			<#else>
+				<a href="${actionUrl}#{currentPage + 1}${urlParas!}${parasUrl!}" class="paginate_button" rel="next">下一页</a>
+			</#if>
+			
+	</div>
+</#macro>
