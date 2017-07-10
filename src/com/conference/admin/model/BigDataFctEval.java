@@ -42,4 +42,14 @@ public class BigDataFctEval extends BaseModel<BigDataFctEval> {
 				+ type;
 		return BigDataFctEval.dao.find(sql);
 	}
+	
+	/***
+	 * 获取某种批示的数量（0 代表无，1代表有）
+	 */
+	public List<BigDataFctEval> getPishiTypeCount(String type) {
+		String sql = "";
+		sql += "SELECT count(0) from bigdata_fct_eval WHERE have_pishi = "
+				+ type;
+		return BigDataFctEval.dao.find(sql);
+	}
 }

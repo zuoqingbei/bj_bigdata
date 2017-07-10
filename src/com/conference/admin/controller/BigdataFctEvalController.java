@@ -34,4 +34,22 @@ public class BigdataFctEvalController extends BaseController{
 		}
 		renderJson(map);
 	}
+	/***
+	 * 第二个圈的百分比
+	 */
+	public void secondCircle(){
+		HashMap<String,String> map = new HashMap<String,String>();
+		//获取所有使用方式的数量并转化成double
+		List<BigDataFctEval> all =  BigDataFctEval.dao.getAllCount();
+		double total = Double.parseDouble(all.get(0)._getAttrValues()[0].toString());
+		for(int i = 0 ; i < 2 ; i ++){
+			//分别获取各使用方式的数量
+			List<BigDataFctEval> typeCount = BigDataFctEval.dao.getPishiTypeCount(i+"");
+			double typeTotal = Double.parseDouble(typeCount.get(0)._getAttrValues()[0].toString());
+			java.text.DecimalFormat df=new java.text.DecimalFormat("#.##");   
+			//返回的value是百分比，精确到小数点后两位
+			map.put(i==0 ? "无批示" : "有批示", df.format((typeTotal/total)*100));
+		}
+		renderJson(map);
+	}
 }
