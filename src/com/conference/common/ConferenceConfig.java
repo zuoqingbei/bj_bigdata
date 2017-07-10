@@ -1,10 +1,12 @@
 package com.conference.common;
 
 
+import com.conference.admin.controller.BigdataFctEvalController;
 import com.conference.admin.controller.ConditionsController;
 import com.conference.admin.controller.IndexController;
 import com.conference.admin.controller.TestController;
 import com.conference.admin.model.BigDataDRef;
+import com.conference.admin.model.BigDataFctEval;
 import com.conference.admin.model.Creator;
 import com.conference.admin.model.Dept;
 import com.conference.admin.model.FctOrigin;
@@ -54,6 +56,9 @@ public class ConferenceConfig extends JFinalConfig{
 		me.add("/home",IndexController.class);
 		me.add("/conditions",ConditionsController.class);//筛选条件数据
 		
+		//Tom add start
+		me.add("/fcteval",BigdataFctEvalController.class);
+		//Tom add end
 	}
 	/**
 	 * 配置插件
@@ -76,6 +81,10 @@ public class ConferenceConfig extends JFinalConfig{
 		arp.addMapping("bigdata_d_dept",Dept.class);//大单位 部门
 		arp.addMapping("bigdata_d_creator",Creator.class);//发稿人
 		arp.addMapping("bigdata_d_ref",BigDataDRef.class);//参照维表，包含方向、性质等
+		
+		//Tom add start
+		arp.addMapping("bigdata_fct_eval",BigDataFctEval.class);//评论表，一条新闻对应多条评论
+		//Tom add end
 	}
 	
 	/**
