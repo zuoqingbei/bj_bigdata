@@ -20,7 +20,7 @@ public class BigDataFctEval extends BaseModel<BigDataFctEval> {
 	 */
 	public List<BigDataFctEval> getTypeNum() {
 		String sql = "";
-		sql += "SELECT DISTINCT use_type_id from bigdata_fct_eval";
+		sql += "SELECT DISTINCT use_type_id from bigdata_fct_eval ORDER BY use_type_id DESC";
 		return BigDataFctEval.dao.find(sql);
 	}
 	
@@ -49,6 +49,16 @@ public class BigDataFctEval extends BaseModel<BigDataFctEval> {
 	public List<BigDataFctEval> getPishiTypeCount(String type) {
 		String sql = "";
 		sql += "SELECT count(0) from bigdata_fct_eval WHERE have_pishi = "
+				+ type;
+		return BigDataFctEval.dao.find(sql);
+	}
+	
+	/***
+	 * 获取各评价级别数量（优、良、中）
+	 */
+	public List<BigDataFctEval> getUseLevelCount(String type) {
+		String sql = "";
+		sql += "SELECT count(0) from bigdata_fct_eval WHERE use_level_id = "
 				+ type;
 		return BigDataFctEval.dao.find(sql);
 	}
