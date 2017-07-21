@@ -2,13 +2,21 @@ package com.conference.common;
 
 
 import com.conference.admin.controller.ConditionsController;
+import com.conference.admin.controller.ExportController;
 import com.conference.admin.controller.IndexController;
 import com.conference.admin.controller.TestController;
 import com.conference.admin.model.BigDataDRef;
 import com.conference.admin.model.Creator;
 import com.conference.admin.model.Dept;
+import com.conference.admin.model.FctEval;
 import com.conference.admin.model.FctOrigin;
+import com.conference.admin.model.FctZb;
+import com.conference.directive.FctEvalDirective;
+import com.conference.directive.FctZbListDirective;
+import com.conference.directive.FctZbNumDirective;
 import com.conference.directive.LabelDirective;
+import com.conference.directive.SourceListDirective;
+import com.conference.directive.SourceNumDirective;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -53,6 +61,7 @@ public class ConferenceConfig extends JFinalConfig{
 		me.add("/common/test",TestController.class);
 		me.add("/home",IndexController.class);
 		me.add("/conditions",ConditionsController.class);//筛选条件数据
+		me.add("/export",ExportController.class);
 		
 	}
 	/**
@@ -73,9 +82,12 @@ public class ConferenceConfig extends JFinalConfig{
 		
 		//建立表的映射
 		arp.addMapping("bigdata_fct_origin",FctOrigin.class);//原始素材
+		arp.addMapping("bigdata_fct_zb",FctZb.class);//新闻
+		
 		arp.addMapping("bigdata_d_dept",Dept.class);//大单位 部门
 		arp.addMapping("bigdata_d_creator",Creator.class);//发稿人
 		arp.addMapping("bigdata_d_ref",BigDataDRef.class);//参照维表，包含方向、性质等
+		arp.addMapping("bigdata_fct_eval",FctEval.class);//新闻评价
 	}
 	
 	/**
@@ -90,6 +102,11 @@ public class ConferenceConfig extends JFinalConfig{
 	 */
 	private void configDirective() {
 		FreeMarkerRender.getConfiguration().setSharedVariable("_label_dic", new LabelDirective());
+		FreeMarkerRender.getConfiguration().setSharedVariable("_source_num", new SourceNumDirective());//素材量统计
+		FreeMarkerRender.getConfiguration().setSharedVariable("_fctzb_num", new FctZbNumDirective());//新闻量统计
+		FreeMarkerRender.getConfiguration().setSharedVariable("_fct_eval", new FctEvalDirective());//新闻评价
+		FreeMarkerRender.getConfiguration().setSharedVariable("_source_analysis_list", new SourceListDirective());//素材分析列表
+		FreeMarkerRender.getConfiguration().setSharedVariable("_fctzb_analysis_list", new FctZbListDirective());//新闻分析列表
 	}
 	
 	/**

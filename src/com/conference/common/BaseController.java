@@ -15,10 +15,13 @@ import java.util.Set;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import oecp.framework.util.FreeMarkerUtil;
 import oecp.framework.util.RandomGenerator;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.conference.util.ExUploadFile;
 import com.conference.util.StringKit;
@@ -36,20 +39,11 @@ import com.jfinal.upload.UploadFile;
  * @author yongtree
  */
 public  class BaseController extends Controller implements Constant {
-
-	
-
-	
-	
-	
-	
 	/** 
 	 * @Desc: 获取request中带有 什么什么.的参数,如  conference.name,类似与getModel
 	 * @param modelName
 	 * @return
 	 * @return: Record
-	 * @author: longjunfeng   
-	 * @date: 2016年8月18日 上午8:56:41 
 	 */
 	public Record getRecord(String modelName) {
 		String modelNameAndDot = modelName + ".";
@@ -497,11 +491,62 @@ public  class BaseController extends Controller implements Constant {
 		}
 		return basePath;
 	}
+	/**
+	 * 
+	 * @time   2017年7月11日 上午11:24:48
+	 * @author zuoqb
+	 * @todo  将参数放入session以及request中
+	 */
+	public void dealAttrToSession(Controller c){
+		//存入用户信息
+		c.setSessionAttr(SESSION_SECURITYCONTAINER, 3);
+		
+		c.setSessionAttr(SESSION_COMPANYID, c.getPara(ATTR_COMPANYID,""));
+		c.setSessionAttr(SESSION_DEPTID, c.getPara(ATTR_DEPTID,""));
+		c.setSessionAttr(SESSION_CREATORID, c.getPara(ATTR_CREATORID,""));
+		c.setSessionAttr(SESSION_DIRECT, c.getPara(ATTR_DIRECT,""));
+		c.setSessionAttr(SESSION_STARTDATE, c.getPara(ATTR_STARTDATE,""));
+		c.setSessionAttr(SESSION_DIRECT, c.getPara(ATTR_ENDDATE,""));
+		c.setSessionAttr(SESSION_PAGENUM, c.getPara(ATTR_PAGENUM,""));
+		c.setSessionAttr(SESSION_PAGESIZE, c.getPara(ATTR_PAGESIZE,""));
+		c.keepPara();
+		c.setAttr("params", joinParam(c));
+		/*this.setAttr(ATTR_COMPANYID, c.getPara(ATTR_COMPANYID));
+		this.setAttr(ATTR_DEPTID, c.getPara(ATTR_DEPTID));
+		this.setAttr(ATTR_CREATORID, c.getPara(ATTR_CREATORID));
+		this.setAttr(ATTR_DIRECT, c.getPara(ATTR_DIRECT));
+		this.setAttr(ATTR_STARTDATE, c.getPara(ATTR_STARTDATE));
+		this.setAttr(ATTR_ENDDATE, c.getPara(ATTR_ENDDATE));*/
+		
+	}
+   public String joinParam(Controller c){
+	   StringBuffer params=new StringBuffer();
+	   params.append(ATTR_COMPANYID).append("=").append(c.getPara(ATTR_COMPANYID,"")).append("&");
+	   params.append(ATTR_DEPTID).append("=").append(c.getPara(ATTR_DEPTID,"")).append("&");
+	   params.append(ATTR_CREATORID).append("=").append(c.getPara(ATTR_CREATORID,"")).append("&");
+	   params.append(ATTR_DIRECT).append("=").append(c.getPara(ATTR_DIRECT,"")).append("&");
+	   params.append(ATTR_STARTDATE).append("=").append(c.getPara(ATTR_STARTDATE,"")).append("&");
+	   params.append(ATTR_ENDDATE).append("=").append(c.getPara(ATTR_ENDDATE,""));
+	   params.append(ATTR_PAGENUM).append("=").append(c.getPara(ATTR_PAGENUM,"")).append("&");
+	   params.append(ATTR_PAGESIZE).append("=").append(c.getPara(ATTR_PAGESIZE,""));
+	   return params.toString();
+   }
 	
- 
-   
-	
-	
+   public static void setFileDownloadHeader(HttpServletRequest request, HttpServletResponse response, String fileName) {
+		final String userAgent = request.getHeader("USER-AGENT");
+		try {
+			String finalFileName = null;
+			if(StringUtils.contains(userAgent, "MSIE")){
+				finalFileName = URLEncoder.encode(fileName,"UTF8");
+			}else if(StringUtils.contains(userAgent, "Mozilla")){
+				finalFileName = new String(fileName.getBytes(), "ISO8859-1");
+			}else{
+				finalFileName = URLEncoder.encode(fileName,"UTF8");
+			}
+			response.setHeader("Content-Disposition", "attachment; filename=\"" + finalFileName + "\"");
+		} catch (Exception e) {
+		}
+	}
 	
 
 

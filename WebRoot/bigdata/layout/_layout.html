@@ -1,31 +1,40 @@
-<#macro layout scripts=[] csss=[] s_channel="" s_part="">
+<#macro layout scripts=[] csss=[] s_channel="" s_part="" s_title="">
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
  <meta name="copyright" content="bigdata"/>
  <meta name="renderer" content="webkit"  />
  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"  />
-<title>bigdata</title>
+<title>${s_title!'bigdata'}</title>
 
 
-<link rel="stylesheet" href="/bigdata/asserts/css/bootstrap-3.3.7.css">
+<link rel="stylesheet" href="${ctx_path!}/bigdata/asserts/css/bootstrap-3.3.7.css">
+<link rel="stylesheet" href="${ctx_path!}/bigdata/css/style.css">
+<link rel="stylesheet" href="${ctx_path!}/bigdata/css/table.css">
 
 <#list csss as css>
 <link rel="stylesheet" href="${css!}" type="text/css" media="screen" />
 </#list>
 <!-- 公用的一些JS -->
-<script src="/bigdata/asserts/js/jquery-2.2.4.js"></script>
-<script src="/bigdata/asserts/js/bootstrap-3.3.7.js"></script>
-<script src="/bigdata/asserts/echarts3.0/echarts.min-3.6.0.js"></script>
+
+<script src="${ctx_path!}/bigdata/asserts/js/jquery-2.2.4.js"></script>
+<script src="${ctx_path!}/bigdata/asserts/js/bootstrap-3.3.7.js"></script>
+<script src="${ctx_path!}/bigdata/asserts/echarts3.0/echarts.min-3.6.0.js"></script>
+<script src="${ctx_path!}/bigdata/asserts/laydate/laydate.js"></script>
+<script src="${ctx_path!}/bigdata/js/bigdata_common.js"></script>
 
 
-<#list scripts as script>
-<script type="text/javascript" src="${script!}"></script>
-</#list>
 </head>
 <body>
 <#nested>
+<#list scripts as script>
+<script type="text/javascript" src="${script!}"></script>
+</#list>
 </body>
+<script>
+var ctx_path='${ctx_path!}';
+</script>
 </html>
 </#macro>

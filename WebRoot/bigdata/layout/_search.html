@@ -1,48 +1,122 @@
-
-<div class="search">
-	<div class="row">
-		<div class="col-md-2 text-right title">
-			<strong>查询条件：</strong>
-		</div>
-		<div class="col-md-10">
-			<form id="search_form" class="form-inline" action="">
+<#macro layout s_action="" show_endDate="false">
+<body>
+	<form class="form-inline" action="">
+	<div class="search">
+		<div class="row">
+			<div class="col-md-2 title">查询条件：</div>
+			<div class="col-md-10">
+				<!--<div class="col-md-12">-->
 				<div class="form-group form-group-sm">
-					<select class="form-control btn-default" name="companyId" 
+					<!--<label>单位：</label>-->
+					<select class="form-control btn-default" name="companyId_select"
 						title="选择单位" onchange="loadConditions()">
 					</select>
 				</div>
 				<div class="form-group form-group-sm">
-					<select class="form-control btn-default" name="deptId"
-						title="选择部门" onchange="loadConditions()">
+					<!--<label>部门：</label>-->
+					<select class="form-control btn-default" name="deptId_select" title="选择部门"
+						onchange="loadConditions()">
 					</select>
 				</div>
 				<div class="form-group form-group-sm">
-					<select class="form-control btn-default" name="creatorId"
+					<!--<label>发稿人：</label>-->
+					<select class="form-control btn-default" name="creatorId_select"
 						title="选择发稿人" onchange="loadConditions()">
 					</select>
 				</div>
 				<div class="form-group form-group-sm">
-					<select class="form-control btn-default" name="direct"
-						title="选择方向">
+					<!--<label>方向：</label>-->
+					<select class="form-control btn-default" name="direct_select" title="选择方向">
 					</select>
 				</div>
-				<!-- <div class="form-group form-group-sm" style="display:block">
-					<select class="form-control btn-default" name="reporter"
-						title="reverse">
-						<option>reverse1</option>
-						<option>reverse2</option>
-						<option>reverse3</option>
-					</select>
-				</div> -->
-				<div class="form-group form-group-sm">
-					<label for="date1">起始日期</label> <input class="form-control"
-						id="date1" name="startDate" type="date"> - <label for="date2">截止日期</label>
-					<input class="form-control" id="date2" name="endDate" type="date">
+				<!--<br>-->
+				<!-- <div class="form-group form-group-sm">
+							<label>预留1：</label>
+							<select class="form-control btn-default" name="reporter"
+								title="reverse">
+								<option>请选择reverse1</option>
+								<option>reverse1</option>
+								<option>reverse2</option>
+								<option>reverse3</option>
+							</select>
+						</div>
+						<div class="form-group form-group-sm">
+							<label>预留2：</label>
+							<select class="form-control btn-default" name="reporter"
+								title="reverse">
+								<option>请选择reverse2</option>
+								<option>reverse1</option>
+								<option>reverse2</option>
+								<option>reverse3</option>
+							</select>
+						</div>
+						<div class="form-group form-group-sm">
+							<label>预留3：</label>
+							<select class="form-control btn-default" name="reporter"
+								title="reverse">
+								<option>请选择reverse3</option>
+								<option>reverse1</option>
+								<option>reverse2</option>
+								<option>reverse3</option>
+							</select>
+						</div> -->
+				<#if (show_endDate=="false")>
+				<div class="form-group form-group-sm date">
+					<label class="sr-only" for="date1" >起始日期：</label> 
+					<input class="form-control" id="date1" onclick="laydate()" name="startDate_select" value="请选择起始日期">
 				</div>
-				<div class="form-group" onclick="loadData()">
-					<input class="btn btn-sm btn-success" style="border-color: #4cae4c;background-color: #5cb85c;" type="button" value="提 交">
+				</#if> 
+				<#if (show_endDate=="true")>
+				<div class="form-group form-group-sm date">
+					<label class="sr-only" for="date1" >起始日期：</label> 
+					<input class="form-control" id="date1" name="startDate_select" value="请选择起始日期"
+						onclick="laydate()">&nbsp;&nbsp;<span class="hyphen">-</span>
+					<label class="sr-only" for="date2">截止日期：</label> 
+					<input class="form-control" id="date2" value="请选择截止日期"
+						onclick="laydate()" name="endDate_select">
 				</div>
-			</form>
+				</#if>
+				
+					<div class="form-group" onclick="submitForm()">
+						<input class="btn btn-sm btn-success" type="button" value="查 询">
+					</div>
+					<!--</div>-->
+			</div>
 		</div>
 	</div>
-</div>
+	</form>
+	<form id="search_from" method="post" style="display:none;" action="${s_action!}">
+					<input type="hidden" id="companyId" name="companyId" value="${companyId!}" />
+					<input type="hidden" id="deptId" name="deptId" value="${deptId!}" />
+					<input type="hidden" id="creatorId" name="creatorId" value="${creatorId!}" />
+					<input type="hidden" id="direct" name="direct" value="${direct!}" />
+					<input type="hidden" id="startDate" name="startDate" value="${startDate!}" />
+					<input type="hidden" id="endDate" name="endDate" value="${endDate!}" />
+					<input type="hidden" id="pageNum" name="pageNum" value="${pageNum!}" />
+					<input type="hidden" id="pageSize" name="pageSize" value="${pageSize!}" />
+	</form>
+	<#nested>
+</body>
+<script>
+var searchAction=('${s_action!}');
+	$(function() {
+		params = {
+			"companyId" : "${companyId!}",//大单位
+			"deptId" : "${deptId!}",//部门
+			"creatorId" : "${creatorId!}",//发稿人
+			"direct" : "${direct!}",//方向
+			"startDate" : "${startDate!}",//开始时间
+			"endDate" : "${endDate!}",//结束时间
+		};
+		var mStartDate='${startDate!}';
+		if('${startDate!}'!=""){
+			$("input[name='startDate_select']").val(mStartDate.replace(new RegExp("-","gm"),"/"));
+		};
+		var mEndDate='${endDate!}';
+		if('${endDate!}'!=""){
+			$("input[name='endDate_select']").val(mEndDate.replace(new RegExp("-","gm"),"/"));
+		};
+		loadConditions(true);
+	})
+</script>
+</#macro>

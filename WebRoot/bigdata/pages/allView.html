@@ -1,0 +1,166 @@
+<#include "${ctx_path!}/bigdata/layout/_layout.html"/>
+<@layout scripts=["${ctx_path!}/bigdata/js/main.js"] csss=[]   s_title="总览">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <style>
+        body{
+            background: none;
+        }
+    </style>
+</head>
+<body>
+<div id="r" class="container-fluid">
+   <#include "${ctx_path!}/bigdata/layout/_search.html"/>
+	<@layout s_action="/home/allView" show_endDate="false">
+	</@layout>
+    <div class="switch " id="index">
+    <div class="row numShow">
+        <div class="col-md-4">
+            <div class="item">
+                <h4 class="title">素材量（个）</h4>
+                <div class="row">
+                    <div class="">
+                        <div class="number">
+                         <@_source_num type="0">
+                         	${data.num!}
+                          </@_source_num>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="comp">
+                         <@_source_num type="1">
+                         	    <span class="glyphicon glyphicon-arrow-up"></span>同比<span>${data.tb!0}%</span>
+                            	<span class="glyphicon glyphicon-arrow-down"></span>环比<span>${data.hb!0}%</span>
+                          </@_source_num>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="item">
+                <h4 class="title">新闻量（个）</h4>
+                <div class="row">
+                    <div class="">
+                        <div class="number">
+                         <@_fctzb_num type="0">
+                         	${data.num!}
+                          </@_fctzb_num>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="comp">
+                             <@_fctzb_num type="1">
+                         	    <span class="glyphicon glyphicon-arrow-up"></span>同比<span>${data.tb!0}%</span>
+                            	<span class="glyphicon glyphicon-arrow-down"></span>环比<span>${data.hb!0}%</span>
+                          	</@_fctzb_num>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="item">
+                <h4 class="title">素材转化率</h4>
+                <div class="row">
+                    <div class="">
+                        <div class="number">
+                        	  <@_source_num type="2">
+	                         	${data.rate!0}%
+	                          </@_source_num>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="comp">
+                        	<@_source_num type="3">
+                         	    <span class="glyphicon glyphicon-arrow-up"></span>同比<span>${data.tb!0}%</span>
+                            	<span class="glyphicon glyphicon-arrow-down"></span>环比<span>${data.hb!0}%</span>
+                          </@_source_num>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row chartPie">
+        <div class="col-md-4">
+            <div class="item">
+                <h4>使用方式</h4>
+                 <#include "/bigdata/tag/_echarts3.tag" /> 
+				<@echarts url="/conditions/fctEvalAjax?${params!}&filed=use_type_id"
+				 chartType="pie" tagBody="true" docId="chart01" showLegend="false" showToolBox="true"   title="使用方式" >
+					<div id="chart01" ></div>
+				</@echarts>
+                
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="item">
+                <h4>是否批示</h4>
+                 <#include "/bigdata/tag/_echarts3.tag" /> 
+				<@echarts url="/conditions/fctEvalAjax?${params!}&filed=have_pishi"
+				 chartType="pie" tagBody="true" docId="chart02" showLegend="false" showToolBox="true"   title="是否批示" >
+					<div id="chart02" ></div>
+				</@echarts>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="item">
+                <h4>评论级别</h4>
+                 <#include "/bigdata/tag/_echarts3.tag" /> 
+				<@echarts url="/conditions/fctEvalAjax?${params!}&filed=use_level_id"
+				 chartType="pie" tagBody="true" docId="chart03" showLegend="false" showToolBox="true"   title="评论级别" >
+					<div id="chart03" ></div>
+				</@echarts>
+            </div>
+        </div>
+    </div>
+    <div class="row chartBar">
+        <!--<h3>新闻量和素材量（Top6）</h3>-->
+        <div class="col-md-6">
+            <div class="item">
+                <h4>新闻量（Top6）</h4>
+                  <#include "/bigdata/tag/_echarts3.tag" /> 
+				<@echarts url="/conditions/fctZbTop6Ajax?${params!}&limit=6"
+				 chartType="horizbar" tagBody="true" docId="chart04" showLegend="false" showToolBox="true" legend="新闻量" >
+					<div id="chart04"></div>
+				</@echarts>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="item">
+                <h4>素材量（Top6）</h4>
+                  <#include "/bigdata/tag/_echarts3.tag" /> 
+				<@echarts url="/conditions/fctOriginTop6Ajax?${params!}&limit=6"
+				 chartType="horizbar" tagBody="true" docId="chart05" showLegend="false" showToolBox="true" legend="素材量" >
+					<div id="chart05"></div>
+				</@echarts>
+            </div>
+        </div>
+    </div>
+    <div class="row chartLine">
+        <div class="col-md-12">
+            <div class="item">
+                <h4>最近5年 素材量-新闻量 趋势图</h4>
+                <#include "/bigdata/tag/_echarts3.tag" /> 
+			     <@echarts url="/conditions/fctStaticYearAjax?${params!}&limit=5"
+			      chartType="line" tagBody="true" docId="chart06" 
+			      color="#5cb85c,#fc3" legend="素材量,新闻量" showToolBox="false"
+			       number=2  dataZoomDisabled="true">
+			      <div id="chart06"></div>
+			     </@echarts>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!--<script src="js/charts.js"></script>-->
+
+  
+
+
+</body>
+</html>
+</@layout>

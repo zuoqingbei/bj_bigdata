@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="pragma" content="no-cache" />
+        <title>echarts3 test</title>
+<script src="${ctx_path!}/bigdata/asserts/js/jquery-2.2.4.js"></script>
+<script src="${ctx_path!}/bigdata/js/bigdata_common.js"></script>
+</head>
+<body style="background-color:#655A66;">
+   	<@_source_analysis_list  pageNum='1' pageSize=1>
+			<#list page.list as c>
+				<li><a href="">${c.companyName!}</a></li>
+			</#list>
+			<#include "/bigdata/common/_paginate.html" />
+			<@paginate currentPage=page.pageNumber
+			totalPage=page.totalPage  actionUrl="/home/sourceAnalysis" urlParas="${params!}"/>
+		</@_source_analysis_list>
+</body>
+</html>

@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.conference.common.BaseModel;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 
 public class Dept extends BaseModel<Dept>{
 	private static final long serialVersionUID = -8811409081417389372L;
@@ -15,15 +17,15 @@ public class Dept extends BaseModel<Dept>{
 	 * @author zuoqb
 	 * @todo   根据大单位获取部门
 	 */
-	public List<Dept> getDepts(String  pid){
+	public List<Record> getDepts(String  pid){
 		String sql="";
-		List<Dept> list;
+		List<Record> list;
 		if(StringUtils.isBlank(pid)){
 			sql+=" select * from bigdata_d_dept  where pid!=0 and pid is not null ";
 		}else{
 			sql+=" select * from bigdata_d_dept  where pid='"+pid+"' ";
 		}
-		list=Dept.dao.find(sql);
+		list=Db.find(sql);
 		//循环查询子集
 	/*	for(Dept d:list){
 			d.set("children", getDepts(d.get("pid")+""));
@@ -36,10 +38,10 @@ public class Dept extends BaseModel<Dept>{
 	 * @author zuoqb
 	 * @todo   一级 大单位
 	 */
-	public List<Dept> getCompanys(){
+	public List<Record> getCompanys(){
 		String sql="";
 		sql+=" select * from bigdata_d_dept  where pid=0 or pid is null ";
-		List<Dept> list=Dept.dao.find(sql);
+		List<Record> list=Db.find(sql);
 		return list;
 	}
 	

@@ -1,34 +1,70 @@
-#r .alert-info{
-    margin-top: 1.8em;
+
+
+
+/*分页*/
+@media all {
+    .pagingAndExp{
+        overflow: hidden;
+        margin-bottom: 10px;
+    }
+    .pagingAndExp>nav>ul.pagination{
+        margin:0;
+    }
+    .pagination > li > a,
+    .pagination > li > span{
+        color: #fff;
+        background-color: transparent;
+    }
+    .pagination > li > a:hover,
+    .pagination > li > span:hover,
+    .pagination > li > a:focus,
+    .pagination > li > span:focus{
+        color: #fff;
+        background-color: rgba(255,255,255,.2);
+    }
+}
+
+.table-hover > tbody > tr:hover{
+    background-color:rgba(0, 0, 0, 0.23)
+}
+
+table.table{
+    margin-top: 1em;
     margin-bottom: 1em;
-    background-color: rgba(58, 255, 71, 0.25);
-    color: #fff;
-    overflow: hidden;
 }
-#r .alert-info .btn{
-    margin: -8px 0;
+
+table.table>thead>tr>th>span.glyphicon{
+    font-size: .9em;
 }
+
 .table > thead > tr > th,
 .table > tbody > tr td{
     text-align: center;
     vertical-align: middle;
-    color: #ddd;
 }
 
-table td.department,
-table td.reporter .reporter-name{
-    cursor: pointer;
+.table> tbody >tr > td {
+    padding: 8px 0;
 }
-#usageMode td.department>.content,
-#level td.department>.content{
-    cursor: default;
+table .active{
+    font-weight: normal;
+    background-color: rgba(255,255,255,.2)
 }
-table td.reporter .reporter-name:hover,
-#usageMode table td.department>div:not(.content):hover,
-#level table td.department>div:not(.content):hover{
-    text-decoration: underline;
+table td a{
+    color: #fff;
+}
+table td a:hover{
+    color: #4ff6ff;
 }
 
+
+table td .item{
+    padding: .5em 0;
+
+}
+table td .item:not(:first-child){
+    border-top: 1px solid rgba(255,255,255,.2);
+}
 table td .content{
     display: none;
 }
@@ -40,6 +76,7 @@ table td:not(.reporter)  .content{
 #level td:not(.reporter) .reporter-name{
     border:none;
 }
+
 #usageMode .reporter-name,
 #usageMode .content,
 #level .reporter-name,
@@ -50,13 +87,10 @@ table td:not(.reporter)  .content{
 #level .total{
     margin-bottom: .5em;
 }
-#r table td {
-    padding: 8px 0;
+
+table td.drill>div:hover,
+table .drill:not(td):hover{
+    cursor: pointer;
+    font-weight: bold;
 }
 
-table td a{
-    color: #fff;
-}
-table td a:hover{
-    color: #4ff6ff;
-}

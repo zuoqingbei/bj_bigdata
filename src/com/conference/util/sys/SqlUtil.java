@@ -1,8 +1,11 @@
 package com.conference.util.sys;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -10,10 +13,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.helper.StringUtil;
 
+import com.conference.admin.model.Dept;
 import com.conference.common.BaseController;
+import com.conference.common.Constant;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
@@ -25,44 +33,294 @@ import com.jfinal.plugin.activerecord.Record;
  * @author 	作者 : longjunfeng E-mail：463527083@qq.com
  * @version 创建时间：2015年12月31日 上午9:07:11 
  */
-public class SqlUtil{
+public class SqlUtil implements Constant{
 	
 	public static String ORDER_NAME="table_order_feild";
 	public static String ORDER_BY= " order by ";
-	public static String WHERE="where";
+	public static String WHERE=" where";
 	public static String AND=" and ";
-	public static String joinSql(BaseController c){
-		return joinSql(c,true);
-	}
-	public static String joinSql(BaseController c,boolean containDate){
+
+	/**
+	 * 
+	 * @time   2017年7月11日 下午2:38:18
+	 * @author zuoqb
+	 * @todo   在标签中拼接筛选条件(以新闻为主表)
+	 */
+	/*public static String joinSqlForNews(HttpServletRequest request,String tableShortName,boolean containDate){
 		StringBuffer sql=new StringBuffer();
+		if(StringUtils.isBlank(tableShortName)){
+			tableShortName="fct_zb";
+		}
+		String companyId=getAttrByKey(request,SESSION_COMPANYID);
+		String deptId=getAttrByKey(request,SESSION_DEPTID);
+		String creatorId=getAttrByKey(request,SESSION_CREATORID);
+		String direct=getAttrByKey(request,SESSION_DIRECT);
+		String startDate=getAttrByKey(request,SESSION_STARTDATE);
+		String endDate=getAttrByKey(request,SESSION_ENDDATE);
 		//大单位
-		sql.append(WHERE+" 1=1 ");
-		if(StringUtils.isNotBlank(c.getPara("unit"))){
-			sql.append(" and org.from_dept='"+c.getPara("unit")+"' ");
+		if(StringUtils.isNotBlank(companyId)&&StringUtils.isBlank(deptId)){
+			//如果大单位不为空 而部门为空 根据大单位查询下属部门
+			List<Record> list=Dept.dao.getDepts(companyId);
+			sql.append(" and (");
+			for(int x=0;x<list.size();x++){
+				if(x==list.size()-1){
+					sql.append(tableShortName+".source_dept_ids like '%"+list.get(x).get("id")+"%'  ");
+				}else{
+					sql.append(tableShortName+".source_dept_ids like '%"+list.get(x).get("id")+"%' or ");
+				}
+			}
+			sql.append(" ) ");
 		}
 		//部门
-		if(StringUtils.isNotBlank(c.getPara("department"))){
-			sql.append(" and dep.name='"+c.getPara("department")+"' ");
+		if(StringUtils.isNotBlank(deptId)){
+			sql.append(" and "+tableShortName+".source_dept_ids like '%,"+deptId+",%' ");
 		}
 		//发稿人
-		if(StringUtils.isNotBlank(c.getPara("reporter"))){
-			sql.append(" and cre.name='"+c.getPara("reporter")+"' ");
+		if(StringUtils.isNotBlank(creatorId)){
+			sql.append(" and "+tableShortName+".creator_ids like '%,"+creatorId+",%' ");
 		}
-		//direct 方向暂时未知
+		//direct 方向
+		if(StringUtils.isNotBlank(direct)){
+			sql.append(" and "+tableShortName+".direction_ids like '%,"+direct+",%' ");
+		}
 		if(containDate){
 			//在统计同比环比时不需要时间
 			//起始日期
-			if(StringUtils.isNotBlank(c.getPara("startDate"))){
-				sql.append(" and date_format(org.created_time,\"%Y-%m-%d\")>='"+c.getPara("startDate")+"' ");
+			if(StringUtils.isNotBlank(startDate)){
+				sql.append(" and date_format("+tableShortName+".created_time,\"%Y-%m-%d\")>='"+startDate+"' ");
 			}
 			//截止日期
-			if(StringUtils.isNotBlank(c.getPara("endDate"))){
-				sql.append(" and date_format(org.created_time,\"%Y-%m-%d\")<='"+c.getPara("endDate")+"' ");
+			if(StringUtils.isNotBlank(endDate)){
+				sql.append(" and date_format("+tableShortName+".created_time,\"%Y-%m-%d\")<='"+endDate+"' ");
+			}
+		}
+		return sql.toString();
+	}*/
+	public static String joinSqlForNews(HttpServletRequest request,String tableShortName,boolean containDate){
+		StringBuffer sql=new StringBuffer();
+		if(StringUtils.isBlank(tableShortName)){
+			tableShortName="fct_zb";
+		}
+		String companyId=getAttrByKey(request,SESSION_COMPANYID);
+		String deptId=getAttrByKey(request,SESSION_DEPTID);
+		String creatorId=getAttrByKey(request,SESSION_CREATORID);
+		String direct=getAttrByKey(request,SESSION_DIRECT);
+		String startDate=getAttrByKey(request,SESSION_STARTDATE);
+		String endDate=getAttrByKey(request,SESSION_ENDDATE);
+		//大单位
+		if(StringUtils.isNotBlank(companyId)&&StringUtils.isBlank(deptId)){
+			//如果大单位不为空 而部门为空 根据大单位查询下属部门
+			List<Record> list=Dept.dao.getDepts(companyId);
+			sql.append(" and (");
+			for(int x=0;x<list.size();x++){
+				if(x==list.size()-1){
+					sql.append(tableShortName+".source_dept_ids='"+list.get(x).get("id")+"'  ");
+				}else{
+					sql.append(tableShortName+".source_dept_ids='"+list.get(x).get("id")+"' or ");
+				}
+			}
+			sql.append(" ) ");
+		}
+		//部门
+		if(StringUtils.isNotBlank(deptId)){
+			sql.append(" and "+tableShortName+".source_dept_ids ='"+deptId+"' ");
+		}
+		//发稿人
+		if(StringUtils.isNotBlank(creatorId)){
+			sql.append(" and "+tableShortName+".creator_ids='"+creatorId+"' ");
+		}
+		//direct 方向
+		if(StringUtils.isNotBlank(direct)){
+			sql.append(" and "+tableShortName+".direction_ids like '%,"+direct+",%' ");
+		}
+		if(containDate){
+			//在统计同比环比时不需要时间
+			//起始日期
+			if(StringUtils.isNotBlank(startDate)){
+				sql.append(" and date_format("+tableShortName+".created_time,\"%Y-%m-%d\")>='"+startDate+"' ");
+			}
+			//截止日期
+			if(StringUtils.isNotBlank(endDate)){
+				sql.append(" and date_format("+tableShortName+".created_time,\"%Y-%m-%d\")<='"+endDate+"' ");
 			}
 		}
 		return sql.toString();
 	}
+	public static String joinSqlForNews(HttpServletRequest request){
+		return joinSqlForNews(request, null, true);
+	}
+	public static String joinSqlForNews(HttpServletRequest request,boolean containDate){
+		return joinSqlForNews(request, null, containDate);
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * 
+	 * @time   2017年7月11日 下午2:38:18
+	 * @author zuoqb
+	 * @todo   在标签中拼接筛选条件(以素材为主表)
+	 */
+	public static String joinSqlForSource(HttpServletRequest request,String tableShortName,boolean containDate){
+		StringBuffer sql=new StringBuffer();
+		if(StringUtils.isBlank(tableShortName)){
+			tableShortName="fct_origin";
+		}
+		String companyId=getAttrByKey(request,SESSION_COMPANYID);
+		String deptId=getAttrByKey(request,SESSION_DEPTID);
+		String creatorId=getAttrByKey(request,SESSION_CREATORID);
+		String direct=getAttrByKey(request,SESSION_DIRECT);
+		String startDate=getAttrByKey(request,SESSION_STARTDATE);
+		String endDate=getAttrByKey(request,SESSION_ENDDATE);
+		//大单位
+		if(StringUtils.isNotBlank(companyId)){
+			sql.append(" and "+tableShortName+".from_dept='"+companyId+"' ");
+		}
+		//部门
+		if(StringUtils.isNotBlank(deptId)){
+			sql.append(" and "+tableShortName+".dept_id='"+deptId+"' ");
+		}
+		//发稿人
+		if(StringUtils.isNotBlank(creatorId)){
+			sql.append(" and "+tableShortName+".creator_id='"+creatorId+"' ");
+		}
+		//direct 方向 暂时不知道来源
+		if(StringUtils.isNotBlank(direct)){
+			//sql.append(" and "+tableShortName+".direction_ids like '%,"+direct+",%' ");
+		}
+		if(containDate){
+			//在统计同比环比时不需要时间
+			//起始日期
+			if(StringUtils.isNotBlank(startDate)){
+				sql.append(" and date_format("+tableShortName+".created_time,\"%Y-%m-%d\")>='"+startDate+"' ");
+			}
+			//截止日期
+			if(StringUtils.isNotBlank(endDate)){
+				sql.append(" and date_format("+tableShortName+".created_time,\"%Y-%m-%d\")<='"+endDate+"' ");
+			}
+		}
+		return sql.toString();
+	}
+	
+	public static String joinSqlForSource(HttpServletRequest request){
+		return joinSqlForSource(request, null, true);
+	}
+	public static String joinSqlForSource(HttpServletRequest request,boolean containDate){
+		return joinSqlForSource(request, null, containDate);
+	}
+	public static void main(String[] args) {
+		System.out.println(getHuanBiDate("2014-01-01", "2014-06-30"));
+	}
+	public static String formatNumber( String num ){
+        num = num.replaceAll(",", ""); // 去掉所有逗号
+        java.text.DecimalFormat df = new java.text.DecimalFormat("##,###,###");
+        return df.format( Double.parseDouble( num ) );
+    }
+	
+	/**
+	 * 获得环比的待比较时间范围，逗号分隔，返回待环比日期
+	 * @param startDate 如："2014-01-01"，默认是一个月的第一天
+	 * @param endDate 如："2014-06-30"，默认与startDate在同一年
+	 * @return
+	 * @author Euray
+	 */
+	public static String getHuanBiDate(String startDate, String endDate) {
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		if(StringUtils.isBlank(startDate)){
+			startDate=sdf.format(new Date());
+		}
+		if(StringUtils.isBlank(endDate)){
+			endDate=sdf.format(new Date());
+		}
+	    String[] starts = startDate.split("-");
+	    String[] ends = endDate.split("-");
+	    int startYear = Integer.parseInt(starts[0]);
+	    int startMonth = Integer.parseInt(starts[1]);
+	    int endMonth = Integer.parseInt(ends[1]);
+	    int endDay = Integer.parseInt(ends[2]);
+	    Calendar end = Calendar.getInstance();
+	    end.set(startYear, endMonth - 1, 1);
+	    int days = end.getActualMaximum(Calendar.DAY_OF_MONTH);
+	    String returnDate = "";
+	    int subNum = endMonth - startMonth + 1;//当前选择了几个月
+	    if (startMonth > subNum) { //待环比日期在同一年，还是不同一年
+	        int startMonthH = startMonth - subNum;
+	        int endMonthH = startMonth - 1;
+	        Calendar endH = Calendar.getInstance();
+	        endH.set(startYear, endMonthH - 1, 1);
+	        int daysH = endH.getActualMaximum(Calendar.DAY_OF_MONTH);
+	        returnDate = startYear + (startMonthH < 10 ? "-0" : "-") + startMonthH + "-01," + startYear
+	                + (endMonthH < 10 ? "-0" : "-") + endMonthH + "-" + (endDay < days ? ends[2] : daysH);
+	    } else {
+	        int startMonthH = 12 + startMonth - subNum;
+	        if (startMonth > 1) {
+	            int endMonthH = startMonth - 1;
+	            Calendar endH = Calendar.getInstance();
+	            endH.set(startYear, endMonthH - 1, 1);
+	            int daysH = endH.getActualMaximum(Calendar.DAY_OF_MONTH);
+	            returnDate = (startYear - 1) + (startMonthH < 10 ? "-0" : "-") + startMonthH + "-01," + startYear
+	                    + (endMonthH < 10 ? "-0" : "-") + endMonthH + "-" + (endDay < days ? ends[2] : daysH);
+	        } else {
+	            returnDate = (startYear - 1) + (startMonthH < 10 ? "-0" : "-") + startMonthH + "-01," + (startYear - 1)
+	                    + "-12-" + (endDay < 31 ? ends[2] : 31);
+	        }
+	    }
+	    return returnDate;
+	}
+	 
+	/**
+	 * 获得同比的待比较时间范围，逗号分隔，返回待同比日期
+	 * @param startDate 如："2014-01-01"，默认是一个月的第一天
+	 * @param endDate 如："2014-06-30"，默认与startDate在同一年
+	 * @return
+	 * @author Euray
+	 */
+	public static String getTongBiDate(String startDate, String endDate) {
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		if(StringUtils.isBlank(startDate)){
+			startDate=sdf.format(new Date());
+		}
+		if(StringUtils.isBlank(endDate)){
+			endDate=sdf.format(new Date());
+		}
+	    String[] starts = startDate.split("-");
+	    String[] ends = endDate.split("-");
+	    int startYear = Integer.parseInt(starts[0]);
+	    int endMonth = Integer.parseInt(ends[1]);
+	    int endDay = Integer.parseInt(ends[2]);
+	    Calendar endDateT = Calendar.getInstance();
+	    endDateT.set(startYear - 1, endMonth - 1, 1);
+	    int days = endDateT.getActualMaximum(Calendar.DAY_OF_MONTH);
+	    String returnDate = "";
+	    if (endDay < days) {
+	        returnDate = (startYear - 1) + "-" + starts[1] + "-01," + (startYear - 1) + "-" + ends[1] + "-" + ends[2];
+	    } else {
+	        returnDate = (startYear - 1) + "-" + starts[1] + "-01," + (startYear - 1) + "-" + ends[1] + "-" + days;
+	    }
+	    return returnDate;
+	}
+	
+	
+	
+	
+	/**
+	 * 
+	 * @time   2017年7月11日 下午3:24:55
+	 * @author zuoqb
+	 * @todo  从session中获取参数
+	 */
+	public static String getAttrByKey(HttpServletRequest request,String key){
+		HttpSession session=request.getSession();
+		String value=session.getAttribute(key)==null?"":session.getAttribute(key)+"";
+		return value;
+	}
+	
+	
+	
+	
 	
 	/**
 	 * 去除order 和group条件
@@ -541,8 +799,56 @@ public class SqlUtil{
 	public static final <E> String ListIntoComma(Collection<E> list){
 		return ListIntoComma(list,true);
 	}
-	
-	
+	/**
+	 * 
+	 * @time   2017年3月8日 上午9:06:05
+	 * @author zuoqb
+	 * @todo  拼接in语句
+	 * @param  @param ObjList 要组装的list
+	 * @param  @param key list中对象的key
+	 * @param  @return
+	 */
+	public static String commonSqlGenerator(List<Record> ObjList,String key){
+    	String sql=" and 1=1  ";
+    	sql+=" in (";
+    	for(Record obj:ObjList){
+    		sql+="'"+obj.get(key)+"',";
+    	}
+    	sql=sql.substring(0,sql.length()-1);
+    	sql+=")	";
+    	return sql;
+    }
+	/**
+	 * 
+	 * @time   2017年3月8日 上午9:06:05
+	 * @author zuoqb
+	 * @todo  拼接in语句
+	 * @param  @param sTable 表名
+	 * @param  @param filed 属性-字段名
+	 * @param  @param ObjList 要组装的list
+	 * @param  @param key list中对象的key
+	 * @param  @return
+	 */
+	public static String commonSqlGenerator(String sTable,String filed,List<Record> ObjList,String key){
+    	String sql=" and 1=1  ";
+    	if(ObjList==null||ObjList.size()==0){
+    		return sql;
+    	}
+    	sql+=" and ";
+    	if(sTable!=null&&StringUtils.isNotBlank(sTable)){
+    		sql+=sTable+".";
+    	}
+    	if(filed!=null&&StringUtils.isNotBlank(filed)){
+    		sql+=filed;
+    	}
+    	sql+=" in (";
+    	for(Record obj:ObjList){
+    		sql+="'"+obj.get(key)+"',";
+    	}
+    	sql=sql.substring(0,sql.length()-1);
+    	sql+=")	";
+    	return sql;
+    }
 	/**
 	 * 列表拼装字符串
 	 * @author wlo_o
@@ -569,5 +875,11 @@ public class SqlUtil{
 		}
 		rs = StringUtil.join(tmp, ",");
 		return rs;
+	}
+	public static String dealNull(String input){
+		if(StringUtils.isBlank(input)||"null".equals(input)){
+			return "暂无";
+		}
+		return input;
 	}
 }

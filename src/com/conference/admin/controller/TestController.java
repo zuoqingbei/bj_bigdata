@@ -5,8 +5,10 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,13 +18,13 @@ import org.apache.commons.lang3.StringUtils;
 import com.conference.admin.model.FctOrigin;
 import com.conference.admin.model.RdcProductAgentDetail;
 import com.conference.common.RESTFulController;
-import com.conference.common.interceptor.TestInterceptor;
+import com.conference.common.interceptor.SessionInterceptor;
 import com.conference.util.MyPoiRender;
 import com.conference.util.excel.ExportRdcProductAgentDetailTemplate;
 import com.conference.util.sys.DataTablesUtil;
 import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Record;
-@Before(TestInterceptor.class)
+@Before(SessionInterceptor.class)
 public class TestController extends  RESTFulController<FctOrigin> {
 	public void index(){
 		render("/views/modules/test/test.html");
@@ -102,5 +104,53 @@ public class TestController extends  RESTFulController<FctOrigin> {
 			response.setHeader("Content-Disposition", "attachment; filename=\"" + finalFileName + "\"");
 		} catch (Exception e) {
 		}
+	}
+	
+	public void testEcharts3(){
+		render("/bigdata/test/testEcharts3.html");
+	}
+	public void monthConUser(){
+		String companyId=getPara("companyId");
+		List<Record> list = new ArrayList<Record>();
+		Record r=new Record();
+		r.set("count", 100);
+		r.set("name", "1月");
+		list.add(r);
+		
+		Record r1=new Record();
+		r1.set("count", 50);
+		r1.set("name", "5月");
+		list.add(r1);
+		renderJson(list);
+	}
+	/**
+	 * 
+	 * @time   2016年12月12日 下午4:02:33
+	 * @author zuoqb
+	 * @todo   模拟多条折线图 柱状图数据 
+	 * @param  
+	 * @return_type   void
+	 */
+	public void monthConUser2(){
+		List<Record> list =new ArrayList<Record>();
+		List<Record> list1 =new ArrayList<Record>();
+		Random ran = new Random();  
+		for(int x=0;x<12;x++){
+			Record r=new Record();
+			Record r1=new Record();
+			r.set("count", ran.nextInt(100));
+			r.set("name", x+1+"月");
+			r1.set("count", ran.nextInt(100));
+			r1.set("name", x+1+"月");
+			list.add(r);
+			list1.add(r1);
+		}
+		Map<String,Object> result=new HashMap<String, Object>();
+		result.put(0+"", list);
+		result.put(1+"", list1);
+		renderJson(result);
+	}
+	public void page(){
+		render("/bigdata/test/page.html");
 	}
 }

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="pragma" content="no-cache" />
+        <title>echarts3 test</title>
+<script src="${ctx_path!}/bigdata/asserts/js/jquery-2.2.4.js"></script>
+<script src="${ctx_path!}/bigdata/js/bigdata_common.js"></script>
+</head>
+<body style="background-color:#655A66;">
+    <div class="col-md-12">
+        <div id="main"></div>
+    </div>
+    
+    <#include "/bigdata/tag/_echarts3.tag" /> 
+     <@echarts url="/common/test/monthConUser2"
+      chartType="line" tagBody="true" docId="userStat" title="测试折线图" subtext="zuo"
+      color="#5cb85c,#fc3" legend="素材量,新闻量" showToolBox="false"
+       number=2  dataZoomDisabled="false">
+      <!-- 为ECharts准备一个具备大小（宽高）的Dom 默认标签ID为echarts1-->
+      <div id="userStat" style="height: 300px; width: 100%;"></div>
+     </@echarts>
+
+   <#include "/bigdata/tag/_echarts3.tag" /> 
+	<@echarts url="/common/test/monthConUser"
+	 chartType="pie" tagBody="true" docId="conStat" showLegend="false" showToolBox="false" 
+	  xRotate=5 yRotate=30 legend="haha"  title="pieRose"  titleColor="red" titleFontSize="16">
+		<div id="conStat" style="height: 300px; width: 100%;"></div>
+	</@echarts>
+   <button type="button" onclick="echartsconStatPlugin.refDataParam('searchYear=2015')"> 刷新</button>
+   
+    <#include "/bigdata/tag/_echarts3.tag" /> 
+	<@echarts url="/common/test/monthConUser"
+	 chartType="horizbar" tagBody="true" docId="conStat0" showLegend="false" showToolBox="false" 
+	    title="pieRose0"  legend="2016" >
+		<div id="conStat0" style="height: 300px; width: 100%;"></div>
+	</@echarts>
+</body>
+<script type="text/javascript">
+</script>
+</html>

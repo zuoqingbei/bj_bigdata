@@ -1,216 +1,396 @@
-body {
-    font-family: "微软雅黑", sans-serif;
-    color: #FFF;
+/*------ 大屏适应 ------*/
+@media screen and (min-width: 2560px){
+    body {
+        font-size: 240%;
+    }
+}
+/*------ 全局样式 ------*/
+@media all {
+    body {
+        font-family: "微软雅黑", sans-serif;
+        color: #FFF;
+    }
+    body#index {
+        padding-top: 4em;
+    }
+    h1, h4{
+        /*text-align: center;*/
+    }
+    ul{
+        list-style: none;
+    }
+    iframe{
+        width:100%;
+        /*margin: -2em;*/
+        /*padding: -2em;*/
+    }
+    .drill{
+        text-decoration: underline;
+    }
+    .drillTh{
+        position: relative;
+        left:.4em;
+    }
+    .active{
+        font-weight: bold;
+        background-color: rgba(0,0,0,.3);
+    }
+    .hover{
+        font-weight: bold;
+    }
+    .btn-default{
+        color: #fff;
+        background-color: transparent;
+        border-color: #eee;
+    }
+    .btn-default:hover,
+    .btn-default:focus{
+        color: #ddd;
+        border-color: #eee;
+        background-color: rgba(0,0,0,.15)
+    }
+    .btn-default:active:focus{
+        color: #fff;
+        border-color: #eee;
+        background-color: rgba(0,0,0,.3)
+    }
+    .open > .dropdown-toggle.btn-default,
+    .btn-default:active:hover,
+    .btn-default.active:hover,
+    .open > .dropdown-toggle.btn-default:hover,
+    .btn-default:active:focus,
+    .btn-default.active:focus,
+    .open > .dropdown-toggle.btn-default:focus,
+    .btn-default:active.focus,
+    .btn-default.active.focus,
+    .open > .dropdown-toggle.btn-default.focus{
+        color: #ccc;
+        background-color: transparent;
+        border-color: #eee;
+    }
+    .dropdown ul{
+        background-color: rgba(0,0,0,.5);
+    }
+    .dropdown ul li{
+        cursor: pointer;
+    }
+    body{
+        background: #1b0821 url(../img/body_bg_city.jpg) no-repeat fixed center ;
+        background-size: 100% 100%;
+    }
+    ::-webkit-inner-spin-button{
+        display: none;
+    }
+}
+/*------ 顶部样式 ------*/
+@media all {
+    nav.navbar{
+        /*box-shadow: 0 -1px 12px 0 #eee inset;*/
+        margin-bottom: .8em;
+        height: 40px;
+        min-height: 44px;
+        background-color: rgba(0,0,0,.7);
+        border: none;
+        box-shadow: 0 3px 5px 0 rgba(0,0,0,.3);
+    }
+    nav.navbar .nav > li > a{
+        /*margin-top: 4px;*/
+        /*padding: 4px 8px;*/
+        color: #ccc;
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+    nav.navbar .navbar-brand{
+        line-height: 14px;
+        padding-left: 1.5em;
+        /*height: auto;*/
+        color: #fff;
+    }
+    nav.navbar span.glyphicon-ok {
+        color: limegreen;
+    }
+
+    .topHeader{
+        border-bottom: 1px solid;
+
+        padding-bottom: 10px;
+    }
+}
+/*------ 左边样式 ------*/
+@media all {
+    #l{
+        position: fixed;
+        height: 100%;
+        width:16%;
+        margin-left: -15px;
+        background: rgba(0,0,0,0.25);
+        overflow: auto;
+    }
+    #l .userInfo{
+        margin-top: 3em;
+        margin-bottom: 1em;
+    }
+    #l .userInfo h4{
+        text-align: center;
+        margin: 1em 0 0.3em;
+    }
+    #l .userInfo-pic{
+        width: 8em;
+        height: 8em;
+        margin: 1em auto;
+    }
+    #l .userInfo-pic img{
+        height: 100%;
+        width:100%;
+        /*padding:2em;*/
+    }
+    #l .userInfo-offer{
+        text-align: center;
+        border-radius: 50%;
+        padding: .3em 0;
+        /*background-color: rgba(0,0,0,.15);*/
+        width: 10em;
+        margin: 0 auto;
+    }
+
+    #l .menu{
+        padding:2em 0;
+    }
+    #l .menu li{
+        cursor: pointer;
+        padding:.4em;
+    }
+    #l .menu>ul>li{
+        font-size: 1.1em;
+        position: relative;
+    }
+    #l .menu>ul>li span.icon{
+        display: inline-block;
+        position: relative;
+        top: .08em;
+        width:1.2em;
+        height: .9em;
+        background-size: auto 100%;
+        background-repeat: no-repeat;
+    }
+    #l .menu>ul>li:nth-of-type(1) span.icon{
+        /*height: .9em;*/
+        background-image: url("../img/i_all.png");
+    }
+    #l .menu>ul>li:nth-of-type(2) span.icon{
+        background-image: url("../img/i_source.png");
+    }
+    #l .menu>ul>li:nth-of-type(3) span.icon{
+        background-image: url("../img/i_news.png");
+    }
+    #l .menu>ul>li:nth-of-type(4) span.icon{
+        background-image: url("../img/i_other.png");
+    }
+    #l .menu>ul>li span.glyphicon{
+        font-size: .8em;
+        position: absolute;
+        left: 9em;
+        top: .8em;
+    }
+    #l .menu>ul>li>ul{
+        display: none;
+        padding-left: 1em;
+    }
+    #l .menu>ul>li>ul>li{
+        padding-left: 1.8em;
+        font-size: .9em;
+    }
+
 }
 
-h1, h4{
-    text-align: center;
-}
-ul{
-    list-style: none;
-}
+/*------ 右边头部和搜索 ------*/
+@media all {
+    .form-group-sm .form-control{
 
-.selected{
-    font-weight: bold;
-    background-color: rgba(0,0,0,.3);
-}
-.hover{
-    font-weight: bold;
-}
-.btn-default{
-    color: #fff;
-    background-color: transparent;
-    border-color: #eee;
-}
-.btn-default:hover,
-.btn-default:focus{
-    color: #ddd;
-    border-color: #eee;
-    background-color: rgba(0,0,0,.15)
-}
-.btn-default:active:focus{
-    color: #fff;
-    border-color: #eee;
-    background-color: rgba(0,0,0,.3)
-}
-.open > .dropdown-toggle.btn-default,
-.btn-default:active:hover,
-.btn-default.active:hover,
-.open > .dropdown-toggle.btn-default:hover,
-.btn-default:active:focus,
-.btn-default.active:focus,
-.open > .dropdown-toggle.btn-default:focus,
-.btn-default:active.focus,
-.btn-default.active.focus,
-.open > .dropdown-toggle.btn-default.focus{
-    color: #ccc;
-    background-color: transparent;
-    border-color: #eee;
-}
-.dropdown ul{
-    background-color: rgba(0,0,0,.5);
-}
-.dropdown ul li{
-    cursor: pointer;
-}
-body{
-    background: url(../img/body_bg_city.jpg) no-repeat fixed center ;
-    background-size: 100% 100%;
-}
-.table-hover > tbody > tr:hover{
-    background-color:rgba(0, 0, 0, 0.23)
-}
+    }
+    #r h3{
+        padding-left: 1em;
+    }
+    #r header{
+        /*padding-top:.6em;*/
+        /*border-bottom: 1px solid rgba(255,255,255,.5);*/
+    }
+    #r header .status span{
+        top: .5em;
+        left: -.3em;
+        font-size: 1.5em;
+    }
+    #r ul.nav-tabs{
+        /*position: absolute;*/
+        top: 8px;
+        left:4em;
+    }
+    #r ul.nav-tabs li{
+        margin-right: .3em;
+    }
+    #r ul.nav-tabs li.active{
+        border-bottom-color: #2d1f38;
+        background-color: #000;
+        /*outline:none;*/
+    }
+    #r .nav-tabs > li > a,
+    #r .nav-tabs > li:hover > a,
+    #r .nav-tabs > li:focus> a{
+        cursor: pointer;
+        color: #eee;
+        background-color: rgba(255,255,255,.3);
+        /*background-color: transparent;*/
+    }
+    #r .nav-tabs > li.active > a,
+    #r .nav-tabs > li.active > a:hover,
+    #r .nav-tabs > li.active > a:focus {
+        /*border-radius: 4px 4px 0 0;*/
+        color: #fff;
+        border: 1px solid #ddd;
+        border-bottom-color: rgb(86, 67, 95);
+        background-color: rgba(0,0,0,0);
+    }
 
 
 
-/*------------------*/
+    #r ul.nav-tabs li>a>span.glyphicon.glyphicon-remove{
+        left:.3em;
+        top:.15em;
+        z-index: 1000;
+    }
 
-#l{
-    position: fixed;
-    height: 100%;
-    width:16%;
-    margin-left: -15px;
-    background: rgba(0,0,0,0.25);
-}
-#l .userInfo{
-    margin-bottom: 6em;
-}
-#l .userInfo-pic img{
-    margin: 0 auto;
-    padding:.5em;
-}
-#l .userInfo-offer{
-    text-align: center;
-}
+    #r .search{
+        border-radius: 4px;
+        background-color: rgba(0,0,0,.2);
+        margin-top: 1.5em;
+        padding-top: .5em;
+    }
+    #r .search .col-md-10{
+        padding-left: 15px;
+    }
+    #r .search .form-group{
+        margin: .3em .5em;
+    }
+    #r .search form{
+        margin-left: -7em;
+    }
+    #r .search form label{
+        width: 5em;
+        text-align: right;
+    }
+    #r .search form .form-control{
+        border-radius: 3px;
+    }
+    #r .search form select{
+        width: 11em;
+    }
+    #r .search option{
+        background-color: rgb(102, 62, 99);
+    }
+    #r .search .title{
+        font-size: 1.1em;
+        padding-top: 10px;
+        padding-left: 30px;
 
-#l .menu{
-    padding:2em 0;
+    }
+    #r .search .btn{
+        margin-top: .5em;
+        margin-bottom: .5em;
+        width:100%;
+    }
+    #r .search input:not([type=submit]){
+        width: 11em;
+        color: #fff;
+        background-color: transparent;
+    }
+    #r .search form .form-group.date input{
+        border-color: #eee;
+    }
+    #r .search form .form-group span.hyphen{
+        position: relative;
+        left: -.15em;
+    }
+    #r .search form [type=submit]{
+        padding:5px 2em;
+    }
 }
-#l .menu li{
-    cursor: pointer;
-    padding:.4em;
-}
-#l .menu>ul>li{
-    font-size: 1.1em;
-}
-#l .menu>ul>li>ul>li{
-    font-size: .9em;
-}
-
-/*--------  右边的样式   ------*/
-#r h3{
-    padding-left: 1em;
-}
-#r header{
-    padding-top:.6em;
-    border-bottom: 1px solid rgba(255,255,255,.5);
-}
-#r header .status span{
-    top: .5em;
-    left: -.3em;
-    font-size: 1.5em;
-}
-#r header span.glyphicon-ok {
-    color: limegreen;
-}
-#r li.tab{
-    position: absolute;
-    top: 8px;
-    left:4em;
-}
-#r .tab .btn,
-#r .tab .btn:active:focus{
-    padding-top: 11.5px;
-    padding-bottom: 12px;
-    margin-right: .3em;
-    border-radius: 4px 4px 0 0;
-    background-color:rgba(255,255,255,.15);
-
-}
-#r .tab>.btn.selected{
-    border-bottom-color: #2d1f38;
-    background-color:transparent;
-    outline:none;
-}
-#r .tab>button>span.glyphicon.glyphicon-remove{
-    left:.3em;
-    top:.15em;
-    z-index: 1000;
-}
-
-#r .search{
-    padding: 1em;
-    background-color: rgba(0,0,0,.2);
-    margin-top: .5em;
-}
-#r .search .form-group{
-    margin:.6em;
-}
-#r .search option{
-    background-color: rgb(102, 62, 99);
-}
-#r .search .title{
-    font-size: 1.2em;
-    padding-top: 1em;
-}
-#r .search .btn{
-    margin-top: .5em;
-    margin-bottom: .5em;
-    width:100%;
-}
-#r .search input:not([type=submit]){
-    color: #fff;
-    background-color: transparent;
-}
-#r .search form [type=submit]{
-    padding:5px 2em;
-}
-
-#r .switch:not(#index){
-    display: none;
+body>#r.container-fluid{
+    padding-left: 0;
 }
 
 #r .numShow{
-    padding: 1em;
+    padding: 1em 0 0;
 }
 #r .numShow .item{
     padding: 1em;
-    border: 1px solid;
-    border-radius: 5px;
+    /*border: 1px solid;*/
+    border-radius: 4px;
     background-color: rgba(0,0,0,.2);
 }
 #r .numShow .item h4{
-    margin-top: 0;
+    position: relative;
 }
 #r .numShow .item .number{
     text-align: center;
     font-size: 2em;
     font-weight: bold;
-    text-shadow: 2px 2px 3px #000;
     padding-left: .6em;
 }
 #r .numShow .item .comp{
     margin-top: .8em;
+    margin-bottom: -.2em;
+}
+#r .numShow .item .comp span:nth-of-type(2){
+    margin-right: 1em;
 }
 #r .chartPie{
-    padding:1em;
+    padding:1em 0 0;
 }
 #r .chartPie .item{
     padding: 1em;
-    border: 1px solid;
-    border-radius: 5px;
+    border-radius: 4px;
     background-color: rgba(0,0,0,.2);
 }
+#r .chartBar{
+    padding:1em 0 0;
+}
+#r .chartLine {
+    padding: 1em 0;
+}
+.row>[class^=col-md-]:not(:first-of-type){
+    padding-left: 0;
+}
+#r .chartPie.numShow .col-md-3:first-of-type .item{
+    height:14em;
+}
 
+#newsAnalysis .numShow.chartPie .item h4,
+#r h4{
+    position: absolute;
+    margin-top: 0;
+    font-weight: normal;
+    font-size: 1.1em;
+}
+#newsAnalysis .numShow.chartPie .item .number{
+    margin-top: 2em;
+}
+#r .numShow.chartPie .item .comp{
+    margin-top: 3.8em;
+}
 #r .chartBar .item,
 #r .chartLine .item{
     padding: 1em;
-    border: 1px solid;
-    border-radius: 5px;
+    border-radius: 6px;
     background-color: rgba(0,0,0,.2);
 }
 
-
+#newsAnalysis .numShow .number{
+    margin-top: 1em;
+}
+#newsAnalysis .numShow .comp{
+    margin-top: 1em;
+    margin-bottom: 2.7em;
+}
 
 
 
@@ -221,7 +401,7 @@ body{
 
 
 #r .chartPie [id^=chart] {
-    height: 10em;
+    height: 12em;
 }
 #r .chartBar [id^=chart] {
     height: 20em;

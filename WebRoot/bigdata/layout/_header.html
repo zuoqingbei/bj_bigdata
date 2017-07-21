@@ -1,17 +1,25 @@
-<header>
-	<ul class="row header">
-		<li class="pull-left status"><span class="glyphicon glyphicon-ok"></span></li>
-		<li class="col-md-8 tab">
-			<button class="btn btn-default selected">
-				<span class="navText">总览</span> <span
-					class="glyphicon glyphicon-remove"></span>
-			</button>
-		</li>
-		<li class="col-md-2 pull-right">
-			<button class="btn btn-default">登出系统&gt;&gt;</button>
-		</li>
-		<li class="col-md-2 pull-right text-right">
-			<button class="btn btn-default">关闭操作</button>
-		</li>
-	</ul>
-</header>
+<nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="${ctx_path!}/home"> 陆军联参信息决策系统</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="status active">
+                    <a style="cursor: pointer">你好，王将军
+                    </a>
+                <li><a href="#">登出</a></li>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>

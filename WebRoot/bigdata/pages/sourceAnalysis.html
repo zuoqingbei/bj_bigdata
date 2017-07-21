@@ -1,230 +1,98 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+<#include "${ctx_path!}/bigdata/layout/_layout.html"/>
+<@layout scripts=["${ctx_path!}/bigdata/js/main.js"] csss=[]   s_title="素材分析">
 <head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>报表开发-素材分析</title>
-    <link rel="stylesheet" href="/bigdata/asserts/css/bootstrap-3.3.7.css">
-    <link rel="stylesheet" href="/bigdata/css/style.css">
-    <link rel="stylesheet" href="/bigdata/css/table.css">
+    <style>
+    	html{
+			height:100%;
+		}
+        body{
+            background: none;
+        }
+    </style>
 </head>
-<body id="sourceAnalysis">
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-2">
-            <div id="l">
-                <div class="userInfo">
-                    <div class="userInfo-pic">
-                        <!--<span class="glyphicon glyphicon-user"></span>-->
-                        <img class="img-responsive img-circle" src="/bigdata/img/user_pic.png" alt="用户名">
+<body>
+<div id="r" class="container-fluid">
+    <#include "${ctx_path!}/bigdata/layout/_search.html"/>
+	<@layout s_action="/home/sourceAnalysis" show_endDate="false">
+	</@layout>
+    <div class="switch " id="sourceAnalysis">
+        <div class="row numShow">
+            <div class="col-md-4">
+                <div class="item">
+                    <h4 class="title">素材量（个）</h4>
+                    <div class="row">
+                        <div class="">
+                            <div class="number">
+                             <@_source_num type="0">
+	                         	${data.num!}
+	                          </@_source_num>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="comp">
+                            <@_source_num type="1">
+                            	<span class="glyphicon glyphicon-arrow-up"></span>同比<span>${data.tb!0}%</span>
+                                <span class="glyphicon glyphicon-arrow-down"></span> 环比<span>${data.hb!0}%</span>
+                            </@_source_num>
+                            </div>
+                        </div>
                     </div>
-                    <h4 class="userInfo-name">王将军</h4>
-                    <div class="userInfo-offer">AA公司总经理</div>
                 </div>
-                <nav class="menu">
-                    <ul>
-                        <li><span> - </span><span class="navText">总览</span></li>
-                        <li><span> - </span><span class="navText">素材分析</span></li>
-                        <li>
-                            <span> + </span><span class="navText">新闻分析</span>
-                            <ul>
-                                <li><span> - </span>新闻分析</li>
-                                <li><span> - </span>使用方式</li>
-                                <li><span> - </span>评价级别</li>
-                            </ul>
-                        </li>
-                        <li>
-                            <span> + </span><span class="navText">其它</span>
-                            <ul style="display: none">
-                                <li><span> - </span>其它1</li>
-                                <li><span> - </span>其它2</li>
-                                <li><span> - </span>其它3</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
+            </div>
+            <div class="col-md-4">
+                <div class="item">
+                    <h4 class="title">新闻量（个）</h4>
+                    <div class="row">
+                        <div class="">
+                            <div class="number">
+                              <@_fctzb_num type="0">
+	                         	${data.num!}
+	                          </@_fctzb_num>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="comp">
+                               <@_fctzb_num type="1">
+                         	    <span class="glyphicon glyphicon-arrow-up"></span>同比<span>${data.tb!0}%</span>
+                            	<span class="glyphicon glyphicon-arrow-down"></span>环比<span>${data.hb!0}%</span>
+                          	</@_fctzb_num>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="item">
+                    <h4 class="title">素材转化率</h4>
+                    <div class="row">
+                        <div class="">
+                            <div class="number">
+                             <@_source_num type="2">
+	                         	${data.rate!0}%
+	                          </@_source_num>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="comp">
+                                 <@_source_num type="3">
+		                         	    <span class="glyphicon glyphicon-arrow-up"></span>同比<span>${data.tb!0}%</span>
+		                            	<span class="glyphicon glyphicon-arrow-down"></span>环比<span>${data.hb!0}%</span>
+		                          </@_source_num>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-10" id="r">
-            <header>
-                <ul class="row header">
-                    <li class="pull-left status"><span class="glyphicon glyphicon-ok"></span></li>
-                    <li class="col-md-2 tab">
-                        <button class="btn btn-default">总览 <span class="glyphicon glyphicon-remove"></span></button>
-                        <button class="btn btn-default active">素材分析 <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                    </li>
-                    <li class="col-md-2 pull-right">
-                        <button class="btn btn-default">登出系统&gt;&gt;</button>
-                    </li>
-                    <li class="col-md-2 pull-right text-right">
-                        <button class="btn btn-default">关闭操作</button>
-                    </li>
-                </ul>
-            </header>
-            <div class="search">
-                <ul class="row">
-                    <li class="col-md-2 text-right title"><strong>查询条件：</strong></li>
-                    <li class="col-md-2">
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdown1"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                大单位
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdown1">
-                                <li>大单位1</li>
-                                <li>大单位2</li>
-                                <li>大单位3</li>
-                                <li>大单位4</li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="col-md-2">
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdown2"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                部门
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdown2">
-                                <li>部门1</li>
-                                <li>部门2</li>
-                                <li>部门3</li>
-                                <li>部门4</li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="col-md-2">
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdown3"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                发稿人
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdown3">
-                                <li>发稿人1</li>
-                                <li>发稿人2</li>
-                                <li>发稿人3</li>
-                                <li>发稿人4</li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="col-md-2">
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdown4"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                方向
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdown4">
-                                <li>方向1</li>
-                                <li>方向2</li>
-                                <li>方向3</li>
-                                <li>方向4</li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="col-md-2">
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdown5"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                Reserve
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdown5">
-                                <li>Reserve1</li>
-                                <li>Reserve2</li>
-                                <li>Reserve3</li>
-                                <li>Reserve4</li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="col-md-6 col-md-offset-2">
-                        <form action="" class=" form-inline">
-                            <div class="form-group">
-                                <label for="date1">起始日期</label>
-                                <input class="form-control" id="date1" type="date">
-                            </div>
-                            -
-                            <div class="form-group">
-                                <label for="date2">截止日期</label>
-                                <input class="form-control" id="date2" type="date">
-                            </div>
-                        </form>
-                    </li>
-                    <li class="col-md-2">
-                        <button class="btn btn-success btn-sm"> 查 询</button>
-                    </li>
-                </ul>
-            </div>
-            <div class="row numShow">
-                <div class="col-md-4">
-                    <div class="item">
-                        <h4 class="title">素材量（个）</h4>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="number">17,435</div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="comp">
-                                    <span class="glyphicon glyphicon-arrow-up"></span>
-                                    同比<span>9%</span>
-                                    <span class="glyphicon glyphicon-arrow-down"></span>
-                                    环比<span>3%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="item">
-                        <h4 class="title">新闻量（个）</h4>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="number">17,435</div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="comp">
-                                    <span class="glyphicon glyphicon-arrow-up"></span>
-                                    同比<span>9%</span>
-                                    <span class="glyphicon glyphicon-arrow-down"></span>
-                                    环比<span>3%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="item">
-                        <h4 class="title">素材转化率（个）</h4>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="number">85.66%</div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="comp">
-                                    <span class="glyphicon glyphicon-arrow-up"></span>
-                                    同比<span>9%</span>
-                                    <span class="glyphicon glyphicon-arrow-down"></span>
-                                    环比<span>3%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="alert alert-info">
-                <div class="pull-left">“部门”、“发稿人”可钻取</div>
-                <div class="pull-right btn btn-default">导出本地</div>
-            </div>
+        <@_source_analysis_list  pageNum='${pageNum!1}' pageSize=10>
+        <div class="tableBox">
             <table class="table table-bordered table-responsive table-hover">
                 <thead>
                 <tr>
                     <th>时间</th>
                     <th>大单位</th>
-                    <th>部门</th>
-                    <th>发稿人 ↓→</th>
+                    <th class="drillTh"> 部门 <span class="glyphicon glyphicon-link"></span> </th>
+                    <th class="drillTh"> 发稿人 <span class="glyphicon glyphicon-link"></span> </th>
                     <th>管理前方采编</th>
                     <th>素材数量</th>
                     <th>新闻数量</th>
@@ -235,510 +103,139 @@
                 </tr>
                 </thead>
                 <tbody>
+                <#list page.list as p>
                 <tr>
-                    <td>6月</td>
-                    <td>北京一公司</td>
-                    <td class="department">销售一部</td>
+                    <td>${p.date!}</td>
+                    <td>${p.companyname!}</td>
+                    <td class="department drill">
+                        <div>${p.deptname!}</div>
+                    </td>
                     <td class="reporter">
-                        <div class="total">2</div>
+                        <div class="total">${p.children?size}</div>
                         <div class="content">
-                            <div class="reporter-name">张三</div>
-                            <div class="reporter-name">李四</div>
+                        	<#list p.children as creator>
+	                            <div class="reporter-name drill">${creator.creatorName!}</div>
+                        	</#list>
                         </div>
                     </td>
                     <td class="manageNum">
-                        <div class="item">
-                            <div class="total">3</div>
-                            <div class="content">
-                                <div>张三A</div>
-                                <div>张三B</div>
-                                <div>张三C</div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="total">4</div>
-                            <div class="content">
-                                <div>李四A</div>
-                                <div>李四B</div>
-                                <div>李四C</div>
-                                <div>李四D</div>
-                            </div>
-                        </div>
+                    	<#list p.children as creator>
+                    		 <div class="item">
+	                            <div class="total">${creator.sourceCodeNum!}</div>
+	                            <div class="content">
+	                            	<#list creator.children as cre>
+	                            		 <div>${cre.sourceCodeName!}</div>
+	                            	</#list>
+	                            </div>
+	                        </div>
+                        </#list>
                     </td>
                     <td class="sourceNum">
-                        <div class="item">
-                            <div class="total">60</div>
-                            <div class="content">
-                                <div>10</div>
-                                <div>20</div>
-                                <div>30</div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="total">73</div>
-                            <div class="content">
-                                <div>11</div>
-                                <div>21</div>
-                                <div>31</div>
-                                <div>10</div>
-                            </div>
-                        </div>
+                        <#list p.children as creator>
+                    		 <div class="item">
+	                            <div class="total">${creator.orgNum!}</div>
+	                            <div class="content">
+	                            	<#list creator.children as cre>
+	                            		 <div>${cre.sourcenNum!}</div>
+	                            	</#list>
+	                            </div>
+	                        </div>
+                        </#list>
                     </td>
                     <td class="newsNum">
-                        <div class="item">
-                            <div class="total">60</div>
-                            <div class="content">
-                                <div>10</div>
-                                <div>20</div>
-                                <div>30</div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="total">73</div>
-                            <div class="content">
-                                <div>11</div>
-                                <div>21</div>
-                                <div>31</div>
-                                <div>10</div>
-                            </div>
-                        </div>
+                         <#list p.children as creator>
+                    		 <div class="item">
+	                            <div class="total">${creator.zbnum!}</div>
+	                            <div class="content">
+	                            	<#list creator.children as cre>
+	                            		 <div>${cre.zbnum!}</div>
+	                            	</#list>
+	                            </div>
+	                        </div>
+                        </#list>
                     </td>
                     <td class="rate">
-                        <div class="item">
-                            <div class="total">60%</div>
-                            <div class="content">
-                                <div>10%</div>
-                                <div>20%</div>
-                                <div>30%</div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="total">73%</div>
-                            <div class="content">
-                                <div>11%</div>
-                                <div>21%</div>
-                                <div>31%</div>
-                                <div>10%</div>
-                            </div>
-                        </div>
+                          <#list p.children as creator>
+                    		 <div class="item">
+	                            <div class="total">${creator.rate!}%</div>
+	                            <div class="content">
+	                            	<#list creator.children as cre>
+	                            		 <div>${cre.rate!}%</div>
+	                            	</#list>
+	                            </div>
+	                        </div>
+                        </#list>
                     </td>
                     <td class="useWay">
-                        <div class="item">
-                            <div class="total">方式A</div>
-                            <div class="content">
-                                <div>方式A</div>
-                                <div>方式A</div>
-                                <div>方式A</div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="total">方式B</div>
-                            <div class="content">
-                                <div>方式B</div>
-                                <div>方式B</div>
-                                <div>方式B</div>
-                                <div>方式B</div>
-                            </div>
-                        </div>
+                         <#list p.children as creator>
+                    		 <div class="item">
+	                            <div class="total">${creator.usetype!'暂无'}</div>
+	                            <div class="content">
+	                            	<#list creator.children as cre>
+	                            		 <div>${cre.usetype!'暂无'}</div>
+	                            	</#list>
+	                            </div>
+	                        </div>
+                        </#list>
                     </td>
                     <td class="level">
-                        <div class="item">
-                            <div class="total">A</div>
-                            <div class="content">
-                                <div>A</div>
-                                <div>A</div>
-                                <div>A</div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="total">B</div>
-                            <div class="content">
-                                <div>B</div>
-                                <div>B</div>
-                                <div>B</div>
-                                <div>B</div>
-                            </div>
-                        </div>
+                          <#list p.children as creator>
+                    		 <div class="item">
+	                            <div class="total">${creator.useLevel!'暂无'}</div>
+	                            <div class="content">
+	                            	<#list creator.children as cre>
+	                            		 <div>${cre.useLevel!'暂无'}</div>
+	                            	</#list>
+	                            </div>
+	                        </div>
+                        </#list>
                     </td>
                     <td class="instruction">
-                        <div class="item">
-                            <div class="total">全部</div>
-                            <div class="content">
-                                <div>是</div>
-                                <div>是</div>
-                                <div>是</div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="total">部分</div>
-                            <div class="content">
-                                <div>是</div>
-                                <div>是</div>
-                                <div>否</div>
-                                <div>否</div>
-                            </div>
-                        </div>
+                        <#list p.children as creator>
+                    		 <div class="item">
+	                            <div class="total">${creator.hasPiShiNum!}</div>
+	                            <div class="content">
+	                            	<#list creator.children as cre>
+	                            		 <div>${cre.hasPiShiNum!0}</div>
+	                            	</#list>
+	                            </div>
+	                        </div>
+                        </#list>
                     </td>
                 </tr>
-                <tr>
-                    <td>7月</td>
-                    <td>北京一公司</td>
-                    <td class="department">销售一部</td>
-                    <td class="reporter">
-                        <div class="total">2</div>
-                        <div class="content">
-                            <div class="reporter-name">张三</div>
-                            <div class="reporter-name">李四</div>
-                        </div>
-                    </td>
-                    <td class="manageNum">
-                        <div class="item">
-                            <div class="total">3</div>
-                            <div class="content">
-                                <div>张三A</div>
-                                <div>张三B</div>
-                                <div>张三C</div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="total">4</div>
-                            <div class="content">
-                                <div>李四A</div>
-                                <div>李四B</div>
-                                <div>李四C</div>
-                                <div>李四D</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="sourceNum">
-                        <div class="item">
-                            <div class="total">60</div>
-                            <div class="content">
-                                <div>10</div>
-                                <div>20</div>
-                                <div>30</div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="total">73</div>
-                            <div class="content">
-                                <div>11</div>
-                                <div>21</div>
-                                <div>31</div>
-                                <div>10</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="newsNum">
-                        <div class="item">
-                            <div class="total">60</div>
-                            <div class="content">
-                                <div>10</div>
-                                <div>20</div>
-                                <div>30</div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="total">73</div>
-                            <div class="content">
-                                <div>11</div>
-                                <div>21</div>
-                                <div>31</div>
-                                <div>10</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="rate">
-                        <div class="item">
-                            <div class="total">60%</div>
-                            <div class="content">
-                                <div>10%</div>
-                                <div>20%</div>
-                                <div>30%</div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="total">73%</div>
-                            <div class="content">
-                                <div>11%</div>
-                                <div>21%</div>
-                                <div>31%</div>
-                                <div>10%</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="useWay">
-                        <div class="item">
-                            <div class="total">方式A</div>
-                            <div class="content">
-                                <div>方式A</div>
-                                <div>方式A</div>
-                                <div>方式A</div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="total">方式B</div>
-                            <div class="content">
-                                <div>方式B</div>
-                                <div>方式B</div>
-                                <div>方式B</div>
-                                <div>方式B</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="level">
-                        <div class="item">
-                            <div class="total">A</div>
-                            <div class="content">
-                                <div>A</div>
-                                <div>A</div>
-                                <div>A</div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="total">B</div>
-                            <div class="content">
-                                <div>B</div>
-                                <div>B</div>
-                                <div>B</div>
-                                <div>B</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="instruction">
-                        <div class="item">
-                            <div class="total">全部</div>
-                            <div class="content">
-                                <div>是</div>
-                                <div>是</div>
-                                <div>是</div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="total">部分</div>
-                            <div class="content">
-                                <div>是</div>
-                                <div>是</div>
-                                <div>否</div>
-                                <div>否</div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
+                </#list>
+               
                 </tbody>
             </table>
-            <!--
-                        <div class="search">
-                            <ul class="row">
-                                <li class="col-md-2 text-right title"><strong>查询条件：</strong></li>
-                                <li class="col-md-2">
-                                    <div class="dropdown">
-                                        <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdown1"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                            大单位
-                                            <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdown1">
-                                            <li>大单位1</li>
-                                            <li>大单位2</li>
-                                            <li>大单位3</li>
-                                            <li>大单位4</li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="col-md-2">
-                                    <div class="dropdown">
-                                        <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdown2"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                            部门
-                                            <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdown2">
-                                            <li>部门1</li>
-                                            <li>部门2</li>
-                                            <li>部门3</li>
-                                            <li>部门4</li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="col-md-2">
-                                    <div class="dropdown">
-                                        <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdown3"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                            发稿人
-                                            <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdown3">
-                                            <li>发稿人1</li>
-                                            <li>发稿人2</li>
-                                            <li>发稿人3</li>
-                                            <li>发稿人4</li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="col-md-2">
-                                    <div class="dropdown">
-                                        <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdown4"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                            方向
-                                            <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdown4">
-                                            <li>方向1</li>
-                                            <li>方向2</li>
-                                            <li>方向3</li>
-                                            <li>方向4</li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="col-md-2">
-                                    <div class="dropdown">
-                                        <button class="btn btn-default dropdown-toggle btn-sm" type="button" id="dropdown5"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                            Reserve
-                                            <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdown5">
-                                            <li>Reserve1</li>
-                                            <li>Reserve2</li>
-                                            <li>Reserve3</li>
-                                            <li>Reserve4</li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="col-md-6 col-md-offset-2">
-                                    <form action="" class=" form-inline">
-                                        <div class="form-group">
-                                            <label for="date1">起始日期</label>
-                                            <input class="form-control" id="date1" type="date">
-                                        </div>
-                                        -
-                                        <div class="form-group">
-                                            <label for="date2">截止日期</label>
-                                            <input class="form-control" id="date2" type="date">
-                                        </div>
-                                    </form>
-                                </li>
-                                <li class="col-md-2">
-                                    <button class="btn btn-success btn-sm"> 查 询</button>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="row numShow">
-                            <div class="col-md-4">
-                                <div class="item">
-                                    <h4 class="title">素材量（个）</h4>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="number">17,435</div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="comp">
-                                                <span class="glyphicon glyphicon-arrow-up"></span>
-                                                同比<span>9%</span>
-                                                <span class="glyphicon glyphicon-arrow-down"></span>
-                                                环比<span>3%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="item">
-                                    <h4 class="title">新闻量（个）</h4>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="number">17,435</div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="comp">
-                                                <span class="glyphicon glyphicon-arrow-up"></span>
-                                                同比<span>9%</span>
-                                                <span class="glyphicon glyphicon-arrow-down"></span>
-                                                环比<span>3%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="item">
-                                    <h4 class="title">素材转化率（个）</h4>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="number">85.66%</div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="comp">
-                                                <span class="glyphicon glyphicon-arrow-up"></span>
-                                                同比<span>9%</span>
-                                                <span class="glyphicon glyphicon-arrow-down"></span>
-                                                环比<span>3%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row chartPie">
-                            <div class="col-md-4">
-                                <div class="item">
-                                    <h4>使用方式</h4>
-                                    <div id="chart01"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="item">
-                                    <h4>是否批示</h4>
-                                    <div id="chart02"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="item">
-                                    <h4>评论级别</h4>
-                                    <div id="chart03"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row chartBar">
-                            <h3>新闻量和素材量（Top6）</h3>
-                            <div class="col-md-6">
-                                <div class="item">
-                                    <div id="chart04"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="item">
-                                    <div id="chart05"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row chartLine">
-                            <h3>最近5年 素材量-新闻量 趋势图</h3>
-                            <div class="col-md-12">
-                                <div class="item">
-                                    <div id="chart06"></div>
-                                </div>
-                            </div>
-                        </div>
-            -->
+            <div class="pagingAndExp">
+                <div class="pull-left btn btn-default" onclick="exportExcel('/export/exportFctZbDetail')">导出本地</div>
+                <#include "/bigdata/common/_paginate.html" />
+				<@paginate currentPage=page.pageNumber
+				totalPage=page.totalPage  actionUrl="/home/sourceAnalysis" urlParas="${params!}"/>
+                <!-- <nav aria-label="Page navigation" class="pull-right">
+                    <ul class="pagination">
+                        <li>
+                            <a href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li>
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav> -->
+            </div>
         </div>
-
+	</@_source_analysis_list>
     </div>
-</div>
-<!--
-<div class="jumbotron">
-    <h1>报表开发1</h1>
-</div>
--->
 
-<script src="/bigdata/asserts/js/jquery-2.2.4.js"></script>
-<script src="/bigdata/asserts/js/bootstrap-3.3.7.js"></script>
-<script src="/bigdata/asserts/echarts3.0/echarts.min-3.6.0.js"></script>
-<!--<script src="js/charts.js"></script>-->
-<script src="/bigdata/js/main.js"></script>
-<script>
-
-</script>
+</div>
 </body>
-</html>
+</@layout>

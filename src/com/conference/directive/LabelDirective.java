@@ -7,7 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
@@ -19,10 +23,12 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
 public class LabelDirective implements TemplateDirectiveModel{
-
 	@SuppressWarnings("rawtypes")
 	public void execute(Environment env, Map params, TemplateModel[] loopVars,
 			TemplateDirectiveBody body) throws TemplateException, IOException {
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+		HttpServletRequest request = attr.getRequest();
 		String tableName=params.get("tableName")==null?"":params.get("tableName").toString();
 		String filedName=params.get("filedName")==null?"":params.get("filedName").toString();
 		String filedValue=params.get("filedValue")==null?"":params.get("filedValue").toString();

@@ -1,14 +1,14 @@
 package com.conference.common.interceptor;
 
+import com.conference.common.BaseController;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 
-public class TestInterceptor implements Interceptor {
+public class SessionInterceptor extends BaseController implements Interceptor {
 
 	@Override
 	public void intercept(Invocation inv) {
-		// TODO Auto-generated method stub
-		System.out.println("----TestInterceptor-----");
+		dealAttrToSession(inv.getController());
 		inv.invoke();
 	}
 

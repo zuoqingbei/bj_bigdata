@@ -917,31 +917,6 @@ public class DateUtil {
 		return str;
     }
     
-    
-    /** 
-     * @Desc: 中英文日期转换
-     * @param date
-     * @param cnFormat
-     * @param enFormat
-     * @param language
-     * @return
-     * @return: String
-     * @author: longjunfeng   
-     * @date: 2016年11月23日 下午6:36:48 
-     */
-    public static String i18nFormat(Date date,String cnFormat,String enFormat,String language){
-    	Calendar calender = Calendar.getInstance();
-		calender.setTime(date);
-    	if(Constant.I18N_ENGLISH.equals(language)){
-    		SimpleDateFormat sdf = new SimpleDateFormat(enFormat,  Locale.ENGLISH);
-    		return sdf.format(calender.getTime());
-    	}else if(Constant.I18N_CHINESE.equals(language)){
-    		SimpleDateFormat sdf = new SimpleDateFormat(cnFormat,  Locale.CHINESE);
-    		return sdf.format(calender.getTime());
-    	}
-    	return "";
-    }
-    
 	public static void main(String[] args) throws Exception {
 		// Date d1 = parseToDate("2009-11-29", null);
 		// Date d2 = parseToDate("2007-12-29", null);
