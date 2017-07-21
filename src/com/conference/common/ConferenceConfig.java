@@ -12,7 +12,6 @@ import com.conference.admin.model.FctEval;
 import com.conference.admin.model.FctOrigin;
 import com.conference.admin.model.FctZb;
 import com.conference.directive.FctEvalDirective;
-import com.conference.directive.FctZbListDirective;
 import com.conference.directive.FctZbNumDirective;
 import com.conference.directive.LabelDirective;
 import com.conference.directive.SourceListDirective;
@@ -106,7 +105,7 @@ public class ConferenceConfig extends JFinalConfig{
 		FreeMarkerRender.getConfiguration().setSharedVariable("_fctzb_num", new FctZbNumDirective());//新闻量统计
 		FreeMarkerRender.getConfiguration().setSharedVariable("_fct_eval", new FctEvalDirective());//新闻评价
 		FreeMarkerRender.getConfiguration().setSharedVariable("_source_analysis_list", new SourceListDirective());//素材分析列表
-		FreeMarkerRender.getConfiguration().setSharedVariable("_fctzb_analysis_list", new FctZbListDirective());//新闻分析列表
+		FreeMarkerRender.getConfiguration().setSharedVariable("_fctzb_analysis_list", new SourceListDirective());//素材分析列表
 	}
 	
 	/**
