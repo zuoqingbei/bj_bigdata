@@ -37,5 +37,17 @@
 	</@echarts>
 </body>
 <script type="text/javascript">
+getData();
+function getData(){
+    $.ajax({
+        url: "/common/test/useLevel",
+        
+        type: 'post',
+        dataType: 'JSON',//here
+        success: function (data) {
+        	console.log(data)
+        }
+    });
+}
 </script>
 </html>

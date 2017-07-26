@@ -36,5 +36,14 @@ public class FctEval extends BaseModel<FctEval>{
 		sql.append(" order by count("+filed+") ");
 		return Db.find(sql.toString());
 	}
-
+	/**
+	 * 新闻使用方式统计
+	 */
+	public List<Record> fctEvalUseType(String  sqlWhere){
+		StringBuffer sql=new StringBuffer();
+		sql.append(" select fct_eval.use_type_id from bigdata_fct_eval fct_eval ");
+		sql.append(" where fct_eval.zb_id in(select fct_zb.zb_id from bigdata_fct_zb fct_zb where 1=1 "+sqlWhere+") ");
+		sql.append("  group by fct_eval.use_type_id order by fct_eval.use_type_id  ");
+		return Db.find(sql.toString());
+	}
 }

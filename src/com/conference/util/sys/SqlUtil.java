@@ -46,7 +46,7 @@ public class SqlUtil implements Constant{
 	 * @author zuoqb
 	 * @todo   在标签中拼接筛选条件(以新闻为主表)
 	 */
-	/*public static String joinSqlForNews(HttpServletRequest request,String tableShortName,boolean containDate){
+	public static String joinSqlForNews(HttpServletRequest request,String tableShortName,boolean containDate){
 		StringBuffer sql=new StringBuffer();
 		if(StringUtils.isBlank(tableShortName)){
 			tableShortName="fct_zb";
@@ -95,8 +95,8 @@ public class SqlUtil implements Constant{
 			}
 		}
 		return sql.toString();
-	}*/
-	public static String joinSqlForNews(HttpServletRequest request,String tableShortName,boolean containDate){
+	}
+	/*public static String joinSqlForNews(HttpServletRequest request,String tableShortName,boolean containDate){
 		StringBuffer sql=new StringBuffer();
 		if(StringUtils.isBlank(tableShortName)){
 			tableShortName="fct_zb";
@@ -145,7 +145,7 @@ public class SqlUtil implements Constant{
 			}
 		}
 		return sql.toString();
-	}
+	}*/
 	public static String joinSqlForNews(HttpServletRequest request){
 		return joinSqlForNews(request, null, true);
 	}

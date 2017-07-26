@@ -1,6 +1,8 @@
 package com.conference.admin.model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -44,6 +46,23 @@ public class Dept extends BaseModel<Dept>{
 		List<Record> list=Db.find(sql);
 		return list;
 	}
-	
-
+	/**
+	 * 
+	 * @time   2017年7月25日 上午9:48:46
+	 * @author zuoqb
+	 * @todo   获取全部部门
+	 */
+	public List<Record> getAllDeptsList(){
+		String sql=" select * from bigdata_d_dept order by id  ";
+		List<Record> list=Db.find(sql);
+		return list;
+	}
+	public Map<String,Record> getAllDeptsMap(){
+		List<Record> list=getAllDeptsList();
+		Map<String,Record> map=new HashMap<String,Record>();
+		for(Record r:list){
+			map.put(r.get("id")+"", r);
+		}
+		return map;
+	}
 }

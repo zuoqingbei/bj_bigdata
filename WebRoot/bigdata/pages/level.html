@@ -17,163 +17,80 @@
 	<@layout s_action="/home/level" show_endDate="true">
 	</@layout>
     <div class="switch " id="level">
+    			<@_fctzb_uselevel_list  pageNum='${pageNum!1}' pageSize=10>
                 <table class="table table-bordered table-responsive table-hover">
                     <thead>
                     <tr>
                         <th rowspan="3">时间</th>
                         <th rowspan="3" class="drillTh">部门
                             <span class="glyphicon glyphicon-link"></span></th></th>
-                        <th colspan="6">评价级别</th>
+                        <th colspan="${useTypesSize*3!}">评价级别</th>
 
                     </tr>
                     <tr>
-                        <th colspan="3">APP</th>
-                        <th colspan="3">IOS</th>
+                        <th colspan="${useTypesSize!}">优</th>
+                        <th colspan="${useTypesSize!}">良</th>
+                        <th colspan="${useTypesSize!}">中</th>
                     </tr>
                     <tr>
-                        <th>优</th>
-                        <th>良</th>
-                        <th>中</th>
-                        <th>优</th>
-                        <th>良</th>
-                        <th>中</th>
+                    	<#list useTypes as type>
+							<th>${type.use_type_id!}</th>
+						</#list>
+						<#list useTypes as type>
+							<th>${type.use_type_id!}</th>
+						</#list>
+						<#list useTypes as type>
+							<th>${type.use_type_id!}</th>
+						</#list>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>6月6日</td>
+                    <#list page.list as p>
+						<#list p.children as dept>
+                    	<tr>
+                        <td>${dept.date!}</td>
                         <td class="department">
-                            <div class="total drill">部门1</div>
+                            <div class="total drill">${dept.deptname!}</div>
                             <div class="content">
-                                <div class="reporter-name">张三</div>
-                                <div class="reporter-name">李四</div>
+                                	<#list dept.creators as creator>
+										<div class="reporter-name">${creator.name!}</div>
+									</#list>
                             </div>
                         </td>
-                        <td class="app_1">
-                            <div class="total">10</div>
-                            <div class="content">
-                                <div>3</div>
-                                <div>7</div>
-                            </div>
-                        </td>
-                        <td class="app_2">
-                            <div class="total">10</div>
-                            <div class="content">
-                                <div>3</div>
-                                <div>7</div>
-                            </div>
-                        </td>
-                        <td class="app_3">
-                            <div class="total">10</div>
-                            <div class="content">
-                                <div>3</div>
-                                <div>7</div>
-                            </div>
-                        </td>
-                        <td class="ios_1">
-                            <div class="total">10</div>
-                            <div class="content">
-                                <div>3</div>
-                                <div>7</div>
-                            </div>
-                        </td>
-                        <td class="ios_2">
-                            <div class="total">10</div>
-                            <div class="content">
-                                <div>3</div>
-                                <div>7</div>
-                            </div>
-                        </td>
-                        <td class="ios_3">
-                            <div class="total">10</div>
-                            <div class="content">
-                                <div>3</div>
-                                <div>7</div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>6月7日</td>
-                        <td class="department">
-                            <div class="total drill">部门2</div>
-                            <div class="content">
-                                <div class="reporter-name">张三</div>
-                                <div class="reporter-name">李四</div>
-                                <div class="reporter-name">王五</div>
-                            </div>
-                        </td>
-                        <td class="app_1">
-                            <div class="total">15</div>
-                            <div class="content">
-                                <div>3</div>
-                                <div>7</div>
-                                <div>5</div>
-                            </div>
-                        </td>
-                        <td class="app_2">
-                            <div class="total">15</div>
-                            <div class="content">
-                                <div>3</div>
-                                <div>7</div>
-                                <div>5</div>
-                            </div>
-                        </td>
-                        <td class="app_3">
-                            <div class="total">15</div>
-                            <div class="content">
-                                <div>3</div>
-                                <div>7</div>
-                                <div>5</div>
-                            </div>
-                        </td>
-                        <td class="ios_1">
-                            <div class="total">15</div>
-                            <div class="content">
-                                <div>3</div>
-                                <div>7</div>
-                                <div>5</div>
-                            </div>
-                        </td>
-                        <td class="ios_2">
-                            <div class="total">15</div>
-                            <div class="content">
-                                <div>3</div>
-                                <div>7</div>
-                                <div>5</div>
-                            </div>
-                        </td>
-                        <td class="ios_3">
-                            <div class="total">15</div>
-                            <div class="content">
-                                <div>3</div>
-                                <div>7</div>
-                                <div>5</div>
-                            </div>
-                        </td>
+                        <#list dept.usetype as usetype>
+								<#assign aindex="${usetype_index}"/>
+								<#list usetype.uselevel as uselevel>
+								<#assign alevel="${uselevel_index}"/>
+									<td class="app_1">
+										<div class="total">${uselevel.count!}</div>
+										<div class="content">
+											<#list dept.creators as c>
+												<#list c.usetype as t>
+													<#assign bindex="${t_index}"/>
+													<#list t.uselevel as l>
+														<#assign blevel="${l_index}"/>
+														<#if aindex==bindex && alevel==blevel>
+															<div>${l.count!}</div>
+														</#if>
+													</#list>
+												</#list>
+											</#list>
+										</div>
+									</td>
+								</#list>
+							</#list>
+                        </tr>
+                       </#list>
+					</#list>
                     </tbody>
                 </table>
                 <div class="pagingAndExp">
-                    <div class="pull-left btn btn-default">导出本地</div>
-                    <nav aria-label="Page navigation" class="pull-right">
-                        <ul class="pagination">
-                            <li>
-                                <a href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li>
-                                <a href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+                    <div class="pull-left btn btn-default" onclick="exportExcel('/export/exportUseLevel')">导出本地</div>
+                   <#include "/bigdata/common/_paginate.html" />
+					<@paginate currentPage=page.pageNumber
+					totalPage=page.totalPage  actionUrl="/home/level" urlParas="${params!}"/>
                 </div>
+                </@_fctzb_uselevel_list>
 
             </div>
 

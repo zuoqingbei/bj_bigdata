@@ -16,13 +16,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
 import com.conference.admin.model.FctOrigin;
+import com.conference.admin.model.FctZb;
 import com.conference.admin.model.RdcProductAgentDetail;
 import com.conference.common.RESTFulController;
 import com.conference.common.interceptor.SessionInterceptor;
 import com.conference.util.MyPoiRender;
 import com.conference.util.excel.ExportRdcProductAgentDetailTemplate;
 import com.conference.util.sys.DataTablesUtil;
+import com.conference.util.sys.SqlUtil;
 import com.jfinal.aop.Before;
+import com.jfinal.kit.JsonKit;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 @Before(SessionInterceptor.class)
 public class TestController extends  RESTFulController<FctOrigin> {
@@ -152,5 +156,17 @@ public class TestController extends  RESTFulController<FctOrigin> {
 	}
 	public void page(){
 		render("/bigdata/test/page.html");
+	}
+	public void useType(){
+		String sqlWhere=SqlUtil.joinSqlForNews(getRequest());
+		Page<Record> page=FctZb.dao.fctZbUseModelGroupByDate(sqlWhere,null, 1, 10);
+		String result=JsonKit.toJson(page, 13);
+		renderJson(result);
+	}
+	public void useLevel(){
+		String sqlWhere=SqlUtil.joinSqlForNews(getRequest());
+		Page<Record> page=FctZb.dao.fctZbUseLevelGroupByDate(sqlWhere,null, 1, 10);
+		String result=JsonKit.toJson(page, 13);
+		renderJson(result);
 	}
 }
