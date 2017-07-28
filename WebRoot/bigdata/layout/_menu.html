@@ -2,32 +2,40 @@
 	<div id="l">
 		<div class="userInfo">
 			<div class="userInfo-pic">
-				<!--<span class="glyphicon glyphicon-user"></span>-->
-				<img class="img-responsive img-circle"
-					src="${ctx_path!}/bigdata/img/user_pic.png" alt="用户名">
+				<#if session.s_container.sysUser??>
+					<img class="img-responsive img-circle"
+					src="${session.s_container.sysUser.photo!'${ctx_path!}/bigdata/img/user_pic.png'}">
+				<#else>
+					<img class="img-responsive img-circle"
+					src="${ctx_path!}/bigdata/img/user_pic.png">
+				</#if>
 			</div>
-			<h4 class="userInfo-name">王将军</h4>
-			<div class="userInfo-offer">AA公司总经理</div>
+			<#if session.s_container.sysUser??>
+				<h4 class="userInfo-name">${session.s_container.sysUser.login_name!}</h4>
+				<div class="userInfo-offer">${session.s_container.belongDept.name!}</div>
+			<#else>
+				<h4 class="userInfo-name">暂无名称</h4>
+				<div class="userInfo-offer">暂无部门</div>
+			</#if>
 		</div>
 		<nav class="menu">
+			
 			<ul>
-				<li class="active"><span class="icon"></span> <span
-					class="navText">总览</span></li>
-				<li><span class="icon"></span> <span class="navText">素材分析</span></li>
-				<li><span class="icon"></span> <span class="navText noSelected">新闻分析</span>
-					<span class="glyphicon glyphicon-menu-down"></span>
-					<ul>
-						<li><span class="navText">新闻分析</span></li>
-						<li><span class="navText">使用方式</span></li>
-						<li><span class="navText">评价级别</span></li>
-					</ul></li>
-				<li><span class="icon"></span> <span class="navText">其它</span>
-					<span class="glyphicon glyphicon-menu-down"></span>
-					<ul>
-						<li><span class="navText">其它内容1</span></li>
-						<li><span class="navText">其它内容2</span></li>
-						<li><span class="navText">其它内容3</span></li>
-					</ul></li>
+				<#list session.s_container.menus as menu>
+					<li class="active" id="left_menu_${menu.id!}" selectedId="${menu.id!}" li-name="${menu.name!}" data="${ctx_path!}${menu.href!}" onclick=pageSwitch("left_menu_${menu.id!}","${ctx_path!}${menu.href!}")><span class="icon ${menu.icon!}"></span><span class="navText">${menu.name!}</span>
+					<!-- 子菜单 -->
+					<#if (menu.children?size>0)>
+						<span class="glyphicon glyphicon-menu-down"></span>
+						<ul>
+							<#list menu.children as cmenu>
+								<li id="left_menu_${cmenu.id!}"  selectedId="${cmenu.id!}" li-name="${cmenu.name!}"  data="${ctx_path!}${cmenu.href!}" onclick=pageSwitch("left_menu_${cmenu.id!}","${ctx_path!}${cmenu.href!}")><span class="navText ${cmenu.icon!}">${cmenu.name!}</span></li>
+							</#list>
+						</ul>
+					</#if>
+					</li>
+				</#list>
+			
+				
 			</ul>
 		</nav>
 	</div>

@@ -4,6 +4,7 @@ package com.conference.common;
 import com.conference.admin.controller.ConditionsController;
 import com.conference.admin.controller.ExportController;
 import com.conference.admin.controller.IndexController;
+import com.conference.admin.controller.LoginController;
 import com.conference.admin.controller.TestController;
 import com.conference.admin.model.BigDataDRef;
 import com.conference.admin.model.Creator;
@@ -11,6 +12,11 @@ import com.conference.admin.model.Dept;
 import com.conference.admin.model.FctEval;
 import com.conference.admin.model.FctOrigin;
 import com.conference.admin.model.FctZb;
+import com.conference.admin.model.SysMenu;
+import com.conference.admin.model.SysRole;
+import com.conference.admin.model.SysUser;
+import com.conference.common.interceptor.LoginInterceptor;
+import com.conference.common.security.SecurityInterceptor;
 import com.conference.directive.FctEvalDirective;
 import com.conference.directive.FctZbNumDirective;
 import com.conference.directive.FctZbUseLevelDirective;
@@ -26,6 +32,7 @@ import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
 import com.jfinal.core.JFinal;
 import com.jfinal.ext.handler.ContextPathHandler;
+import com.jfinal.ext.interceptor.SessionInViewInterceptor;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
@@ -51,6 +58,9 @@ public class ConferenceConfig extends JFinalConfig{
 		me.setDevMode(getPropertyToBoolean("devMode", true));
 		me.setViewType(ViewType.FREE_MARKER);
 		me.setFreeMarkerTemplateUpdateDelay(0);//html页面缓存时间为10分钟
+		me.setError403View("/common/error/403.html");
+		me.setError404View("/common/error/404.html");
+		me.setError500View("/common/error/500.html");
 		me.setMaxPostSize(104857600*5);
 	}
 	
@@ -63,6 +73,7 @@ public class ConferenceConfig extends JFinalConfig{
 		me.add("/home",IndexController.class);
 		me.add("/conditions",ConditionsController.class);//筛选条件数据
 		me.add("/export",ExportController.class);
+		me.add("/login",LoginController.class);
 		
 	}
 	/**
@@ -84,19 +95,26 @@ public class ConferenceConfig extends JFinalConfig{
 		//建立表的映射
 		arp.addMapping("bigdata_fct_origin",FctOrigin.class);//原始素材
 		arp.addMapping("bigdata_fct_zb",FctZb.class);//新闻
-		
 		arp.addMapping("bigdata_d_dept",Dept.class);//大单位 部门
 		arp.addMapping("bigdata_d_creator",Creator.class);//发稿人
 		arp.addMapping("bigdata_d_ref",BigDataDRef.class);//参照维表，包含方向、性质等
 		arp.addMapping("bigdata_fct_eval",FctEval.class);//新闻评价
-	}
+		
+		//权限
+		arp.addMapping("bigdata_sys_user",SysUser.class);//系统用户
+		arp.addMapping("bigdata_sys_role",SysRole.class);//系统角色
+		arp.addMapping("bigdata_sys_menu",SysMenu.class);//系统菜单
+	};
 	
 	/**
 	 * 配置全局拦截器
 	 */
 	@Override
 	public void configInterceptor(Interceptors me) {
-	}
+		me.add(new SessionInViewInterceptor(true)); 	//系统自带 不用管
+		me.add(new LoginInterceptor());				//所有路径的用户登录拦截器
+		me.add(new SecurityInterceptor());			//权限管理器
+	};
 	
 	/**
 	 * 配置标签
@@ -110,7 +128,7 @@ public class ConferenceConfig extends JFinalConfig{
 		FreeMarkerRender.getConfiguration().setSharedVariable("_fctzb_analysis_list", new SourceListDirective());//素材分析列表
 		FreeMarkerRender.getConfiguration().setSharedVariable("_fctzb_usemodel_list", new FctZbUseModelDirective());//新闻使用方式分析列表
 		FreeMarkerRender.getConfiguration().setSharedVariable("_fctzb_uselevel_list", new FctZbUseLevelDirective());//新闻评价等级分析列表
-	}
+	};
 	
 	/**
 	 * 配置处理器

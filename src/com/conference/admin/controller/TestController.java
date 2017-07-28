@@ -18,8 +18,11 @@ import org.apache.commons.lang3.StringUtils;
 import com.conference.admin.model.FctOrigin;
 import com.conference.admin.model.FctZb;
 import com.conference.admin.model.RdcProductAgentDetail;
+import com.conference.admin.model.SysUser;
 import com.conference.common.RESTFulController;
 import com.conference.common.interceptor.SessionInterceptor;
+import com.conference.common.security.SecurityAuthorityAnnotation;
+import com.conference.common.security.SecurityContainer;
 import com.conference.util.MyPoiRender;
 import com.conference.util.excel.ExportRdcProductAgentDetailTemplate;
 import com.conference.util.sys.DataTablesUtil;
@@ -30,6 +33,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 @Before(SessionInterceptor.class)
 public class TestController extends  RESTFulController<FctOrigin> {
+	@SecurityAuthorityAnnotation(needLogin=true)
 	public void index(){
 		render("/views/modules/test/test.html");
 	}
@@ -168,5 +172,10 @@ public class TestController extends  RESTFulController<FctOrigin> {
 		Page<Record> page=FctZb.dao.fctZbUseLevelGroupByDate(sqlWhere,null, 1, 10);
 		String result=JsonKit.toJson(page, 13);
 		renderJson(result);
+	}
+	public void userInfo(){
+		SysUser sysUser=SysUser.dao.findById("1");
+		SecurityContainer s=new SecurityContainer(sysUser, this);
+		renderJson(s);
 	}
 }

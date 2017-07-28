@@ -23,6 +23,8 @@ import oecp.framework.util.RandomGenerator;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.conference.admin.model.SysUser;
+import com.conference.common.security.SecurityContainer;
 import com.conference.util.ExUploadFile;
 import com.conference.util.StringKit;
 import com.conference.util.TwoDimensionCode;
@@ -79,8 +81,8 @@ public  class BaseController extends Controller implements Constant {
 	
 	/**
 	 * 返回注册 的跨域 JSONP
-	 * @author longjunfeng
-	 * @date   2015年12月18日上午9:29:33
+	 * @author zuoqb
+	 * @date   2017年7月27日15:37:08
 	 */
 	public void renderForReg(){
 		if(isParaExists("jsonpCallback")){
@@ -326,41 +328,7 @@ public  class BaseController extends Controller implements Constant {
 		return returnMsgMap;
 	}
 	
-	/** 
-	 * @Desc: 国际化返回成功信息
-	 * @param status_code
-	 * @return
-	 * @return: Map<String,String>
-	 * @author: longjunfeng   
-	 * @date: 2016年11月17日 下午4:53:59 
-	 */
-	public Map<String, String> setCommonMsgSuccessI18n(String status_code) {
-		String msg=((Res)getAttr("_res")).get("msg." + status_code);
-		this.setAttr(Constant.STATUS, "success");
-		this.setAttr(Constant.MSG,msg);
-		Map<String, String> returnMsgMap=new HashMap<String, String>();
-		returnMsgMap.put(Constant.STATUS, "success");
-		returnMsgMap.put(Constant.MSG, msg);
-		return returnMsgMap;
-	}
-	
-	/** 
-	 * @Desc: 国际化返回失败信息
-	 * @param status_code
-	 * @return
-	 * @return: Map<String,String>
-	 * @author: longjunfeng   
-	 * @date: 2016年11月17日 下午4:54:17 
-	 */
-	public Map<String, String> setCommonMsgErrorI18n(String status_code) {
-		String msg=((Res)getAttr("_res")).get("msg." + status_code);
-		this.setAttr(Constant.STATUS, "error");
-		this.setAttr(Constant.MSG,msg);
-		Map<String, String> returnMsgMap=new HashMap<String, String>();
-		returnMsgMap.put(Constant.STATUS, "error");
-		returnMsgMap.put(Constant.MSG, msg);
-		return returnMsgMap;
-	}
+
 	
 	/**
 	 *  输出错误信息JSON信息，只返回错误
@@ -493,13 +461,37 @@ public  class BaseController extends Controller implements Constant {
 	}
 	/**
 	 * 
+	 * @time   2017年7月27日 下午1:43:25
+	 * @author zuoqb
+	 * @todo   获取登录用户的权限信息容器
+	 * 如果返回为null则用户没有登录，也可以在线程变量里面获取SecurityContainer
+	 */
+	public SecurityContainer getSecurityContainer(){
+		return getSessionAttr(SESSION_SECURITYCONTAINER);
+	}
+	/**
+	 * 
+	 * @time   2017年7月27日 下午2:42:14
+	 * @author zuoqb
+	 * @todo   得到登录用户，所有的登录操作，把用户都放入SESSION_USER字段
+	 * 用新全系系统中SecurityContainer 里面的值
+	 */
+	public SysUser getLoginUser() {
+		SecurityContainer container=this.getSecurityContainer();
+		if(container!=null){
+			return container.getSysUser();
+		}
+		return null;
+	}
+	/**
+	 * 
 	 * @time   2017年7月11日 上午11:24:48
 	 * @author zuoqb
 	 * @todo  将参数放入session以及request中
 	 */
 	public void dealAttrToSession(Controller c){
-		//存入用户信息
-		c.setSessionAttr(SESSION_SECURITYCONTAINER, 3);
+		/*//存入用户信息
+		c.setSessionAttr(SESSION_SECURITYCONTAINER, 3);*/
 		
 		c.setSessionAttr(SESSION_COMPANYID, c.getPara(ATTR_COMPANYID,""));
 		c.setSessionAttr(SESSION_DEPTID, c.getPara(ATTR_DEPTID,""));
@@ -509,6 +501,7 @@ public  class BaseController extends Controller implements Constant {
 		c.setSessionAttr(SESSION_DIRECT, c.getPara(ATTR_ENDDATE,""));
 		c.setSessionAttr(SESSION_PAGENUM, c.getPara(ATTR_PAGENUM,""));
 		c.setSessionAttr(SESSION_PAGESIZE, c.getPara(ATTR_PAGESIZE,""));
+		//c.setAttr("session", c.getSession());
 		c.keepPara();
 		c.setAttr("params", joinParam(c));
 		/*this.setAttr(ATTR_COMPANYID, c.getPara(ATTR_COMPANYID));

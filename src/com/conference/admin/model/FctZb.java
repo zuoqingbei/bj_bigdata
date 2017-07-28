@@ -108,8 +108,7 @@ public class FctZb extends BaseModel<FctZb> {
 	 */
 	public List<Record> fctZbByYear(String sqlWhere, int startYear, int endYear) {
 		String sql = "";
-		sql += " select ifnull(m.count,'0') as count,d.years as name from (select * from bigdata_date where years>'"
-				+ startYear + "' and years<='" + endYear + "') d left join (  ";
+		sql += " select ifnull(m.count,'0') as count,d.years as name from ("+SqlUtil.dealYearSql(startYear, endYear)+") d left join (  ";
 		sql += " select count(1) as count,date_format(fct_zb.created_time,'%Y') as name ";
 		sql += "  from bigdata_fct_zb fct_zb where 1=1 " + sqlWhere;
 		sql += " group by date_format(fct_zb.created_time,'%Y')  ) m ";

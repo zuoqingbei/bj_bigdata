@@ -17,6 +17,11 @@ public interface Constant {
 	/**是否使用线下模式
 	 */
 	public final static String OFFLINEMODE=PropKit.use("config.txt").get("sys.offlineMode");
+	
+	public final static String JSESSIONID="JSESSIONID";
+	public final static String SESSION_VALIDATECODE="validateCode";//验证码字段
+	public final static String SESSION_MOBILE_VC="session_mobilevc";//手机短信验证码字段
+	
 	//cookie值
 	public final static String COOKIE_LOGIN_ID="login_id";
 	public final static String COOKIE_SECRET_TOKEN="secret_token";
@@ -27,6 +32,7 @@ public interface Constant {
 	public final static String MSG="msg";
 	//session值
 	public final static String SESSION_SECURITYCONTAINER = "s_container";//用户登录的所有信息都放入当中
+	public final static String SESSION_USER = "login_user";
 	public final static String SESSION_COMPANYID = "s_companyId";//大单位
 	public final static String SESSION_DEPTID = "s_deptid";
 	public final static String SESSION_CREATORID = "s_creatorid";

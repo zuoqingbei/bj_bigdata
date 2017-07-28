@@ -321,6 +321,21 @@ public class SqlUtil implements Constant{
 	
 	
 	
+	public static String dealYearSql(int startYear,int endYear){
+		String sql="select a.* from( ";
+		for(int x=startYear;x<endYear+1;x++){
+			if(x==endYear){
+				sql+=" select '"+x+"' as years from   dual  ";
+			}else{
+				sql+=" select '"+x+"' as years from   dual union ";
+			}
+		}
+		sql+=" )a ";
+		return sql;
+	}
+	
+	
+	
 	
 	/**
 	 * 去除order 和group条件

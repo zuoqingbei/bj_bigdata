@@ -4,10 +4,14 @@
 		<div class="row header">
 			<div class=" col-md-12">
 				<ul class="nav nav-tabs">
-					<li role="presentation" class="active"><a> <span
-							class="navText">总览</span> <span
+				<#list session.s_container.menus as menu>
+					<#if (menu_index==0)>
+						<li role="presentation"  id="top_tab_${menu.id!}" selectedId="${menu.id!}" data="${ctx_path!}${menu.href!}" class="active"><a> <span
+							class="navText">${menu.name!}</span> <span
 							class="glyphicon glyphicon-remove"></span>
 					</a></li>
+					</#if>
+				</#list>
 				</ul>
 			</div>
 

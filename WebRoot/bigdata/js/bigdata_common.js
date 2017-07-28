@@ -59,7 +59,6 @@ function loadConditions(isFirst){
 	if(isFirst==undefined||!isFirst){
 		joinParam();
 	}
-	console.log(params)
 	conditionsCompanys();
 	conditionsDepts();
 	conditionsCreator();

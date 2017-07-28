@@ -14,11 +14,19 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li class="status active">
-                    <a style="cursor: pointer">你好，王将军
-                    </a>
-                <li><a href="#">登出</a></li>
-                </li>
+            	<#if session.s_container.sysUser??>
+					<li class="status active">
+	                    <a style="cursor: pointer">你好，${session.s_container.sysUser.login_name!}
+	                    </a>
+	                <li><a href="${ctx_path}login/logout">登出</a></li>
+	                </li>
+				<#else>
+					<li class="status active">
+	                   
+	                <li><a href="#">登录</a></li>
+	                </li>
+				</#if>
+                
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

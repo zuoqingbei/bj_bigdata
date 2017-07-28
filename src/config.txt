@@ -31,3 +31,7 @@ file.ppt_size_limit=50
 file.voice_size_limit=50
 ##通用其他类型文件最大值(单位M)
 file.other_size_limit=50
+
+
+#超级用户账号
+super.sysuser=1348898564@qq.com

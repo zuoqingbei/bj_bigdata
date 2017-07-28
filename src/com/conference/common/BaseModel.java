@@ -3,12 +3,8 @@ package com.conference.common;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.conference.util.Reflections;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
-import com.jfinal.plugin.activerecord.Table;
 import com.jfinal.plugin.activerecord.TableMapping;
 
 /** 
@@ -83,126 +79,6 @@ public class BaseModel<T extends Model<?>> extends Model<T>{
 	
 	
 	
-	/**
-	 * 逻辑删除,把del_flag改为1
-	 * @author longjunfeng
-	 * @return 
-	 * @date   2016年1月8日上午8:39:06
-	 */
-	public boolean deleteLogic(){
-		this.set("del_flag", DEL_FLAG_DELETE);
-		return this.update();
-	}
-	
-	/**根据ID逻辑删除
-	 * @param id
-	 * @return
-	 * @author longjunfeng
-	 * @date   2016年6月29日下午4:16:14
-	 */
-	public int deleteLogic(Object id){
-		Table table = TableMapping.me().getTable(this.getOriginClass());
-		String sql="UPDATE "+table.getName()+" SET del_flag =? WHERE  id = ?";
-		return Db.update(sql, DEL_FLAG_DELETE,id);
-	}
-	
-	
-	/**
-	 * 获取省市区 code和名称放入表字段中
-	 * 根据前台 /script/commonJs/city.js 插件,获取的区域信息,并把区域信息放到model中去,
-	 * 要求,表中所有的区域字段都一致
-	 * @param c
-	 * @param model
-	 * @author longjunfeng
-	 * @date   2016年4月16日下午2:24:25
-	 */
-	public static void getAreaInfoFromParam(BaseController c,Model model){
-		Table table = TableMapping.me().getTable(model.getClass());
-		if (StringUtils.isNotBlank(c.getPara("pro"))
-				&& c.getPara("pro").split(",").length == 2) {
-			if(table.hasColumnLabel("provice_id")){
-				model.set("provice_id", c.getPara("pro").split(",")[0]);
-				model.set("provice_name", c.getPara("pro").split(",")[1]);
-			}else if(table.hasColumnLabel("pro_code")){
-				model.set("pro_code", c.getPara("pro").split(",")[0]);
-				model.set("pro_name", c.getPara("pro").split(",")[1]);
-			} 
-		}
-		if (StringUtils.isNotBlank(c.getPara("city"))
-				&& c.getPara("city").split(",").length == 2) {
-			if(table.hasColumnLabel("city_id")){
-				model.set("city_id", c.getPara("city").split(",")[0]);
-				model.set("city_name", c.getPara("city").split(",")[1]);
-			}else if(table.hasColumnLabel("pro_code")){
-				model.set("city_code", c.getPara("city").split(",")[0]);
-				model.set("city_name", c.getPara("city").split(",")[1]);
-			} 
-		}
-		if (StringUtils.isNotBlank(c.getPara("area"))
-				&& c.getPara("area").split(",").length == 2) {
-			if(table.hasColumnLabel("area_code")){
-				model.set("area_code", c.getPara("area").split(",")[0]);
-				model.set("area_name", c.getPara("area").split(",")[1]);
-			}else if(table.hasColumnLabel("area_id")){
-				model.set("area_id", c.getPara("area").split(",")[0]);
-				model.set("area_name", c.getPara("area").split(",")[1]);
-			}
-		}
-	}
-	
-	/**
-	 * 把实体里面的model信息,解析成前台 /script/commonJs/city.js 插件字段
-	 * 必须有想要的区域规定字段
-	 * @param model
-	 * @author longjunfeng
-	 * @date   2016年4月16日下午2:34:13
-	 */
-	public static void getAreaInfoFromModel(Model model){
-		if(model==null){
-			return;
-		}
-		if (StringUtils.isNotBlank(model.getStr("pro_code"))) {
-			model.put("pro", model.getStr("pro_code")+","+ model.getStr("pro_name"));
-		}
-		if (StringUtils.isNotBlank(model.getStr("city_code"))) {
-			model.put("city", model.getStr("city_code")+","+ model.getStr("city_name"));
-		}
-		if (StringUtils.isNotBlank(model.getStr("area_code"))) {
-			model.put("area", model.getStr("area_code")+","+ model.getStr("area_name"));
-		}
-	}
-	
-	
-	
-	
-	/**处理自己的父级机构
-	 * 处理的字段有  parent_id、parent_ids
-	 * @param model
-	 * @author longjunfeng
-	 * @date   2016年6月29日上午10:11:14
-	 */
-	public  void dealParentIds(T model){
-		if(model.get("parent_id")==null||model.getStr("parent_id").equals("0")){
-			model.set("parent_id", "0");
-			model.set("parent_ids", ",0,");
-		}else{
-			T parnetModel = this.findById(model.get("parent_id"));
-			model.set("parent_ids", parnetModel.get("parent_ids").toString()+ parnetModel.get("id").toString()+",");
-		}
-	}
-	
-	/**处理子机构的自己的父级机构
-	 * 处理的字段有  parent_id、parent_ids
-	 * @param model
-	 * @author longjunfeng
-	 * @return 
-	 * @date   2016年6月29日上午10:11:14
-	 */
-	public static int dealChildrenParentIds(Model model){
-		Table table = TableMapping.me().getTable(model.getClass());
-		String sql="UPDATE "+table.getName()+" SET parent_ids =? WHERE  parent_ids LIKE ?";
-		return Db.update(sql, model.getStr("parent_ids")+model.get("id").toString()+",","%,"+model.get("id").toString()+",%");
-	}
 	
 	/**将menu sourcelist 根据父子 进行排序
 	 * @param list
