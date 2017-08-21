@@ -301,19 +301,18 @@ public class ImportExcel {
 //	/**
 //	 * 导入测试
 //	 */
-//	public static void main(String[] args) throws Throwable {
-//		
-//		ImportExcel ei = new ImportExcel("target/export.xlsx", 1);
-//		
-//		for (int i = ei.getDataRowNum(); i < ei.getLastDataRowNum(); i++) {
-//			Row row = ei.getRow(i);
-//			for (int j = 0; j < ei.getLastCellNum(); j++) {
-//				Object val = ei.getCellValue(row, j);
-//				System.out.print(val+", ");
-//			}
-//			System.out.print("\n");
-//		}
-//		
-//	}
+	public static void main(String[] args) throws Throwable {
+		ImportExcel ei = new ImportExcel("D:\\test.xlsx", 0);
+		
+		for (int i = ei.getDataRowNum(); i < ei.getLastDataRowNum()+1; i++) {
+			Row row = ei.getRow(i);
+			for (int j = 0; j < ei.getLastCellNum(); j++) {
+				Object val = ei.getCellValue(row, j);
+				System.out.print(val+", ");
+			}
+			System.out.print("\n");
+		}
+		
+	}
 
 }
