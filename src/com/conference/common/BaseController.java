@@ -301,14 +301,14 @@ public  class BaseController extends Controller implements Constant {
 	 * @return 
 	 * @date   2015年12月17日下午5:21:15
 	 */
-	public Map<String, String> setCommonMsg(String status_code) {
+	/*public Map<String, String> setCommonMsg(String status_code) {
 		this.setAttr(Constant.STATUS, status_code);
 		this.setAttr(Constant.MSG,I18n.use().get("msg." + status_code));
 		Map<String, String> returnMsgMap=new HashMap<String, String>();
 		returnMsgMap.put(Constant.STATUS, status_code);
 		returnMsgMap.put(Constant.MSG, I18n.use().get("msg." + status_code));
 		return returnMsgMap;
-	}
+	}*/
 	
 	
 	/**

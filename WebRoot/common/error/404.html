@@ -1,12 +1,18 @@
 <#include "${ctx_path!}/bigdata/layout/_layout.html"/>
-<@layout scripts=[] csss=[]   s_title="页面未找到">
-<link rel="stylesheet" type="text/css" href="/index/css/error.css">
-        <div class="error">
-            <em>404</em>
-            <div class="e-t">
-                <img src="/index/image/59.gif">
-                <p>哎呦~页面未找到！</p>
-            </div>
-            <a href="javascript:history.go(-1);">返回</a>
-        </div>
+<@layout scripts=[] csss=["${ctx_path!}/bigdata/css/errorPage.css"]   s_title="网页找不到">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>网页找不到</title>
+    <style>
+        html,body{
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="errorPage">
+<div class="code"></div>
+<div class="text">页面飞去外太空啦~</div>
+<a class="btn btn-default" href="/home">返回主页</a>
+</body>
 </@layout>

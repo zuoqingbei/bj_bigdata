@@ -58,7 +58,7 @@ public class ConferenceConfig extends JFinalConfig{
 		me.setDevMode(getPropertyToBoolean("devMode", true));
 		me.setViewType(ViewType.FREE_MARKER);
 		me.setFreeMarkerTemplateUpdateDelay(0);//html页面缓存时间为10分钟
-		me.setError403View("/common/error/403.html");
+		me.setError403View("/common/error/403.html");//没有权限
 		me.setError404View("/common/error/404.html");
 		me.setError500View("/common/error/500.html");
 		me.setMaxPostSize(104857600*5);

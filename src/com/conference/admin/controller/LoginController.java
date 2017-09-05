@@ -7,10 +7,12 @@ import com.conference.common.service.SysUserService;
 
 public class LoginController  extends BaseController {
 	public void submit(){
-		String login_id="zuoqb";
-		String password="123456";
+		String login_id=getPara("username");
+		String password=getPara("password");
+		String rememberMe=getPara("rememberMe");
+		this.setCookie(BaseController.COOKIE_REMEMBER_ME, 	rememberMe,10800, "/");
 		Map<String,String>  result=SysUserService.service.login(login_id, password, this);
-		redirect("/home");
+		renderJson(result);
 	}
 	public void index(){
 		render("/bigdata/pages/login/login.html");

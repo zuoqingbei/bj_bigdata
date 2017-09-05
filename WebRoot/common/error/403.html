@@ -1,14 +1,26 @@
 <#include "${ctx_path!}/bigdata/layout/_layout.html"/>
-<@layout scripts=[] csss=[]   s_title="无权限">
-<link rel="stylesheet" type="text/css" href="/index/css/error.css">
-        <div class="error">
-            <em>403</em>
-            <div class="e-t">
-                <img src="/bigdata/img/59.gif">
-                <p>您暂无权限进入该页面!</p>
-                <h5 style="text-align: center;"></h5>
-            </div>
-            <a href="javascript:history.go(-1);">返回</a>
-        </div>
-
+<@layout scripts=[] csss=["${ctx_path!}/bigdata/css/errorPage.css"]   s_title="无权限">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>无权限</title>
+    <style>
+        html,body{
+            height: 100%;
+        }
+        .errorPage .code{
+            background: none;
+            height: auto;
+        }
+        .errorPage .text{
+            margin-bottom: 2em;
+            font-size: 2.4em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="errorPage">
+<div class="code"></div>
+<div class="text">对不起，您没有权限进行此操作！</div>
+<a class="btn btn-default" href="/home">返回主页</a>
 </@layout>

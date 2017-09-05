@@ -1,0 +1,24 @@
+body.errorPage {
+    text-align: center;
+    background: url("../img/error_bg.png");
+    background-size: 100% 100%;
+    padding-top: 10em;
+}
+.errorPage .code{
+    width:30em;
+    height:12em;
+    margin: 0 auto 5em;
+    background: url("../img/404.png");
+    background-size: 100% 100%;
+}
+.errorPage .text{
+    width:100%;
+    font-size: 1.2em;
+}
+.errorPage a.btn{
+    margin-top: 2em;
+    font-size: 1.2em;
+    border-radius: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+}
