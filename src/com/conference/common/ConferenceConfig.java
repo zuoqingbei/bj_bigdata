@@ -18,6 +18,7 @@ import com.conference.admin.model.SysUser;
 import com.conference.common.interceptor.LoginInterceptor;
 import com.conference.common.security.SecurityInterceptor;
 import com.conference.directive.FctEvalDirective;
+import com.conference.directive.FctZbListDirective;
 import com.conference.directive.FctZbNumDirective;
 import com.conference.directive.FctZbUseLevelDirective;
 import com.conference.directive.FctZbUseModelDirective;
@@ -125,7 +126,7 @@ public class ConferenceConfig extends JFinalConfig{
 		FreeMarkerRender.getConfiguration().setSharedVariable("_fctzb_num", new FctZbNumDirective());//新闻量统计
 		FreeMarkerRender.getConfiguration().setSharedVariable("_fct_eval", new FctEvalDirective());//新闻评价
 		FreeMarkerRender.getConfiguration().setSharedVariable("_source_analysis_list", new SourceListDirective());//素材分析列表
-		FreeMarkerRender.getConfiguration().setSharedVariable("_fctzb_analysis_list", new SourceListDirective());//素材分析列表
+		FreeMarkerRender.getConfiguration().setSharedVariable("_fctzb_analysis_list", new FctZbListDirective());//新闻分析列表
 		FreeMarkerRender.getConfiguration().setSharedVariable("_fctzb_usemodel_list", new FctZbUseModelDirective());//新闻使用方式分析列表
 		FreeMarkerRender.getConfiguration().setSharedVariable("_fctzb_uselevel_list", new FctZbUseLevelDirective());//新闻评价等级分析列表
 	};
@@ -146,7 +147,7 @@ public class ConferenceConfig extends JFinalConfig{
 	
 	
 	public static void main(String[] args) {
-		JFinal.start("WebRoot", 8080, "/", 5);
+		JFinal.start("WebRoot", 8090, "/", 5);
 	}
 
 }

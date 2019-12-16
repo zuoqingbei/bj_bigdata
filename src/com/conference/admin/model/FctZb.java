@@ -155,6 +155,12 @@ public class FctZb extends BaseModel<FctZb> {
 			r.set("deptName", joinStrByMap(deptMap));
 			r.set("creatorName", joinStrByMap(creatorNameMap));
 			r.set("souceCodeName", joinStrByMap(souceCodeNameMap));
+			Record d=Db.findFirst("SELECT d_creator.`name` FROM `bigdata_fct_zb`  fct_zb LEFT JOIN bigdata_d_creator d_creator on d_creator.id=fct_zb.source_code where fct_zb.zb_id='"+r.get("zb_id")+"'");
+			if(d!=null){
+				r.set("souceCodeName", d.get("name"));
+			}else{
+				r.set("souceCodeName", "");
+			}
 			// 是否批示处理
 			String hasPiShi = r.getStr("hasPiShi");
 			if (StringUtils.isBlank(hasPiShi) || "0".equals(hasPiShi)) {

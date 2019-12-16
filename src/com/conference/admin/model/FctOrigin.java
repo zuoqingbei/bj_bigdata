@@ -191,7 +191,7 @@ public class FctOrigin extends BaseModel<FctOrigin>{
 		sql.append(" from bigdata_fct_origin fct_origin  ");
 		sql.append(" left join bigdata_r_zb_origin r_zb_origin on r_zb_origin.origin_id=fct_origin.id ");
 		sql.append(" left join bigdata_fct_zb fct_zb on fct_zb.zb_id=r_zb_origin.zb_id ");
-		sql.append(" left join bigdata_d_creator d_creator on d_creator.id=fct_origin.sourceCode ");
+		sql.append(" left join bigdata_d_creator d_creator on d_creator.id=fct_origin.creator_id ");
 		sql.append("  where ");
 		sql.append(" date_format(fct_origin.created_time,'%Y%m')='"+date+"' ");
 		sql.append(" and fct_origin.from_dept='"+fromDept+"' ");

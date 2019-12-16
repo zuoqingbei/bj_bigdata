@@ -29,7 +29,7 @@
     }
     .drillTh{
         position: relative;
-        left:.4em;
+        /* left:.4em; */
     }
     .active{
         font-weight: bold;

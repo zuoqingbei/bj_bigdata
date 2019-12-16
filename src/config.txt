@@ -6,11 +6,11 @@ devMode = true
 #------------------------------------------------------API接口或账户配置------------------------------------------------
 #数据库
 
-jdbcUrl =jdbc:mysql://101.200.74.145/qst?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
-user = qst
-password = qst
+jdbcUrl =jdbc:mysql://114.115.212.175:3306/bigdata?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+user = root
+password = Hailian8765QD@
 
-#jdbcUrl =jdbc:mysql://192.167.31.50/bigdatademo?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+#jdbcUrl =jdbc:mysql://192.167.31.50:3306/bigdatademo?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
 #user = wsh
 #password = 112112
 
