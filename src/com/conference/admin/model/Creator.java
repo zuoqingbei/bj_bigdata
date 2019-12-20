@@ -9,6 +9,10 @@ import com.conference.common.BaseModel;
 public class Creator extends BaseModel<Creator>{
 	private static final long serialVersionUID = -8811409081417389372L;
 	public static final Creator dao=new Creator();
+	public List<Creator> getAllCreator(){
+		return Creator.dao.find("SELECT * FROM `bigdata_d_creator`");
+	}
+	
 	/**
 	 * 
 	 * @time   2017年7月6日 下午2:15:10

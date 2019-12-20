@@ -3,6 +3,7 @@ package com.conference.common;
 
 import com.conference.admin.controller.ConditionsController;
 import com.conference.admin.controller.ExportController;
+import com.conference.admin.controller.ImportExcelController;
 import com.conference.admin.controller.IndexController;
 import com.conference.admin.controller.LoginController;
 import com.conference.admin.controller.TestController;
@@ -12,6 +13,7 @@ import com.conference.admin.model.Dept;
 import com.conference.admin.model.FctEval;
 import com.conference.admin.model.FctOrigin;
 import com.conference.admin.model.FctZb;
+import com.conference.admin.model.RZbOrigin;
 import com.conference.admin.model.SysMenu;
 import com.conference.admin.model.SysRole;
 import com.conference.admin.model.SysUser;
@@ -75,6 +77,7 @@ public class ConferenceConfig extends JFinalConfig{
 		me.add("/conditions",ConditionsController.class);//筛选条件数据
 		me.add("/export",ExportController.class);
 		me.add("/login",LoginController.class);
+		me.add("/import",ImportExcelController.class);
 		
 	}
 	/**
@@ -95,16 +98,18 @@ public class ConferenceConfig extends JFinalConfig{
 		
 		//建立表的映射
 		arp.addMapping("bigdata_fct_origin",FctOrigin.class);//原始素材
-		arp.addMapping("bigdata_fct_zb",FctZb.class);//新闻
+		arp.addMapping("bigdata_fct_zb","zb_id",FctZb.class);//新闻
 		arp.addMapping("bigdata_d_dept",Dept.class);//大单位 部门
 		arp.addMapping("bigdata_d_creator",Creator.class);//发稿人
 		arp.addMapping("bigdata_d_ref",BigDataDRef.class);//参照维表，包含方向、性质等
-		arp.addMapping("bigdata_fct_eval",FctEval.class);//新闻评价
+		arp.addMapping("bigdata_fct_eval","eval_id",FctEval.class);//新闻评价
 		
 		//权限
 		arp.addMapping("bigdata_sys_user",SysUser.class);//系统用户
 		arp.addMapping("bigdata_sys_role",SysRole.class);//系统角色
 		arp.addMapping("bigdata_sys_menu",SysMenu.class);//系统菜单
+		arp.addMapping("bigdata_r_zb_origin",RZbOrigin.class);
+		
 	};
 	
 	/**

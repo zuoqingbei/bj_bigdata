@@ -62,7 +62,7 @@ public class SecurityContainer implements Serializable {
 			this.belongDept=Dept.dao.findById(sysUser.get("dept_id"));
 			this.roles=SysRole.dao.getRolesByUser(sysUser.get("id"));
 			this.menus=SysMenu.dao.getMenuByUser(sysUser.get("id"),null);
-			this.mangeCreator=Creator.dao.getCreatorByUser(sysUser.get("id"));
+			this.mangeCreator=Creator.dao.getCreatorByUser(sysUser.get("id")+"");
 			this.roleTypes=SysRole.dao.getRoleTypesWithEnum(sysUser);
 		}
 	}

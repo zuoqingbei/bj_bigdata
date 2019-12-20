@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -92,10 +93,10 @@ public class FctZb extends BaseModel<FctZb> {
 	 */
 	public List<Record> fctZbTop6(String sqlWhere, String limit) {
 		String sql = "";
-		sql += " select distinct d_dept.name, ";
-		sql += " (select count(1) from bigdata_fct_zb fct_zb where fct_zb.source_dept_ids=d_dept.id "
+		sql += " select * from(select distinct d_dept.name, ";
+		sql += " (select count(1) from bigdata_fct_zb fct_zb where fct_zb.source_dept_ids like CONCAT('%,',d_dept.id,'%,') "
 				+ sqlWhere + " )as count  ";
-		sql += " from bigdata_d_dept d_dept where d_dept.pid!=0   limit "
+		sql += " from bigdata_d_dept d_dept where d_dept.pid!=0 )c ORDER BY COUNT    limit "
 				+ limit;
 		return Db.find(sql);
 	}
@@ -115,7 +116,20 @@ public class FctZb extends BaseModel<FctZb> {
 		sql += "  on d.years=m.name order by d.years desc ";
 		return Db.find(sql);
 	}
-
+	public String joinStr(String str){
+		String sql="";
+		if(org.apache.commons.lang3.StringUtils.isNotBlank(str)){
+			for(String id:str.split(",")){
+				if(org.apache.commons.lang3.StringUtils.isNotBlank(id)){
+					sql+="'"+id+"',";
+				}
+			}
+		}
+		if(sql.length()>0){
+			sql=sql.substring(0,sql.length()-1);
+		}
+		return sql;
+	}
 	/**
 	 * 
 	 * @time 2017年7月17日 上午10:43:31
@@ -123,6 +137,74 @@ public class FctZb extends BaseModel<FctZb> {
 	 * @todo 新闻分析-列表数据
 	 */
 	public Page<Record> fctZbAnalysis(String sqlWhere, int pageNum, int pageSize) {
+		// 第一步统计基础信息（评价以及标题等（一对多的部门发稿人前方记者除外））
+		StringBuffer selectSql = new StringBuffer();
+		StringBuffer fromSql = new StringBuffer();
+		selectSql.append(" select a.* ");
+		fromSql.append(" from (select   fct_zb.zb_id,date_format(fct_zb.created_time,'%Y%m%d') as date,fct_zb.zb_name, ");
+		fromSql.append(" (select  group_concat(distinct  fct_eval.use_type_id separator '+') from bigdata_fct_eval fct_eval where fct_eval.zb_id=fct_zb.zb_id ) as useType, ");
+		fromSql.append(" (select  group_concat(distinct  fct_eval.use_level_id separator '+') from bigdata_fct_eval fct_eval where fct_eval.zb_id=fct_zb.zb_id ) as useLevel,  ");
+		fromSql.append(" (select  group_concat(distinct  fct_eval.have_pishi separator '+') from bigdata_fct_eval fct_eval where fct_eval.zb_id=fct_zb.zb_id ) as hasPiShi,  ");
+		fromSql.append(" (select  group_concat(distinct  fct_eval.office_id separator '+') from bigdata_fct_eval fct_eval where fct_eval.zb_id=fct_zb.zb_id ) as office ");
+		fromSql.append("  from bigdata_fct_zb fct_zb  ");
+		fromSql.append("  left join bigdata_r_zb_origin zb_origin on zb_origin.zb_id=fct_zb.zb_id ");
+		fromSql.append("  join bigdata_fct_origin fct_origin on fct_origin.id=zb_origin.origin_id ");
+		fromSql.append(sqlWhere);
+		fromSql.append(" group by fct_zb.zb_id order by fct_zb.created_time desc)a ");
+		Page<Record> pager = Db.paginate(pageNum, pageSize,
+				selectSql.toString(), fromSql.toString());
+		for (Record r : pager.getList()) {
+			FctZb zb=FctZb.dao.findById(r.get("zb_id"));
+			if(zb!=null){
+				String deptIds=zb.get("source_dept_ids")+"";
+				String cIds=zb.get("creator_ids")+"";
+				String s0=joinStr(cIds);
+				if(StringUtils.isNotBlank(s0)){
+					String dSql="SELECT * FROM bigdata_d_creator where id in("+s0+")";
+					List<Creator> depts=Creator.dao.find(dSql);
+					String dName="";
+					for(Creator d:depts){
+						dName+=d.get("name")+"+";
+					}
+					if(StringUtils.isNotBlank(dName)){
+						dName=dName.substring(0,dName.length()-1);
+					}
+					r.set("creatorName",dName);
+				}
+				
+				String s1=joinStr(deptIds);
+				if(StringUtils.isNotBlank(s1)){
+					String dSql="SELECT * FROM `bigdata_d_dept` where id in("+s1+")";
+					List<Dept> depts=Dept.dao.find(dSql);
+					String dName="";
+					for(Dept d:depts){
+						dName+=d.get("name")+"+";
+					}
+					if(StringUtils.isNotBlank(dName)){
+						dName=dName.substring(0,dName.length()-1);
+					}
+					r.set("deptName",dName);
+				}
+			}
+			
+			Record d=Db.findFirst("SELECT d_creator.`name` FROM `bigdata_fct_zb`  fct_zb LEFT JOIN bigdata_d_creator d_creator on d_creator.id=fct_zb.source_code where fct_zb.zb_id='"+r.get("zb_id")+"'");
+			if(d!=null){
+				r.set("souceCodeName", d.get("name"));
+			}else{
+				r.set("souceCodeName", "");
+			}
+			// 是否批示处理
+			String hasPiShi = r.getStr("hasPiShi");
+			if (StringUtils.isBlank(hasPiShi) || "0".equals(hasPiShi)) {
+				hasPiShi = "暂无批示";
+			} else if (hasPiShi.indexOf("1") != -1) {
+				hasPiShi = "部分批示";
+			}
+			r.set("hasPiShi", hasPiShi);
+		}
+		return pager;
+	}
+	/*public Page<Record> fctZbAnalysis(String sqlWhere, int pageNum, int pageSize) {
 		// 第一步统计基础信息（评价以及标题等（一对多的部门发稿人前方记者除外））
 		StringBuffer selectSql = new StringBuffer();
 		StringBuffer fromSql = new StringBuffer();
@@ -172,7 +254,7 @@ public class FctZb extends BaseModel<FctZb> {
 			r.set("children", children);
 		}
 		return pager;
-	}
+	}*/
 
 	/**
 	 * 
@@ -203,9 +285,9 @@ public class FctZb extends BaseModel<FctZb> {
 		List<Record> useTypes=FctEval.dao.fctEvalUseType(sqlWhere);
 		String selectSql=" select a.* ";
 		StringBuffer fromSql = new StringBuffer();
-		fromSql.append(" from ( select date_format(fct_zb.created_time,'%Y%m%d') as date,count(1) as count,group_concat(distinct fct_zb.source_dept_ids separator '') as source_dept_ids  from bigdata_fct_zb  fct_zb  ");
+		fromSql.append(" from ( select date_format(fct_zb.created_time,'%Y%m%d') as date,count(1) as count,group_concat(distinct fct_zb.source_dept_ids separator '') as source_dept_ids,zb_id  from bigdata_fct_zb  fct_zb  ");
 		fromSql.append(" where 1=1 " + sqlWhere);
-		fromSql.append(" group by date_format(fct_zb.created_time,'%Y%m%d') order by ");
+		fromSql.append(" group by date_format(fct_zb.created_time,'%Y%m%d') ,zb_id order by ");
 		fromSql.append(" date_format(fct_zb.created_time,'%Y%m%d') desc )a ");
 		Page<Record> pager = Db.paginate(pageNum, pageSize,
 				selectSql.toString(), fromSql.toString());
@@ -231,6 +313,14 @@ public class FctZb extends BaseModel<FctZb> {
 					//根据时间 部门统计发稿人
 					List<Record>  creators=creatorByDeptUseModel(sqlWhere, date, deptId, useTypes);
 					record.set("creators", creators);
+					/*FctZb zb=FctZb.dao.findById(r.get("zb_id"));
+					String cIds=zb.get("creator_ids")+"";
+					String s0=joinStr(cIds);
+					if(StringUtils.isNotBlank(s0)){
+						String dSql="SELECT * FROM bigdata_d_creator where id in("+s0+")";
+						List<Creator> creators=Creator.dao.find(dSql);
+						record.set("creators", creators);
+					}*/
 					finList.add(record);
 				}
 			};
@@ -322,6 +412,7 @@ public class FctZb extends BaseModel<FctZb> {
 			sql+=" )c on c.na=a.use_level_id ";
 			sql+=" order by a.sor ";
 			List<Record> l=Db.find(sql);
+			Collections.reverse(l); 
 			mRecord.set("useLevel", l);
 			list.add(mRecord);
 		};

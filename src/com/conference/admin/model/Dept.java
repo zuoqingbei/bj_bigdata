@@ -46,6 +46,18 @@ public class Dept extends BaseModel<Dept>{
 		List<Record> list=Db.find(sql);
 		return list;
 	}
+	public List<Dept> getAllCompanys(){
+		String sql="";
+		sql+=" select * from bigdata_d_dept  where pid=0 or pid is null ";
+		List<Dept> list=Dept.dao.find(sql);
+		return list;
+	}
+	public List<Dept> getAllDepts(){
+		String sql="";
+		sql+=" select * from bigdata_d_dept  where pid!=0 and pid is not null";
+		List<Dept> list=Dept.dao.find(sql);
+		return list;
+	}
 	/**
 	 * 
 	 * @time   2017年7月25日 上午9:48:46

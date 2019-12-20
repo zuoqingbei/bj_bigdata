@@ -121,16 +121,16 @@ public class ExportUseModelTemplate extends AbstractExcelExportTemplate<RdcProdu
 			//相同序号出现四次，第五次时，序号+1，出现次数置0
 			currentXuHao++;
 			createStyledCell(rowBody, 0, currentXuHao + "", cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 1, list.get(i).get("date"), cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 2, SqlUtil.dealNull(list.get(i).get("deptname")), cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 1, list.get(i).get("date")+"", cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 2, SqlUtil.dealNull(list.get(i).get("deptname")+""), cellStyle.getCellStyleDataText());
 			int cIndex=3;
 			for(int x=0;x<useTypes.size();x++){
 				String typeName=useTypes.get(x).getStr("use_type_id");
-				createStyledCell(rowBody, cIndex, SqlUtil.dealNull(list.get(i).get(typeName+"优")), cellStyle.getCellStyleDataText());
+				createStyledCell(rowBody, cIndex, SqlUtil.dealNull(list.get(i).get(typeName+"优")+""), cellStyle.getCellStyleDataText());
 				cIndex++;
-				createStyledCell(rowBody, cIndex, SqlUtil.dealNull(list.get(i).get(typeName+"良")), cellStyle.getCellStyleDataText());
+				createStyledCell(rowBody, cIndex, SqlUtil.dealNull(list.get(i).get(typeName+"良")+""), cellStyle.getCellStyleDataText());
 				cIndex++;
-				createStyledCell(rowBody, cIndex, SqlUtil.dealNull(list.get(i).get(typeName+"中")), cellStyle.getCellStyleDataText());
+				createStyledCell(rowBody, cIndex, SqlUtil.dealNull(list.get(i).get(typeName+"中")+""), cellStyle.getCellStyleDataText());
 				cIndex++;
 			};
 		

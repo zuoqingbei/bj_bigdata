@@ -46,6 +46,36 @@ function exportExcel(action){
 	setHiddenValue();
 	$("#search_from").attr("action",action).submit();
 }
+//下载模板
+function downloadExcel(action){
+	$("#search_from").attr("action",action).submit();
+}
+function importExcel(url) { 
+	  var form = document.getElementById('upload'), 
+	  formData = new FormData(form); 
+	  $.ajax({ 
+	   url:url, 
+	   type:"post", 
+	   data:formData, 
+	   processData:false, 
+	   contentType:false, 
+	   success:function(res){ 
+	    if(res){ 
+	     //alert("上传成功！"); 
+	    	submitForm();
+	    } 
+	    console.log(res); 
+	    $("#pic").val(""); 
+	   }, 
+	   error:function(err){ 
+	   } 
+	 
+	  }) 
+	 
+}
+function OpenDialog(){
+	$("#btn_file").trigger("click");
+}
 //分页 页码点击
 function paginateMethod(pageNum){
 		$("#pageNum").val(pageNum);

@@ -70,15 +70,15 @@ public class ExportFctZbTemplate extends AbstractExcelExportTemplate<RdcProductA
 				currentXuHao++;
 			}
 			createStyledCell(rowBody, 0, currentXuHao + "", cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 1, SqlUtil.dealNull(list.get(i).get("date")), cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 2, SqlUtil.dealNull(list.get(i).get("deptName")), cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 3, SqlUtil.dealNull(list.get(i).get("creatorName")), cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 4, SqlUtil.dealNull(list.get(i).get("zb_name")), cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 5, SqlUtil.dealNull(list.get(i).get("useType")), cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 6, SqlUtil.dealNull(list.get(i).get("useLevel")), cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 7, SqlUtil.dealNull(list.get(i).get("hasPiShi")), cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 8, SqlUtil.dealNull(list.get(i).get("office")), cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 9, SqlUtil.dealNull(list.get(i).get("souceCodeName")), cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 1, SqlUtil.dealNull(list.get(i).get("date")+""), cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 2, SqlUtil.dealNull(list.get(i).get("deptName")+""), cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 3, SqlUtil.dealNull(list.get(i).get("creatorName")+""), cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 4, SqlUtil.dealNull(list.get(i).get("zb_name")+""), cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 5, SqlUtil.dealNull(list.get(i).get("useType")+""), cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 6, SqlUtil.dealNull(list.get(i).get("useLevel")+""), cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 7, SqlUtil.dealNull(list.get(i).get("hasPiShi")+""), cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 8, SqlUtil.dealNull(list.get(i).get("office")+""), cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 9, SqlUtil.dealNull(list.get(i).get("souceCodeName")+""), cellStyle.getCellStyleDataText());
 		}
 	}
 	

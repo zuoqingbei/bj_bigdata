@@ -74,8 +74,9 @@ public class FctOrigin extends BaseModel<FctOrigin>{
 		sql.append(sqlWhere);
 		sql.append(" )a ");
 		sql.append(" join ");
-		sql.append(" (select count(1) as news_num from bigdata_fct_origin fct_origin right join bigdata_r_zb_origin zb_origin ");
-		sql.append("  on fct_origin.id=zb_origin.origin_id ");
+		/*sql.append(" (select count(1) as news_num from bigdata_fct_origin fct_origin right join bigdata_r_zb_origin zb_origin ");
+		sql.append("  on fct_origin.id=zb_origin.origin_id ");*/
+		sql.append(" (select count(1) as news_num from bigdata_fct_zb ");
 		sql.append("  where 1=1 ");
 		sql.append(sqlWhere);
 		sql.append(" )b ");

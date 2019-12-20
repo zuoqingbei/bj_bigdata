@@ -76,7 +76,7 @@
             <thead>
             <tr>
                 <th>时间</th>
-                <th>部门</th>
+                <th>采集部门</th>
                 <th>发稿人</th>
                 <th>新闻标题</th>
                 <th>使用方式</th>
@@ -104,10 +104,15 @@
         </table>
         <div class="pagingAndExp">
             <div class="pull-left btn btn-default" onclick="exportExcel('/export/exportFctZbDetail')">导出本地</div>
+            <div class="pull-left btn btn-default" onclick="downloadExcel('/import/downFctZbTemp')">下载模板</div>
+            <div class="pull-left btn btn-default" onclick="OpenDialog()">导入数据</div>
            <#include "/bigdata/common/_paginate.html" />
 				<@paginate currentPage=page.pageNumber
 				totalPage=page.totalPage  actionUrl="/home/newsAnalysis" urlParas="${params!}"/>
         </div>
+         <form id="upload" enctype="multipart/form-data" method="post" style="display:none;"> 
+	        <input type="file" name="file" id="btn_file" style="display:none" onchange="importExcel('/import/importFctZb')">
+		</form> 
         </@_fctzb_analysis_list>
     </div>
 

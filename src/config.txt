@@ -6,13 +6,17 @@ devMode = true
 #------------------------------------------------------API接口或账户配置------------------------------------------------
 #数据库
 
-jdbcUrl =jdbc:mysql://114.115.212.175:3306/bigdata?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
-user = root
-password = Hailian8765QD@
+#jdbcUrl =jdbc:mysql://114.115.212.175:3306/bigdata?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+#user = root
+#password = Hailian8765QD@
 
-#jdbcUrl =jdbc:mysql://192.167.31.50:3306/bigdatademo?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
-#user = wsh
-#password = 112112
+jdbcUrl =jdbc:mysql://10.155.20.86:3306/bigdata?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+user = bigdata
+password = Bigdata,123
+
+#jdbcUrl =jdbc:mysql://192.168.3.186:3306/bigdata?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+#user = bigdata
+#password = bigdata
 
 #file文件服务配置 	
 ##文件数量 

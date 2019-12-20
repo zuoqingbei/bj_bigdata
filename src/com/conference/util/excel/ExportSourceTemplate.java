@@ -70,16 +70,16 @@ public class ExportSourceTemplate extends AbstractExcelExportTemplate<RdcProduct
 				currentXuHao++;
 			}
 			createStyledCell(rowBody, 0, currentXuHao + "", cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 1, list.get(i).get("date"), cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 2, SqlUtil.dealNull(list.get(i).get("companyname")), cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 3, SqlUtil.dealNull(list.get(i).get("deptname")), cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 4, SqlUtil.dealNull(list.get(i).get("creatorName")), cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 5, SqlUtil.dealNull(list.get(i).get("sourceCodeName")), cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 1, list.get(i).get("date")+"", cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 2, SqlUtil.dealNull(list.get(i).get("companyname")+""), cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 3, SqlUtil.dealNull(list.get(i).get("deptname")+""), cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 4, SqlUtil.dealNull(list.get(i).get("creatorName")+""), cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 5, SqlUtil.dealNull(list.get(i).get("sourceCodeName")+""), cellStyle.getCellStyleDataText());
 			createStyledCell(rowBody, 6, list.get(i).getLong("sourcenNum")+"", cellStyle.getCellStyleDataText());
 			createStyledCell(rowBody, 7, list.get(i).getLong("zbnum")+"", cellStyle.getCellStyleDataText());
 			createStyledCell(rowBody, 8, list.get(i).get("rate")+"%", cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 9, SqlUtil.dealNull(list.get(i).get("useType")), cellStyle.getCellStyleDataText());
-			createStyledCell(rowBody, 10, SqlUtil.dealNull(list.get(i).get("useLevel")), cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 9, SqlUtil.dealNull(list.get(i).get("useType")+""), cellStyle.getCellStyleDataText());
+			createStyledCell(rowBody, 10, SqlUtil.dealNull(list.get(i).get("useLevel")+""), cellStyle.getCellStyleDataText());
 			createStyledCell(rowBody, 11, list.get(i).getLong("hasPiShiNum")+"", cellStyle.getCellStyleDataText());
 		}
 	}
