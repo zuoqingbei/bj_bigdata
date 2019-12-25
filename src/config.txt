@@ -9,10 +9,7 @@ devMode = true
 jdbcUrl =jdbc:mysql://114.115.212.175:3306/bigdata?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
 user = root
 password = Hailian8765QD@
-#lexin服务器
-#jdbcUrl =jdbc:mysql://10.155.20.86:3306/bigdata?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
-#user = bigdata
-#password = Bigdata,123
+
 
 #北京服务器
 #jdbcUrl =jdbc:mysql://192.168.3.186:3306/bigdata?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
